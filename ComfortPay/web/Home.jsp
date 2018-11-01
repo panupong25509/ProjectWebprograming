@@ -12,6 +12,7 @@
         <title>Comfort Pay - ซื้อง่าย จ่ายสะดวก</title>
     </head>
     <body>
+        <jsp:include page="/Component/navbar.jsp" />
         <h1>Comfort Pay</h1>
     </body>
 </html>
