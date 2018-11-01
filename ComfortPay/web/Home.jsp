@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Comfort Pay - ซื้อง่าย จ่ายสะดวก</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Comfort Pay</h1>
     </body>
 </html>
