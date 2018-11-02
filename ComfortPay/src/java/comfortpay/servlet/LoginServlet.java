@@ -5,32 +5,19 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.controller.AccountJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.transaction.UserTransaction;
 
 /**
  *
- * @author Joknoi
+ * @author INT303
  */
 public class LoginServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ComfortPayPU")
-    EntityManagerFactory emf;
-    @Resource
-    UserTransaction utx;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,30 +31,18 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-//        AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-//        List<Account> account = accountCtrl.findAccountEntities();
-//        session.setAttribute("account", account);
-//        response.sendRedirect("MyAccount.jsp");
         if (session.getAttribute("account") != null) {
             getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
         } else {
-            if (request.getParameter("username") != null || request.getParameter("password") != null) {
-                AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = accountCtrl.findAccount("username");
-                session.setAttribute("account", account);
-                            getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
-//                if (account != null) {
-//                    if (account.getPassword().equals(request.getParameter("password"))) {
-//                        getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
-//                    } else {
-//                        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                    }
-//                } else {
-//                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                }
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            if (username != null || password != null) {
+                session.setAttribute("account", username);
+                getServletContext().getRequestDispatcher("/MyAccount.jsp").forward(request, response);
             } else {
                 getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
             }
+            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
         }
     }
 
