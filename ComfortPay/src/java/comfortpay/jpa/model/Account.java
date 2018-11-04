@@ -6,20 +6,25 @@
 package comfortpay.jpa.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Joknoi
+ * @author crtiexx
  */
 @Entity
 @Table(name = "ACCOUNT")
@@ -31,6 +36,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Account.findByScore", query = "SELECT a FROM Account a WHERE a.score = :score")
     , @NamedQuery(name = "Account.findByDegree", query = "SELECT a FROM Account a WHERE a.degree = :degree")})
 public class Account implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "username")
+    private List<Address> addressList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,6 +61,8 @@ public class Account implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "DEGREE")
     private String degree;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "account")
+    private Profile profile;
 
     public Account() {
     }
@@ -100,6 +110,14 @@ public class Account implements Serializable {
         this.degree = degree;
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,6 +141,15 @@ public class Account implements Serializable {
     @Override
     public String toString() {
         return "comfortpay.jpa.model.Account[ username=" + username + " ]";
+    }
+
+    @XmlTransient
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
     }
     
 }

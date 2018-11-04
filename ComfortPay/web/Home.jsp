@@ -15,9 +15,9 @@
         body {
             margin: 0;
         }
-        #sec1 {
-            background-color: black;
-            height: 100vh;
+        #section1 {
+            min-height: 100vh;
+            padding-top: 30px;
         }
         #sec2 {
             background-color: green;
@@ -26,7 +26,9 @@
     </style>
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
-        <img src="bg.png" width="100%">
+        <div id="section1">
+            <img src="images/Home/bgFila.jpg" width="100%">
+        </div>
         <div id="sec2"></div>
     </body>
 </html>

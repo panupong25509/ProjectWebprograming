@@ -6,6 +6,7 @@
 package comfortpay.servlet;
 
 import comfortpay.jpa.model.Account;
+import comfortpay.jpa.model.Profile;
 import comfortpay.jpa.model.controller.AccountJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,6 +54,8 @@ public class LoginPopupServlet extends HttpServlet {
                 if (account != null) {
                     if (account.getPassword().equals(password)) {
                         session.setAttribute("account", account);
+                        Profile profile = account.getProfile();
+                        session.setAttribute("profile", profile);
                         if (path == null || path == "") {
                             getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
                         } else {

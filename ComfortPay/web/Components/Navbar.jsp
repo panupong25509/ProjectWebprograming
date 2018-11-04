@@ -10,34 +10,49 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
         <title>JSP Page</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     </head>
     <style>
         /*nav*/
-        #nav1 {
-            height: 40px;
-            background-color: black;
-            line-height: 40px;
+        .nav1 {
+            height: 30px;
+            background-color: #F5F5F5;
+            line-height: 30px;
             vertical-align: middle;
         }
         .nav2 {
             background-color: transparent;
-            height: 60px;
-            line-height: 60px;
+            height: 100px;
+            line-height: 100px;
             vertical-align: middle;
+            transition: 1s;
+            width: 100vw;
+        }
+        .logo {
+            height: 100px;
             transition: 1s;
         }
         .scrollNav {
             background-color: white;
             box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            height: 60px;
+            line-height: 60px;
         }
-        #nav1 a,#nav2 a {
+        .logoScroll {
+            height: 60px;
+        }
+        .nav1 a,.nav2 a {
             padding: 0;
         }
-        nav {
+        .nav1 a {
+            color: #4A4A4A;
+            font-size: 12px;
+        }
+        .navbars {
             position: fixed;
-            width: 100vw;
+            /*width: 100vw;*/
             z-index: 2;
         }
         /*popup*/
@@ -136,45 +151,57 @@
         }
     </style>
     <body>
-        <nav>
-            <div id="nav1" class="d-block">
-                <div class="container">
-                    <ul class="nav d-inline-block">
+        <div class="navbars">
+            <nav class="nav1 navbar-expand-lg">
+                <div class="container navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
                         <% if (session.getAttribute("account") == null) { %>
                         <li class="nav-item ">
-                            <a class="nav-link text-white" onclick="Login()" style="cursor: pointer;">Login</a>
+                            <a class="nav-link" onclick="Login()" style="cursor: pointer;"><i class="fas fa-user"></i> LOG IN</a>
                         </li>
-                        <% } else { %>
+                        <% } else {%>
                         <li class="nav-item d-inline-block">
-                            <a class="nav-link text-white">${account.username}</a>
+                            <a class="nav-link" href="MyAccount">${profile.fname} ${profile.lname}</a>
                         </li>
                         <li class="nav-item d-inline-block">
-                            <a class="nav-link text-white" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
+                            <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
                         </li>
                         <% }%>
                     </ul>
-                    <ul class="nav d-inline-block float-right">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">SHOPPING CART (0) </a>
+                            <a class="nav-link mr-3" href="#"><i class="fas fa-star"></i> WISH LIST </a>
                         </li>
-                    </ul>  
-                </div>
-            </div>
-            <div id="nav2" class="d-block nav2">
-                <div class="container">
-                    <ul class="nav d-inline-block">
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">COMFORTPAY</a>
+                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
                         </li>
                     </ul>
-                    <ul class="nav d-inline-block float-right">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="#">FAVORITE</a>
-                        </li>
-                    </ul>  
                 </div>
-            </div>
-        </nav>
+            </nav>
+            <nav class="nav2 navbar-expand-lg">
+                <div class="container navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link"><img src="images/Home/logo.png" class="logo"></a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link">CHAMPION</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-5">NIKE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-5">ADIDAS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-5">FILA</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
         <div id="login" class="modal">
             <div class="col-8 mx-auto">
                 <form class="modal-content animate" action="LoginPopup">
@@ -198,11 +225,11 @@
             //Scrolling Effect
             $(window).on('scroll', function () {
                 if ($(window).scrollTop()) {
-                    $('#nav2').addClass('scrollNav');
-                    $('#nav2 a').addClass('text-body');
+                    $('.nav2').addClass('scrollNav');
+                    $('.logo').addClass('logoScroll');
                 } else {
-                    $('#nav2').removeClass('scrollNav');
-                    $('#nav2 a').removeClass('text-body');
+                    $('.nav2').removeClass('scrollNav');
+                    $('.logo').removeClass('logoScroll');
                 }
             });
             //Login

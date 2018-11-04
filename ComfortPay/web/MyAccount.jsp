@@ -9,13 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>My Account</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <p>${path}</p>
-        <p>${path1}</p>
-        <p>${path2}</p>
+        <jsp:include page="Components/Navbar.jsp"/>
+        <h1>My Account</h1>
+        <p>${account.username}</p>
+        <p>${account.degree}</p>
+        <p>${account.score}</p>
         <p></p>
     </body>
 </html>

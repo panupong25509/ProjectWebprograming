@@ -12,6 +12,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>comfortpay.servlet.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MyAccountServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.MyAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyAccountServlet</servlet-name>
+        <url-pattern>/MyAccount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
