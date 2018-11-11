@@ -27,7 +27,7 @@
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
         <div id="section1">
-            <img src="images/Home/bgFila.jpg" width="100%">
+            <img src="images/Home/TrackPantsWideFeature_lead_o0not9.jpg" width="100%">
         </div>
         <div id="sec2"></div>
     </body>
