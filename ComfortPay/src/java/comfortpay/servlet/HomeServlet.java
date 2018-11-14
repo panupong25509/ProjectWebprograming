@@ -29,6 +29,7 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
     }
 

@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Productshoes.findByDescription", query = "SELECT p FROM Productshoes p WHERE p.description = :description")
     , @NamedQuery(name = "Productshoes.findByColor", query = "SELECT p FROM Productshoes p WHERE p.color = :color")
     , @NamedQuery(name = "Productshoes.findBySize", query = "SELECT p FROM Productshoes p WHERE p.size = :size")
-    , @NamedQuery(name = "Productshoes.findByPrice", query = "SELECT p FROM Productshoes p WHERE p.price = :price")})
+    , @NamedQuery(name = "Productshoes.findByPrice", query = "SELECT p FROM Productshoes p WHERE p.price = :price")
+    , @NamedQuery(name = "Productshoes.findByQuantity", query = "SELECT p FROM Productshoes p WHERE p.quantity = :quantity")})
 public class Productshoes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +64,8 @@ public class Productshoes implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PRICE")
     private Double price;
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
     public Productshoes() {
     }
@@ -138,6 +141,14 @@ public class Productshoes implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     @Override
