@@ -6,17 +6,19 @@
 package comfortpay.jpa.model.controller;
 
 import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.PreexistingEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.jpa.model.controller.exceptions.PreexistingEntityException;
+import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
 /**
@@ -37,11 +39,29 @@ public class AccountJpaController implements Serializable {
     }
 
     public void create(Account account) throws PreexistingEntityException, RollbackFailureException, Exception {
+        if (account.getAddressList() == null) {
+            account.setAddressList(new ArrayList<Address>());
+        }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
+            List<Address> attachedAddressList = new ArrayList<Address>();
+            for (Address addressListAddressToAttach : account.getAddressList()) {
+                addressListAddressToAttach = em.getReference(addressListAddressToAttach.getClass(), addressListAddressToAttach.getAddressid());
+                attachedAddressList.add(addressListAddressToAttach);
+            }
+            account.setAddressList(attachedAddressList);
             em.persist(account);
+            for (Address addressListAddress : account.getAddressList()) {
+                Account oldUsernameOfAddressListAddress = addressListAddress.getUsername();
+                addressListAddress.setUsername(account);
+                addressListAddress = em.merge(addressListAddress);
+                if (oldUsernameOfAddressListAddress != null) {
+                    oldUsernameOfAddressListAddress.getAddressList().remove(addressListAddress);
+                    oldUsernameOfAddressListAddress = em.merge(oldUsernameOfAddressListAddress);
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -65,7 +85,34 @@ public class AccountJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Account persistentAccount = em.find(Account.class, account.getUsername());
+            List<Address> addressListOld = persistentAccount.getAddressList();
+            List<Address> addressListNew = account.getAddressList();
+            List<Address> attachedAddressListNew = new ArrayList<Address>();
+            for (Address addressListNewAddressToAttach : addressListNew) {
+                addressListNewAddressToAttach = em.getReference(addressListNewAddressToAttach.getClass(), addressListNewAddressToAttach.getAddressid());
+                attachedAddressListNew.add(addressListNewAddressToAttach);
+            }
+            addressListNew = attachedAddressListNew;
+            account.setAddressList(addressListNew);
             account = em.merge(account);
+            for (Address addressListOldAddress : addressListOld) {
+                if (!addressListNew.contains(addressListOldAddress)) {
+                    addressListOldAddress.setUsername(null);
+                    addressListOldAddress = em.merge(addressListOldAddress);
+                }
+            }
+            for (Address addressListNewAddress : addressListNew) {
+                if (!addressListOld.contains(addressListNewAddress)) {
+                    Account oldUsernameOfAddressListNewAddress = addressListNewAddress.getUsername();
+                    addressListNewAddress.setUsername(account);
+                    addressListNewAddress = em.merge(addressListNewAddress);
+                    if (oldUsernameOfAddressListNewAddress != null && !oldUsernameOfAddressListNewAddress.equals(account)) {
+                        oldUsernameOfAddressListNewAddress.getAddressList().remove(addressListNewAddress);
+                        oldUsernameOfAddressListNewAddress = em.merge(oldUsernameOfAddressListNewAddress);
+                    }
+                }
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -99,6 +146,11 @@ public class AccountJpaController implements Serializable {
                 account.getUsername();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The account with id " + id + " no longer exists.", enfe);
+            }
+            List<Address> addressList = account.getAddressList();
+            for (Address addressListAddress : addressList) {
+                addressListAddress.setUsername(null);
+                addressListAddress = em.merge(addressListAddress);
             }
             em.remove(account);
             utx.commit();

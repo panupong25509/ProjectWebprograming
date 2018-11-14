@@ -5,17 +5,18 @@
  */
 package comfortpay.jpa.model.controller;
 
-import comfortpay.jpa.model.Address;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import comfortpay.jpa.model.Account;
+import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
 /**
@@ -40,7 +41,16 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Account username = address.getUsername();
+            if (username != null) {
+                username = em.getReference(username.getClass(), username.getUsername());
+                address.setUsername(username);
+            }
             em.persist(address);
+            if (username != null) {
+                username.getAddressList().add(address);
+                username = em.merge(username);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -61,7 +71,22 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
+            Address persistentAddress = em.find(Address.class, address.getAddressid());
+            Account usernameOld = persistentAddress.getUsername();
+            Account usernameNew = address.getUsername();
+            if (usernameNew != null) {
+                usernameNew = em.getReference(usernameNew.getClass(), usernameNew.getUsername());
+                address.setUsername(usernameNew);
+            }
             address = em.merge(address);
+            if (usernameOld != null && !usernameOld.equals(usernameNew)) {
+                usernameOld.getAddressList().remove(address);
+                usernameOld = em.merge(usernameOld);
+            }
+            if (usernameNew != null && !usernameNew.equals(usernameOld)) {
+                usernameNew.getAddressList().add(address);
+                usernameNew = em.merge(usernameNew);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -95,6 +120,11 @@ public class AddressJpaController implements Serializable {
                 address.getAddressid();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
+            }
+            Account username = address.getUsername();
+            if (username != null) {
+                username.getAddressList().remove(address);
+                username = em.merge(username);
             }
             em.remove(address);
             utx.commit();

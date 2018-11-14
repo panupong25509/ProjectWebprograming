@@ -7,18 +7,21 @@ package comfortpay.jpa.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,12 +34,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
     , @NamedQuery(name = "Account.findByUsername", query = "SELECT a FROM Account a WHERE a.username = :username")
     , @NamedQuery(name = "Account.findByPassword", query = "SELECT a FROM Account a WHERE a.password = :password")
+    , @NamedQuery(name = "Account.findByScore", query = "SELECT a FROM Account a WHERE a.score = :score")
     , @NamedQuery(name = "Account.findByLevel", query = "SELECT a FROM Account a WHERE a.level = :level")
     , @NamedQuery(name = "Account.findByFname", query = "SELECT a FROM Account a WHERE a.fname = :fname")
     , @NamedQuery(name = "Account.findByLname", query = "SELECT a FROM Account a WHERE a.lname = :lname")
     , @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
-    , @NamedQuery(name = "Account.findByDob", query = "SELECT a FROM Account a WHERE a.dob = :dob")
-    , @NamedQuery(name = "Account.findByScore", query = "SELECT a FROM Account a WHERE a.score = :score")})
+    , @NamedQuery(name = "Account.findByDob", query = "SELECT a FROM Account a WHERE a.dob = :dob")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,6 +52,8 @@ public class Account implements Serializable {
     @Size(max = 20)
     @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "SCORE")
+    private Integer score;
     @Size(max = 10)
     @Column(name = "LEVEL")
     private String level;
@@ -65,8 +70,8 @@ public class Account implements Serializable {
     @Column(name = "DOB")
     @Temporal(TemporalType.DATE)
     private Date dob;
-    @Column(name = "SCORE")
-    private Integer score;
+    @OneToMany(mappedBy = "username")
+    private List<Address> addressList;
 
     public Account() {
     }
@@ -89,6 +94,14 @@ public class Account implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
     public String getLevel() {
@@ -131,12 +144,13 @@ public class Account implements Serializable {
         this.dob = dob;
     }
 
-    public Integer getScore() {
-        return score;
+    @XmlTransient
+    public List<Address> getAddressList() {
+        return addressList;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
     }
 
     @Override
