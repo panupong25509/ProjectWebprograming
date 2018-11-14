@@ -46,6 +46,7 @@ public class HomeServlet extends HttpServlet {
         
         ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx,emf);
         List<Productshoes> pdshoes = pdsJpa.findProductshoesEntities();
+
         
         getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
        
