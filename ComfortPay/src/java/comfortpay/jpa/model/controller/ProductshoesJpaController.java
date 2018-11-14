@@ -5,8 +5,9 @@
  */
 package comfortpay.jpa.model.controller;
 
-import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.Productshoes;
 import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.jpa.model.controller.exceptions.PreexistingEntityException;
 import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
 import java.util.List;
@@ -22,9 +23,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class AddressJpaController implements Serializable {
+public class ProductshoesJpaController implements Serializable {
 
-    public AddressJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public ProductshoesJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -35,18 +36,21 @@ public class AddressJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Address address) throws RollbackFailureException, Exception {
+    public void create(Productshoes productshoes) throws PreexistingEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            em.persist(address);
+            em.persist(productshoes);
             utx.commit();
         } catch (Exception ex) {
             try {
                 utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            if (findProductshoes(productshoes.getProductcode()) != null) {
+                throw new PreexistingEntityException("Productshoes " + productshoes + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -56,12 +60,12 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public void edit(Address address) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Productshoes productshoes) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            address = em.merge(address);
+            productshoes = em.merge(productshoes);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -71,9 +75,9 @@ public class AddressJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = address.getAddressid();
-                if (findAddress(id) == null) {
-                    throw new NonexistentEntityException("The address with id " + id + " no longer exists.");
+                String id = productshoes.getProductcode();
+                if (findProductshoes(id) == null) {
+                    throw new NonexistentEntityException("The productshoes with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -84,19 +88,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Address address;
+            Productshoes productshoes;
             try {
-                address = em.getReference(Address.class, id);
-                address.getAddressid();
+                productshoes = em.getReference(Productshoes.class, id);
+                productshoes.getProductcode();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The productshoes with id " + id + " no longer exists.", enfe);
             }
-            em.remove(address);
+            em.remove(productshoes);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -112,19 +116,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public List<Address> findAddressEntities() {
-        return findAddressEntities(true, -1, -1);
+    public List<Productshoes> findProductshoesEntities() {
+        return findProductshoesEntities(true, -1, -1);
     }
 
-    public List<Address> findAddressEntities(int maxResults, int firstResult) {
-        return findAddressEntities(false, maxResults, firstResult);
+    public List<Productshoes> findProductshoesEntities(int maxResults, int firstResult) {
+        return findProductshoesEntities(false, maxResults, firstResult);
     }
 
-    private List<Address> findAddressEntities(boolean all, int maxResults, int firstResult) {
+    private List<Productshoes> findProductshoesEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Address.class));
+            cq.select(cq.from(Productshoes.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -136,20 +140,20 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public Address findAddress(Integer id) {
+    public Productshoes findProductshoes(String id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Address.class, id);
+            return em.find(Productshoes.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getAddressCount() {
+    public int getProductshoesCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Address> rt = cq.from(Address.class);
+            Root<Productshoes> rt = cq.from(Productshoes.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

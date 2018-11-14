@@ -9,14 +9,20 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
         <title>My Account</title>
     </head>
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
-        <h1>My Account</h1>
-        <p>${account.username}</p>
-        <p>${account.degree}</p>
-        <p>${account.score}</p>
+        <div style="padding-top: 130px;">
+            <h1>My Account</h1>
+            <p>${account.fname} ${account.lname}</p>
+            <p>${account.level}</p>
+            <p>${account.score}</p>
+        </div>
+
+
         <p></p>
     </body>
 </html>

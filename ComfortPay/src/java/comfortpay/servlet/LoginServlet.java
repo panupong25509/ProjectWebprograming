@@ -6,7 +6,6 @@
 package comfortpay.servlet;
 
 import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.Profile;
 import comfortpay.jpa.model.controller.AccountJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,6 +43,8 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         String path = request.getParameter("path");
+        int pathLength = path.length();
+        String pathServlet = path.substring(0, pathLength-4);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (session.getAttribute("account") == null) {
@@ -54,13 +55,11 @@ public class LoginServlet extends HttpServlet {
                 if (account != null) {
                     if (account.getPassword().equals(password)) {
                         session.setAttribute("account", account);
-                        Profile profile = account.getProfile();
-                        session.setAttribute("profile", profile);
                         if (path == null || path == "") {
                             getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-                            response.sendRedirect(path);
+                            response.sendRedirect(pathServlet);
                         } else {
-                            response.sendRedirect(path);
+                            response.sendRedirect(pathServlet);
                         }
                     } else {
                         request.setAttribute("path", path);
@@ -78,7 +77,7 @@ public class LoginServlet extends HttpServlet {
             if (path == null || path == "") {
                 getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
             } else {
-                response.sendRedirect(path);
+                response.sendRedirect(pathServlet);
             }
         }
 

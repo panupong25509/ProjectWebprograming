@@ -17,13 +17,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author crtiexx
+ * @author Joknoi
  */
 @Entity
 @Table(name = "ADDRESS")
@@ -43,27 +42,20 @@ public class Address implements Serializable {
     @Basic(optional = false)
     @Column(name = "ADDRESSID")
     private Integer addressid;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
+    @Size(max = 500)
     @Column(name = "ADDRESS")
     private String address;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 100)
     @Column(name = "DISTRICT")
     private String district;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 100)
     @Column(name = "PROVINCE")
     private String province;
-    @Basic(optional = false)
-    @NotNull
+    @Size(max = 5)
     @Column(name = "POSTCODE")
-    private int postcode;
+    private String postcode;
     @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Account username;
 
     public Address() {
@@ -71,14 +63,6 @@ public class Address implements Serializable {
 
     public Address(Integer addressid) {
         this.addressid = addressid;
-    }
-
-    public Address(Integer addressid, String address, String district, String province, int postcode) {
-        this.addressid = addressid;
-        this.address = address;
-        this.district = district;
-        this.province = province;
-        this.postcode = postcode;
     }
 
     public Integer getAddressid() {
@@ -113,11 +97,11 @@ public class Address implements Serializable {
         this.province = province;
     }
 
-    public int getPostcode() {
+    public String getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(int postcode) {
+    public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 

@@ -161,13 +161,13 @@
                         </li>
                         <% } else {%>
                         <li class="nav-item d-inline-block">
-                            <a class="nav-link" href="MyAccount">${profile.fname} ${profile.lname}</a>
+                            <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
                         </li>
                         <li class="nav-item d-inline-block">
                             <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
                         </li>
                         <% }%>
-                    </ul>
+                    </ul>   
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link mr-3" href="#"><i class="fas fa-star"></i> WISH LIST </a>
