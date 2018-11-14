@@ -43,23 +43,25 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         String path = request.getParameter("path");
-        if(){
+        String pathServlet = null;
+
+        if (path != null && path != "") {
             int pathLength = path.length();
-            String pathServlet = path.substring(0, pathLength - 4);
+            pathServlet = path.substring(0, pathLength - 4);
         }
-        
+
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (session.getAttribute("account") == null) {
             if (username != null || password != null) {
                 AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = accountCtrl.findAccount(username);
-                
+                Account account = accountCtrl.findAccount(username.toUpperCase());
+
                 if (account != null) {
                     if (account.getPassword().equals(password)) {
                         session.setAttribute("account", account);
                         if (path == null || path == "") {
-                            getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
+                            getServletContext().getRequestDispatcher("/Home").forward(request, response);
                             response.sendRedirect(pathServlet);
                         } else {
                             response.sendRedirect(pathServlet);
@@ -78,7 +80,7 @@ public class LoginServlet extends HttpServlet {
             }
         } else {
             if (path == null || path == "") {
-                getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/Home").forward(request, response);
             } else {
                 response.sendRedirect(pathServlet);
             }
