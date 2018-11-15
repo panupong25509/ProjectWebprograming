@@ -65,6 +65,14 @@ public class Address implements Serializable {
         this.addressid = addressid;
     }
 
+    public Address(String address, String district, String province, String postcode, Account username) {
+        this.address = address;
+        this.district = district;
+        this.province = province;
+        this.postcode = postcode;
+        this.username = username;
+    }
+
     public Integer getAddressid() {
         return addressid;
     }

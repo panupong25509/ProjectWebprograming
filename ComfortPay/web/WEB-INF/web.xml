@@ -24,6 +24,10 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>comfortpay.servlet.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterAccountServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.RegisterAccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterAccountServlet</servlet-name>
+        <url-pattern>/RegisterAccount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

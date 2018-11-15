@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Navbar
-    Created on : Nov 3, 2018, 10:39:15 PM
-    Author     : crtiexx
+    Document   : test
+    Created on : Nov 15, 2018, 11:27:12 PM
+    Author     : Joknoi
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,45 +14,26 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     </head>
     <style>
-        /*nav*/
-        .nav1 {
-            height: 30px;
-            background-color: #F5F5F5;
-            line-height: 30px;
-            vertical-align: middle;
-        }
-        .nav2 {
+        /* Navbar */
+        .navbarLogo {
             background-color: transparent;
-            height: 100px;
-            line-height: 100px;
-            vertical-align: middle;
+            color: #968783;
+            font-size: 20px;
             transition: 1s;
-            width: 100vw;
+            /*height: 80px;*/
         }
-        .logo {
+        .navbarLogoSlide {
+            background-color: white;
+            color: #968783;
+            font-size: 20px;
+            /*height: 60px;*/
+        }
+        .Logo {
             height: 80px;
             transition: 1s;
         }
-        .scrollNav {
-            background-color: white;
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+        .LogoSlide {
             height: 60px;
-            line-height: 60px;
-        }
-        .logoScroll {
-            height: 60px;
-        }
-        .nav1 a,.nav2 a {
-            padding: 0;
-        }
-        .nav1 a {
-            color: #4A4A4A;
-            font-size: 12px;
-        }
-        .navbars {
-            position: fixed;
-            /*width: 100vw;*/
-            z-index: 2;
         }
         /* The Modal (background) */
         .modal {
@@ -104,60 +85,79 @@
         }
     </style>
     <body>
-        <div class="navbars">
-            <nav class="nav1 navbar-expand-lg">
-                <div class="container navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <% if (session.getAttribute("account") == null) { %>
-                        <li class="nav-item ">
-                            <a class="nav-link" onclick="Login()" style="cursor: pointer;"><i class="fas fa-user"></i> LOG IN</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" style="cursor: pointer;"><i class="fas fa-user"></i> REGISTER</a>
-                        </li>
-                        <% } else {%>
-                        <li class="nav-item">
-                            <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
-                        </li>
-                        <% }%>
-                    </ul>   
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link mr-3" href="#"><i class="fas fa-star"></i> WISH LIST </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
-                        </li>
-                    </ul>
+        <div style="position: fixed;z-index: 2;width: 100vw;">
+            <div style="background-color: #53759A;color: #D5C4AD;font-size: 12px;height: 35px;">
+                <div class="container">
+                    <div class="col-12 row m-0 navbar-collapse navbar-expand-lg">
+                        <ul class="list-inline m-0 mr-auto p-0">
+                            <% if (session.getAttribute("account") == null) { %>
+                            <li class="list-inline-item">
+                                <a class="nav-link" onclick="Login()"><i class="fas fa-user"></i> LOGIN</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="Register" ><i class="fas fa-user"></i> REGISTER</a>
+                            </li>
+                            <% } else {%>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
+                            </li>
+                            <% }%>
+                        </ul> 
+                        <ul class="list-inline m-0">
+                            <li class="list-inline-item">
+                                <div>
+                                    <form action="Search" class="form-inline">
+                                        <input class="form-control" type="text" name="search" required style="height: 35px;background-color: transparent">
+                                        <a href="#">
+                                            <button type="submit" style="height: 35px;background-color: transparent;border: none;cursor: pointer">
+                                                <i class="fas fa-search ml-1"></i>
+                                            </button>
+                                        </a>
+                                    </form> 
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link"><i class="fas fa-star"></i> WISH LIST </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
+                            </li>
+                        </ul> 
+                    </div>
                 </div>
-            </nav>
-            <nav class="nav2 navbar-expand-lg">
-                <div class="container navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link"><img src="images/Home/logo.png" class="logo"></a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link">CHAMPION</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">NIKE</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">ADIDAS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">FILA</a>
-                        </li>
-                    </ul>
+            </div>
+            <!--2-->
+            <div class="navbarLogo">
+                <div class="container">
+                    <div class="col-12 row m-0 navbar-expand-lg navbar-collapse">
+                        <ul class="list-inline m-0 mr-auto p-0">
+                            <li class="list-inline-item">
+                                <a class="nav-link" onclick="Login()"><img src="images/Home/logo.png" class="Logo"></a>
+                            </li>
+                        </ul> 
+                        <ul class="list-inline m-0">
+                            <li class="list-inline-item">
+                                <a class="nav-link">CHAMPION</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">NIKE</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">ADIDAS</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">FILA</a>
+                            </li>
+                        </ul> 
+                    </div>
                 </div>
-            </nav>
+            </div>  
         </div>
+
+        <!--        popup-->
         <div id="login" class="modal">
             <div class="col-8 mx-auto">
                 <form class="modal-content animate" action="LoginPopup">
@@ -177,15 +177,16 @@
             </div>
 
         </div>
+
         <script>
             //Scrolling Effect
             $(window).on('scroll', function () {
                 if ($(window).scrollTop()) {
-                    $('.nav2').addClass('scrollNav');
-                    $('.logo').addClass('logoScroll');
+                    $('.navbarLogo').addClass('navbarLogoSlide');
+                    $('.Logo').addClass('LogoSlide');
                 } else {
-                    $('.nav2').removeClass('scrollNav');
-                    $('.logo').removeClass('logoScroll');
+                    $('.navbarLogo').removeClass('navbarLogoSlide');
+                    $('.Logo').removeClass('LogoSlide');
                 }
             });
             //Login
