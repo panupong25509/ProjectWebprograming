@@ -16,24 +16,16 @@
     <style>
         /* Navbar */
         .navbarLogo {
-            background-color: transparent;
-            color: #968783;
-            font-size: 20px;
-            transition: 1s;
-            /*height: 80px;*/
+             background-color: transparent;
+             color: #968783;
+             font-size: 20px;
+             height: 100px;
         }
         .navbarLogoSlide {
-            background-color: white;
-            color: #968783;
-            font-size: 20px;
-            /*height: 60px;*/
-        }
-        .Logo {
-            height: 80px;
-            transition: 1s;
-        }
-        .LogoSlide {
-            height: 60px;
+             background-color: white;
+             color: #968783;
+             font-size: 20px;
+             height: 80px;
         }
         /* The Modal (background) */
         .modal {
@@ -85,7 +77,7 @@
         }
     </style>
     <body>
-        <div style="position: fixed;z-index: 2;width: 100vw;">
+        <div style="position: fixed;z-index: 2">
             <div style="background-color: #53759A;color: #D5C4AD;font-size: 12px;height: 35px;">
                 <div class="container">
                     <div class="col-12 row m-0 navbar-collapse navbar-expand-lg">
@@ -135,7 +127,7 @@
                     <div class="col-12 row m-0 navbar-expand-lg navbar-collapse">
                         <ul class="list-inline m-0 mr-auto p-0">
                             <li class="list-inline-item">
-                                <a class="nav-link" onclick="Login()"><img src="images/Home/logo.png" class="Logo"></a>
+                                <a class="nav-link" onclick="Login()"><img src="../images/Home/logo.png" style="height: 80px;"></a>
                             </li>
                         </ul> 
                         <ul class="list-inline m-0">
@@ -156,7 +148,7 @@
                 </div>
             </div>  
         </div>
-
+        
         <!--        popup-->
         <div id="login" class="modal">
             <div class="col-8 mx-auto">
@@ -183,10 +175,10 @@
             $(window).on('scroll', function () {
                 if ($(window).scrollTop()) {
                     $('.navbarLogo').addClass('navbarLogoSlide');
-                    $('.Logo').addClass('LogoSlide');
+                    $('.logo').addClass('logoScroll');
                 } else {
                     $('.navbarLogo').removeClass('navbarLogoSlide');
-                    $('.Logo').removeClass('LogoSlide');
+                    $('.logo').removeClass('logoScroll');
                 }
             });
             //Login

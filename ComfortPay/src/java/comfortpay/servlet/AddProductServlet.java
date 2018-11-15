@@ -5,8 +5,11 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.controller.AccountJpaController;
+import comfortpay.jpa.model.Cart;
+import comfortpay.jpa.model.ProductLine;
+import comfortpay.jpa.model.Productcloth;
+import comfortpay.jpa.model.controller.ProductclothJpaController;
+import comfortpay.jpa.model.controller.ProductshoesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -21,15 +24,14 @@ import javax.transaction.UserTransaction;
 
 /**
  *
- * @author Joknoi
+ * @author Techin
  */
-public class LoginServlet extends HttpServlet {
+public class AddProductServlet extends HttpServlet {
 
-    @PersistenceUnit(unitName = "ComfortPayPU")
-    EntityManagerFactory emf;
-    @Resource
-    UserTransaction utx;
-
+     @Resource
+ UserTransaction utx;
+ @PersistenceUnit(unitName="ComfortPayPU")
+ EntityManagerFactory emf;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,49 +43,20 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        String path = request.getParameter("path");
-        String pathServlet = null;
-
-        if (path != null && path != "") {
-            int pathLength = path.length();
-            pathServlet = path.substring(0, pathLength - 4);
+       String productCode = request.getParameter("productcode");
+       ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
+       
+       Productcloth pdc = pdcJpa.findProductcloth(productCode);
+       ProductLine pdl = new ProductLine(pdc,1);
+ 
+       HttpSession session = request.getSession();
+       Cart cart = (Cart) session.getAttribute("cart");
+        if (cart==null) {
+            cart = new Cart();
+            session.setAttribute("cart", cart);
         }
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        if (session.getAttribute("account") == null) {
-            if (username != null || password != null) {
-                AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = accountCtrl.findAccount(username.toUpperCase());
-
-                if (account != null) {
-                    if (account.getPassword().equals(password)) {
-                        session.setAttribute("account", account);
-                        if (path == null || path == "") {
-                            getServletContext().getRequestDispatcher("/Home").forward(request, response);
-                            response.sendRedirect(pathServlet);
-                        } else {
-                            response.sendRedirect(pathServlet);
-                        }
-                    } else {
-                        request.setAttribute("path", path);
-                        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-                    }
-                } else {
-                    request.setAttribute("path", path);
-                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-                }
-            } else {
-                request.setAttribute("path", path);
-                getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-            }
-        } else {
-            if (path == null || path == "") {
-                getServletContext().getRequestDispatcher("/Home").forward(request, response);
-            } else {
-                response.sendRedirect(pathServlet);
-            }
-        }
+        cart.add(pdl.getProduct());
+        getServletContext().getRequestDispatcher("/Cart").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

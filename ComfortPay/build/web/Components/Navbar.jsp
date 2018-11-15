@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Navbar
-    Created on : Nov 3, 2018, 10:39:15 PM
-    Author     : crtiexx
+    Document   : test
+    Created on : Nov 15, 2018, 11:27:12 PM
+    Author     : Joknoi
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,95 +11,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-        <title>JSP Page</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     </head>
     <style>
-        /*nav*/
-        .nav1 {
-            height: 30px;
-            background-color: #F5F5F5;
-            line-height: 30px;
-            vertical-align: middle;
-        }
-        .nav2 {
+        /* Navbar */
+        .navbarLogo {
             background-color: transparent;
-            height: 100px;
-            line-height: 100px;
-            vertical-align: middle;
+            color: #968783;
+            font-size: 20px;
             transition: 1s;
-            width: 100vw;
+            /*height: 80px;*/
         }
-        .logo {
-            height: 100px;
-            transition: 1s;
-        }
-        .scrollNav {
+        .navbarLogoSlide {
             background-color: white;
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            color: #968783;
+            font-size: 20px;
+            /*height: 60px;*/
+        }
+        .Logo {
+            height: 80px;
+            transition: 1s;
+        }
+        .LogoSlide {
             height: 60px;
-            line-height: 60px;
         }
-        .logoScroll {
-            height: 60px;
-        }
-        .nav1 a,.nav2 a {
-            padding: 0;
-        }
-        .nav1 a {
-            color: #4A4A4A;
-            font-size: 12px;
-        }
-        .navbars {
-            position: fixed;
-            /*width: 100vw;*/
-            z-index: 2;
-        }
-        /*popup*/
-        /* Full-width input fields */
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        /* Set a style for all buttons */
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-        /* Extra styles for the cancel button */
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
-
-        /* Center the image and position the close button */
-
-
-        form .container {
-            padding: 16px;
-        }
-
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
-
         /* The Modal (background) */
         .modal {
             display: none; /* Hidden by default */
@@ -142,7 +77,6 @@
 
         /* Add Zoom Animation */
         .animate {
-            -webkit-animation: animatezoom 0.6s;
             animation: animatezoom 0.6s
         }  
         @keyframes animatezoom {
@@ -151,57 +85,79 @@
         }
     </style>
     <body>
-        <div class="navbars">
-            <nav class="nav1 navbar-expand-lg">
-                <div class="container navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <% if (session.getAttribute("account") == null) { %>
-                        <li class="nav-item ">
-                            <a class="nav-link" onclick="Login()" style="cursor: pointer;"><i class="fas fa-user"></i> LOG IN</a>
-                        </li>
-                        <% } else {%>
-                        <li class="nav-item d-inline-block">
-                            <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
-                        </li>
-                        <li class="nav-item d-inline-block">
-                            <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
-                        </li>
-                        <% }%>
-                    </ul>   
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link mr-3" href="#"><i class="fas fa-star"></i> WISH LIST </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
-                        </li>
-                    </ul>
+        <div style="position: fixed;z-index: 2;width: 100vw;">
+            <div style="background-color: #53759A;color: #D5C4AD;font-size: 12px;height: 35px;">
+                <div class="container">
+                    <div class="col-12 row m-0 navbar-collapse navbar-expand-lg">
+                        <ul class="list-inline m-0 mr-auto p-0">
+                            <% if (session.getAttribute("account") == null) { %>
+                            <li class="list-inline-item">
+                                <a class="nav-link" onclick="Login()"><i class="fas fa-user"></i> LOGIN</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="Register" ><i class="fas fa-user"></i> REGISTER</a>
+                            </li>
+                            <% } else {%>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
+                            </li>
+                            <% }%>
+                        </ul> 
+                        <ul class="list-inline m-0">
+                            <li class="list-inline-item">
+                                <div>
+                                    <form action="Search" class="form-inline">
+                                        <input class="form-control" type="text" name="search" required style="height: 35px;background-color: transparent">
+                                        <a href="#">
+                                            <button type="submit" style="height: 35px;background-color: transparent;border: none;cursor: pointer">
+                                                <i class="fas fa-search ml-1"></i>
+                                            </button>
+                                        </a>
+                                    </form> 
+                                </div>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link"><i class="fas fa-star"></i> WISH LIST </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
+                            </li>
+                        </ul> 
+                    </div>
                 </div>
-            </nav>
-            <nav class="nav2 navbar-expand-lg">
-                <div class="container navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link"><img src="images/Home/logo.png" class="logo"></a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link">CHAMPION</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">NIKE</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">ADIDAS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-5">FILA</a>
-                        </li>
-                    </ul>
+            </div>
+            <!--2-->
+            <div class="navbarLogo">
+                <div class="container">
+                    <div class="col-12 row m-0 navbar-expand-lg navbar-collapse">
+                        <ul class="list-inline m-0 mr-auto p-0">
+                            <li class="list-inline-item">
+                                <a class="nav-link" onclick="Login()"><img src="images/Home/logo.png" class="Logo"></a>
+                            </li>
+                        </ul> 
+                        <ul class="list-inline m-0">
+                            <li class="list-inline-item">
+                                <a class="nav-link">CHAMPION</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">NIKE</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">ADIDAS</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="nav-link">FILA</a>
+                            </li>
+                        </ul> 
+                    </div>
                 </div>
-            </nav>
+            </div>  
         </div>
+
+        <!--        popup-->
         <div id="login" class="modal">
             <div class="col-8 mx-auto">
                 <form class="modal-content animate" action="LoginPopup">
@@ -221,15 +177,16 @@
             </div>
 
         </div>
+
         <script>
             //Scrolling Effect
             $(window).on('scroll', function () {
                 if ($(window).scrollTop()) {
-                    $('.nav2').addClass('scrollNav');
-                    $('.logo').addClass('logoScroll');
+                    $('.navbarLogo').addClass('navbarLogoSlide');
+                    $('.Logo').addClass('LogoSlide');
                 } else {
-                    $('.nav2').removeClass('scrollNav');
-                    $('.logo').removeClass('logoScroll');
+                    $('.navbarLogo').removeClass('navbarLogoSlide');
+                    $('.Logo').removeClass('LogoSlide');
                 }
             });
             //Login

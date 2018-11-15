@@ -84,6 +84,27 @@ public class Account implements Serializable {
         return username;
     }
 
+    public Account(String username, String password, String fname, String lname, String email, Date dob, List<Address> addressList) {
+        this.username = username;
+        this.password = password;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.dob = dob;
+        this.addressList = addressList;
+    }
+
+    public Account(String username, String password, String fname, String lname, String email, Date dob) {
+        this.username = username;
+        this.password = password;
+        this.score = 0;
+        this.level = "low";
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.dob = dob;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

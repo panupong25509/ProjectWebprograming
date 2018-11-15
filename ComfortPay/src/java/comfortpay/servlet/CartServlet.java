@@ -11,13 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Joknoi
+ * @author Techin
  */
-public class LogoutServlet extends HttpServlet {
+public class CartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,16 +29,7 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.invalidate();
-        String path = request.getParameter("path");
-        int pathLength = path.length();
-        String pathServlet = path.substring(0, pathLength-4);
-        if(path==null || path==""){
-            getServletContext().getRequestDispatcher("/Home").forward(request, response);
-        }else{
-            response.sendRedirect(pathServlet);
-        }
+       getServletContext().getRequestDispatcher("/Cart.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

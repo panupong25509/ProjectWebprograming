@@ -148,6 +148,17 @@ public class ProductclothJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Productcloth> findByProductclothType(String productType){
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Productcloth.findByProducttype");
+            query.setParameter("producttype",productType.toUpperCase());
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    } 
 
     public int getProductclothCount() {
         EntityManager em = getEntityManager();
