@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Joknoi
  */
-public class LogoutServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,15 +30,11 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.invalidate();
-        String path = request.getParameter("path");
-        int pathLength = path.length();
-        String pathServlet = path.substring(0, pathLength-4);
-        if(path==null || path==""){
+        HttpSession session = request.getSession();
+        if(session.getAttribute("account")!=null){
             getServletContext().getRequestDispatcher("/Home").forward(request, response);
-        }else{
-            response.sendRedirect(pathServlet);
+        } else {
+            getServletContext().getRequestDispatcher("/Register.jsp").forward(request, response);
         }
     }
 

@@ -11,7 +11,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
-        <title>JSP Page</title>
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     </head>
     <style>
@@ -159,11 +158,14 @@
                         <li class="nav-item ">
                             <a class="nav-link" onclick="Login()" style="cursor: pointer;"><i class="fas fa-user"></i> LOG IN</a>
                         </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" style="cursor: pointer;"><i class="fas fa-user"></i> REGISTER</a>
+                        </li>
                         <% } else {%>
-                        <li class="nav-item d-inline-block">
+                        <li class="nav-item">
                             <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
                         </li>
-                        <li class="nav-item d-inline-block">
+                        <li class="nav-item">
                             <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
                         </li>
                         <% }%>

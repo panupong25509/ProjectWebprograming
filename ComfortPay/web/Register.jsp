@@ -1,7 +1,7 @@
 <%-- 
-    Document   : Login.jsp
-    Created on : Nov 4, 2018, 4:03:49 AM
-    Author     : crtiexx
+    Document   : Register
+    Created on : Nov 15, 2018, 12:35:13 AM
+    Author     : Joknoi
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,14 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <title>Login Comfort Pay</title>
+        <title>Register</title>
     </head>
     <body>
-        <jsp:include page="Components/Navbar.jsp"/>
+                <jsp:include page="Components/Navbar.jsp"/>
         <div class="col-8 mx-auto text-center" style="padding-top: 130px;">
-            <h1>Login Comfort Pay</h1>
-            <form action="Login">
+            <h1>Register Comfort Pay</h1>
+            <form action="RegisterAccount">
                 <br>
                 <input type="text" placeholder="Enter Username" name="username" required>
                 <br>
@@ -24,7 +23,12 @@
                 <input type="password" placeholder="Enter Password" name="password" required>
                 <br>
                 <br>
-                <input type="hidden" name="path" value=${path}>
+                <input type="password" placeholder="Enter Password" name="passwordAgain" required>
+                <br>
+                <br>
+                <input type="password" placeholder="Enter Password" name="passwordAgain" required>
+                <br>
+                <br>
                 <button type="submit">Login</button>
             </form>
         </div>

@@ -13,7 +13,8 @@
         <title>Login Comfort Pay</title>
     </head>
     <body>
-        <div class="col-8 mx-auto mt-5 text-center">
+        <jsp:include page="Components/Navbar.jsp"/>
+        <div class="col-8 mx-auto text-center" style="padding-top: 130px;">
             <h1>Login Comfort Pay</h1>
             <form action="Login">
                 <br>

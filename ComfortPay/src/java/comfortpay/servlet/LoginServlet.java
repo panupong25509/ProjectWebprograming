@@ -85,53 +85,6 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(pathServlet);
             }
         }
-
-//        if (path != null || path != "") {
-//            if (session.getAttribute("account") == null) {
-//                if (username != null || password != null) {
-//                    AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-//                    Account account = accountCtrl.findAccount(username);
-//                    if (account != null) {
-//                        if (account.getPassword().equals(password)) {
-//                            session.setAttribute("account", account);
-//                            response.sendRedirect("Home.jsp");
-//                        } else {
-//                            request.setAttribute("path", path);
-//                            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                        }
-//                    } else {
-//                        request.setAttribute("path", path);
-//                        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                    }
-//                } else {
-//                    request.setAttribute("path", path);
-//                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                }
-//            } else {
-//                response.sendRedirect(path);
-//            }
-//        } else {
-//            if (session.getAttribute("account") == null) {
-//                if (username != null || password != null) {
-//                    AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-//                    Account account = accountCtrl.findAccount(username);
-//                    if (account != null) {
-//                        if (account.getPassword().equals(password)) {
-//                            session.setAttribute("account", account);
-//                            getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-//                        } else {
-//                            getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                        }
-//                    } else {
-//                        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                    }
-//                } else {
-//                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-//                }
-//            } else {
-//                getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-//            }
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

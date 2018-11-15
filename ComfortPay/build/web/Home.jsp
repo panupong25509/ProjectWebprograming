@@ -30,24 +30,31 @@
         <div id="section1">
             <img src="images/Home/TrackPantsWideFeature_lead_o0not9.jpg" width="100%">
         </div>
-        <div id="sec2">
-            <c:forEach items="${pdc}" var = "pdc" >
-                <div>
-                    <p>${pdc.productname}</p>
-                    <p>${pdc.price}</p>
-                    
-                </div>
-                
-            </c:forEach>
-            <c:forEach items="${pds}" var = "pds">
-                <div>
-                    <p>${pds.productname}</p>
-                    <p>${pds.price}</p>
-                    
-                </div>
-                
-            </c:forEach>
-            
+        <div id="sec2" class="pt-5">
+            <div class="container">
+                <div class="col-12">
+                    <div class="row">
+                        <c:forEach items="${pdc}" var = "pdc" >
+                            <div class="col-4 p-3 text-center">
+                                <div style="background-color: white;">
+                                    <p>${pdc.productname}</p>
+                                    <p>${pdc.price} BATH</p>
+                                    <button>ADD</button>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <c:forEach items="${pds}" var = "pds">
+                            <div class="col-4 p-3 text-center"> 
+                                <div style="background-color: white;">
+                                    <p>${pds.productname}</p>
+                                    <p>${pds.price} BATH</p> 
+                                    <button>ADD</button>    
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>               
+            </div>
         </div>
     </body>
 </html>
