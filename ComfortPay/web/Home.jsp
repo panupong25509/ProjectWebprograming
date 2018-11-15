@@ -35,22 +35,30 @@
                 <div class="col-12">
                     <div class="row">
                         <c:forEach items="${pdc}" var = "pdc" >
-                            <div class="col-4 p-3 text-center">
-                                <div style="background-color: white;">
-                                    <p>${pdc.productname}</p>
-                                    <p>${pdc.price} BATH</p>
-                                    <button>ADD</button>
+                            <form action="Product" method="post" method="post" class="col-4 p-3 text-center"> 
+                                <div onclick="javascript:this.form.submit();">
+                                    <div style="background-color: white;">
+                                        <p>${pdc.productname}</p>
+                                        <p>${pdc.price} BATH</p>
+                                        <button>ADD</button>
+                                        <input type="hidden" name="productcode" value="${pdc.productcode}">
+                                         <input type="hidden" name="producttype" value="cloth">
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </c:forEach>
                         <c:forEach items="${pds}" var = "pds">
-                            <div class="col-4 p-3 text-center"> 
-                                <div style="background-color: white;">
-                                    <p>${pds.productname}</p>
-                                    <p>${pds.price} BATH</p> 
-                                    <button>ADD</button>    
+                            <form action="Product" method="post" class="col-4 p-3 text-center">
+                                <div onclick="javascript:this.form.submit();"> 
+                                    <div style="background-color: white;">
+                                        <p>${pds.productname}</p>
+                                        <p>${pds.price} BATH</p> 
+                                        <button>ADD</button>   
+                                        <input type="hidden" name="productcode" value="${pds.productcode}">
+                                         <input type="hidden" name="producttype" value="shoes">
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </c:forEach>
                     </div>
                 </div>               
