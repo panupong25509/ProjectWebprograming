@@ -43,10 +43,10 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
         String path = request.getParameter("path");
-        if(){
+//        if(){
             int pathLength = path.length();
             String pathServlet = path.substring(0, pathLength - 4);
-        }
+//        }
         
         String username = request.getParameter("username");
         String password = request.getParameter("password");
