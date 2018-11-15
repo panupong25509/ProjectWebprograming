@@ -30,7 +30,7 @@
             width: 100vw;
         }
         .logo {
-            height: 100px;
+            height: 80px;
             transition: 1s;
         }
         .scrollNav {
@@ -54,51 +54,6 @@
             /*width: 100vw;*/
             z-index: 2;
         }
-        /*popup*/
-        /* Full-width input fields */
-        input[type=text], input[type=password] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        /* Set a style for all buttons */
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-        /* Extra styles for the cancel button */
-        .cancelbtn {
-            width: auto;
-            padding: 10px 18px;
-            background-color: #f44336;
-        }
-
-        /* Center the image and position the close button */
-
-
-        form .container {
-            padding: 16px;
-        }
-
-        span.psw {
-            float: right;
-            padding-top: 16px;
-        }
-
         /* The Modal (background) */
         .modal {
             display: none; /* Hidden by default */
@@ -141,7 +96,6 @@
 
         /* Add Zoom Animation */
         .animate {
-            -webkit-animation: animatezoom 0.6s;
             animation: animatezoom 0.6s
         }  
         @keyframes animatezoom {
