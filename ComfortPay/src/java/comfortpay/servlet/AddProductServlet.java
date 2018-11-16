@@ -47,7 +47,7 @@ public class AddProductServlet extends HttpServlet {
        ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
        
        Productcloth pdc = pdcJpa.findProductcloth(productCode);
-       ProductLine pdl = new ProductLine(pdc,1);
+//       ProductLine pdl = new ProductLine(pdc,1);
  
        HttpSession session = request.getSession();
        Cart cart = (Cart) session.getAttribute("cart");
@@ -55,7 +55,7 @@ public class AddProductServlet extends HttpServlet {
             cart = new Cart();
             session.setAttribute("cart", cart);
         }
-        cart.add(pdl.getProduct());
+        cart.add(pdc);
         getServletContext().getRequestDispatcher("/Cart").forward(request, response);
     }
 
