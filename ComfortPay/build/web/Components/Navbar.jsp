@@ -4,6 +4,7 @@
     Author     : Joknoi
 --%>
 
+<%@page import="comfortpay.jpa.model.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -123,7 +124,14 @@
                                 <a class="nav-link"><i class="fas fa-star"></i> WISH LIST </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link"><i class="fas fa-shopping-cart"></i> SHOPPING CART (0) </a>
+                                <a class="nav-link" href="/ComfortPay/Cart">
+                                    <% Cart cart = (Cart) session.getAttribute("cart"); %>
+                                    <% if (cart!=null && cart.getTotalQuantity() != 0) { %>
+                                    <i class="fas fa-shopping-cart"></i> SHOPPING CART (${cart.totalQuantity}) 
+                                    <% } else { %>
+                                    <i class="fas fa-shopping-cart"></i> SHOPPING CART (0) 
+                                    <% }%>
+                                </a>
                             </li>
                         </ul> 
                     </div>
@@ -135,7 +143,7 @@
                     <div class="col-12 row m-0 navbar-expand-lg navbar-collapse">
                         <ul class="list-inline m-0 mr-auto p-0">
                             <li class="list-inline-item">
-                                <a class="nav-link" onclick="Login()"><img src="images/Home/logo.png" class="Logo"></a>
+                                <a class="nav-link" href="/ComfortPay/Home"><img src="images/Home/logo.png" class="Logo"></a>
                             </li>
                         </ul> 
                         <ul class="list-inline m-0">

@@ -6,6 +6,7 @@
 package comfortpay.jpa.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,27 @@ public class Cart {
         }
     }
 
+    public void reduce(Productcloth p) {
+        ProductLine line = cart.get(p.getProductcode());
+        line.setQuantity(line.getQuantity() - 1);
+        if (line.getQuantity() == 0) {
+            remove(p);
+        }
+    }
+
+    public void remove(Productcloth p) {
+        cart.remove(p.getProductcode());
+    }
+
+    public int getTotalQuantity() {
+        int all = 0;
+        Collection<ProductLine> productLine = this.cart.values();
+        for (ProductLine productline : productLine) {
+            all += productline.getQuantity();
+        }
+        return all;
+    }
+
     public Map<String, ProductLine> getCart() {
         return cart;
     }
@@ -38,7 +60,8 @@ public class Cart {
     public void setCart(Map<String, ProductLine> cart) {
         this.cart = cart;
     }
-        public List<ProductLine> getProductLine() {
+
+    public List<ProductLine> getProductLine() {
         return new ArrayList(cart.values());
     }
 }

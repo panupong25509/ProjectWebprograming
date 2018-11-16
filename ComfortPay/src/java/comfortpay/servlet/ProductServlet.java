@@ -43,17 +43,17 @@ public class ProductServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productcode = request.getParameter("productcode");
-        String producttype = request.getParameter("producttype");
+//        String producttype = request.getParameter("producttype");
 
-        if (producttype.equals("cloth")) {
+//        if (producttype.equals("cloth")) {
             ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
             Productcloth product = pdcJpa.findProductcloth(productcode);
             request.setAttribute("product", product);
-        } else {
-            ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx, emf);
-            Productshoes product = pdsJpa.findProductshoes(productcode);
-            request.setAttribute("product", product);
-        }
+//        } else {
+//            ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx, emf);
+//            Productshoes product = pdsJpa.findProductshoes(productcode);
+//            request.setAttribute("product", product);
+//        }
 
         getServletContext().getRequestDispatcher("/Product.jsp").forward(request, response);
     }

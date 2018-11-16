@@ -12,18 +12,30 @@
         <title>Product</title>
     </head>
     <body>
-        <h1>Product</h1>
-        <p>ProductName : ${product.productname}</p>
-        <p>ProductCode : ${product.productcode}</p>
-        <p>ProductType : ${product.producttype}</p>
-        <p>Size : ${product.size}</p>
-        <p>Color : ${product.color}</p>
-        <p>Price : ${product.price}</p>
-        
-        <form action="AddProduct" method="post">
-            <input type="hidden" name="productcode" value="${product.productcode}"> 
-            <input type="submit">
-        </form>
+        <jsp:include page="Components/Navbar.jsp"/>
+        <div class="container text-center" style="padding-top: 130px;">
+            <h1>Product</h1>
+            <div class="col-12 row m-0">
+                <div class="col p-3 text-right">
+                    <img src="images/PictureWebPro/adidasMencCloth/${product.productcode}.jpg" width="80%">
+                </div>
+                <div class="col p-3 text-left">
+                    <p>ProductName : ${product.productname}</p>
+                    <p>ProductCode : ${product.productcode}</p>
+                    <p>ProductType : ${product.producttype}</p>
+                    <p>Size : ${product.size}</p>
+                    <p>Color : ${product.color}</p>
+                    <p>Price : ${product.price}</p>
+
+                    <form action="AddToCart" method="post">
+                        <input type="hidden" name="productcode" value="${product.productcode}"> 
+                        <input type="submit" value="ADD">
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
 
     </body>
 </html>

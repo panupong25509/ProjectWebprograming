@@ -40,6 +40,18 @@
         <servlet-name>CartServlet</servlet-name>
         <servlet-class>comfortpay.servlet.CartServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReduceProductServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.ReduceProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveProductServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.RemoveProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.AddToCartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -79,6 +91,18 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/Cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReduceProductServlet</servlet-name>
+        <url-pattern>/ReduceProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveProductServlet</servlet-name>
+        <url-pattern>/RemoveProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <url-pattern>/AddToCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

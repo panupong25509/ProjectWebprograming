@@ -5,13 +5,11 @@
  */
 package comfortpay.servlet;
 
+import comfortpay.jpa.model.Cart;
 import comfortpay.jpa.model.Productcloth;
-import comfortpay.jpa.model.Productshoes;
 import comfortpay.jpa.model.controller.ProductclothJpaController;
-import comfortpay.jpa.model.controller.ProductshoesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -19,17 +17,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Joknoi
  */
-public class HomeServlet extends HttpServlet {
- @Resource
- UserTransaction utx;
- @PersistenceUnit(unitName="ComfortPayPU")
- EntityManagerFactory emf;
+public class RemoveProductServlet extends HttpServlet {
+
+    @Resource
+    UserTransaction utx;
+    @PersistenceUnit(unitName = "ComfortPayPU")
+    EntityManagerFactory emf;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,16 +42,16 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String productCode = request.getParameter("productcode");
         ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
-        List<Productcloth> pdcloth = pdcJpa.findProductclothEntities();
-        
-//        ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx,emf);
-//        List<Productshoes> pdshoes = pdsJpa.findProductshoesEntities();
-//        
-        request.setAttribute("pdc", pdcloth);
-//        request.setAttribute("pds", pdshoes);
-        getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-       
+
+        Productcloth pdc = pdcJpa.findProductcloth(productCode);
+//       ProductLine pdl = new ProductLine(pdc,1);
+
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.remove(pdc);
+        getServletContext().getRequestDispatcher("/Cart").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

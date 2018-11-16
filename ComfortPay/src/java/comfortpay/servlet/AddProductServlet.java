@@ -51,10 +51,6 @@ public class AddProductServlet extends HttpServlet {
  
        HttpSession session = request.getSession();
        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart==null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
         cart.add(pdc);
         getServletContext().getRequestDispatcher("/Cart").forward(request, response);
     }

@@ -21,7 +21,7 @@
             padding-top: 30px;
         }
         #sec2 {
-            background-color: green;
+            background-color: white;
             height: 200vh;
         }
     </style>
@@ -37,13 +37,16 @@
                         <c:forEach items="${pdc}" var = "pdc" >
                             <form action="Product" method="post" method="post" class="col-4 p-3 text-center"> 
                                 <div onclick="javascript:this.form.submit();">
-                                    <div style="background-color: white;">
-                                        <p>${pdc.productname}</p>
-                                        <p>${pdc.price} BATH</p>
-                                        <button>ADD</button>
-                                        <input type="hidden" name="productcode" value="${pdc.productcode}">
-                                         <input type="hidden" name="producttype" value="cloth">
-                                    </div>
+                                    <button style="background-color: #ECEEF0; border: none">
+                                        <div style="background-color: transparent;cursor: pointer">
+                                            <img src="images/PictureWebPro/adidasMencCloth/${pdc.productcode}.jpg" width="100%">
+                                            <p>${pdc.productname}</p>
+                                            <p>${pdc.price} BATH</p>
+                                            <!--<button>ADD</button>-->
+                                            <input type="hidden" name="productcode" value="${pdc.productcode}">
+                                            <input type="hidden" name="producttype" value="cloth">
+                                        </div>
+                                    </button>
                                 </div>
                             </form>
                         </c:forEach>
@@ -55,7 +58,7 @@
                                         <p>${pds.price} BATH</p> 
                                         <button>ADD</button>   
                                         <input type="hidden" name="productcode" value="${pds.productcode}">
-                                         <input type="hidden" name="producttype" value="shoes">
+                                        <input type="hidden" name="producttype" value="shoes">
                                     </div>
                                 </div>
                             </form>
