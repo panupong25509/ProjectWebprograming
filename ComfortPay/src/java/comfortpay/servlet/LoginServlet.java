@@ -49,7 +49,6 @@ public class LoginServlet extends HttpServlet {
             int pathLength = path.length();
             pathServlet = path.substring(0, pathLength - 4);
         }
-
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (session.getAttribute("account") == null) {

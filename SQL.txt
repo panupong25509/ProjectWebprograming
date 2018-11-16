@@ -20,13 +20,84 @@ CREATE TABLE ADDRESS (
 );
 INSERT INTO ADDRESS(ADDRESS,DISTRICT,PROVINCE,POSTCODE,USERNAME)
 VALUES ('201/857 KLONGSONGTONNOON','LADKRABANG','BANGKOK','10520','PANUPONG');
-CREATE TABLE PRODUCTCLOTH (
+
+CREATE TABLE PRODUCT (
     PRODUCTCODE VARCHAR(8) PRIMARY KEY ,
     PRODUCTID INT GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
     PRODUCTNAME VARCHAR(100),
     PRODUCTTYPE VARCHAR(20),
+    PRODUCTBRAND VARCHAR(10),
     DESCRIPTION VARCHAR(200),
     COLOR VARCHAR(20),
+<<<<<<< HEAD
+    SIZE VARCHAR(5),
+    PRICE DOUBLE,
+    QUANTITY INT
+);
+
+INSERT INTO PRODUCT (PRODUCTCODE, PRODUCENAME, PRODUCTTYPE, PRODUCTBRAND, DESCRIPTION, COLOR, SIZE, PRICE, QUANTITY)
+VALUES ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '7', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '7.5', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '8', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '8.5', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '9', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '9.5', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '10', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '10.5', 6700, 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '11', '6700', 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '11.5', '6700', 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '12', '6700', 10),
+       ('CPS_001', 'Air Jordan 3 Retro', 'Sneaker', 'Nike', 'Gray', '13', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '7', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '7.5', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '8', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '8.5', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '9', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '9.5', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '10', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '10.5', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '11', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '11.5', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '12', '6700', 10),
+       ('CPS_002', 'Air Jordan 5 Retro', 'Sneaker', 'Nike', 'Black', '13', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '7', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '7.5', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '8', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '8.5', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '9', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '9.5', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '10', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '10.5', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '11', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '11.5', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '12', '6700', 10),
+       ('CPS_003', 'Air Max 97 QS', 'Sneaker', 'Nike', 'Black', '13', '6700', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '7', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '7.5', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '8', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '8.5', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '9', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '9.5', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '10', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '10.5', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '11', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '11.5', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '12', '4600', 10),
+       ('CPS_004', 'Jordan Why not Zero 1 Chaos PF', 'Sneaker', 'Nike', 'white', '13', '4600', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '7', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '7.5', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '8', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '8.5', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '9', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '9.5', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '10', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '10.5', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '11', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '11.5', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '12', '10000', 10),
+       ('CPS_005', 'PHARRELL WILLIAMS SOLARHU NMD SHOES', 'Sneaker', 'Adidas', 'white', '13', '10000', 10),
+       
+=======
     SIZE VARCHAR(1),
     PRICE DOUBLE,
     QUANTITY INT
@@ -46,3 +117,4 @@ CREATE TABLE PRODUCTSHOES (
 );
 INSERT INTO PRODUCTSHOES(PRODUCTCODE, PRODUCTNAME, PRODUCTTYPE, DESCRIPTION, COLOR, SIZE, PRICE, QUANTITY)
 VALUES ('CFPS0001','ADIDAS NMD','SNEAKER','VERY POOR','BLACK',38,5000,10);
+>>>>>>> c21141d72b4ffd392d8edd28120bd72d31c69fa7
