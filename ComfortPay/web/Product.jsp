@@ -23,12 +23,11 @@
                     <p>ProductName : ${product.productname}</p>
                     <p>ProductCode : ${product.productcode}</p>
                     <p>ProductType : ${product.producttype}</p>
-                    <p>Size : ${product.size}</p>
                     <p>Color : ${product.color}</p>
                     <p>Price : ${product.price}</p>
 
                     <form action="AddToCart" method="post">
-                        <input type="hidden" name="productcode" value="${product.productcode}"> 
+                        <input type="hidden" name="productid" value="${product.productid}"> 
                         <input type="submit" value="ADD">
                     </form>
                 </div>

@@ -5,31 +5,20 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Cart;
 import comfortpay.jpa.model.Products;
-import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Joknoi
  */
-public class AddToCartServlet extends HttpServlet {
-
-    @Resource
-    UserTransaction utx;
-    @PersistenceUnit(unitName = "ComfortPayPU")
-    EntityManagerFactory emf;
+public class ProductListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,20 +31,11 @@ public class AddToCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productId = request.getParameter("productid");
-        ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
-
-        Products product = productsCtrl.findProducts(Integer.parseInt(productId));
-
-        HttpSession session = request.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new Cart();
-            session.setAttribute("cart", cart);
-        }
-        cart.add(product);
-        session.setAttribute("product", product);
-        response.sendRedirect("Product");
+        String name = (String) request.getAttribute("name");
+        List<Products> products = (List<Products>) request.getAttribute("products");
+        request.setAttribute("products", products);
+        request.setAttribute("name", name);
+        getServletContext().getRequestDispatcher("/ProductList.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

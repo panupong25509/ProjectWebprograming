@@ -5,10 +5,8 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Productcloth;
-import comfortpay.jpa.model.Productshoes;
-import comfortpay.jpa.model.controller.ProductclothJpaController;
-import comfortpay.jpa.model.controller.ProductshoesJpaController;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -41,14 +39,10 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
-        List<Productcloth> pdcloth = pdcJpa.findProductclothEntities();
-        
-//        ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx,emf);
-//        List<Productshoes> pdshoes = pdsJpa.findProductshoesEntities();
-//        
-        request.setAttribute("pdc", pdcloth);
-//        request.setAttribute("pds", pdshoes);
+        ProductsJpaController productCtrl = new ProductsJpaController(utx, emf);
+        List<Products> products = productCtrl.findProductsEntities();
+              
+        request.setAttribute("products", products);
         getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
        
     }

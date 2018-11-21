@@ -5,10 +5,8 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Productcloth;
-import comfortpay.jpa.model.Productshoes;
-import comfortpay.jpa.model.controller.ProductclothJpaController;
-import comfortpay.jpa.model.controller.ProductshoesJpaController;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -18,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 
 /**
@@ -42,20 +41,21 @@ public class ProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productcode = request.getParameter("productcode");
-//        String producttype = request.getParameter("producttype");
+        HttpSession session = request.getSession();
+        String productIdReq = request.getParameter("productid");
+        int productId = 0;
+        if (productIdReq == null) {
+            Products product = (Products) session.getAttribute("product");
+            productId = product.getProductid();
+        } else {
+            productId = Integer.parseInt(productIdReq);
+        }
 
-//        if (producttype.equals("cloth")) {
-            ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
-            Productcloth product = pdcJpa.findProductcloth(productcode);
-            request.setAttribute("product", product);
-//        } else {
-//            ProductshoesJpaController pdsJpa = new ProductshoesJpaController(utx, emf);
-//            Productshoes product = pdsJpa.findProductshoes(productcode);
-//            request.setAttribute("product", product);
-//        }
-
-        getServletContext().getRequestDispatcher("/Product.jsp").forward(request, response);
+        ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
+        
+        Products product = productsCtrl.findProducts(productId);
+        request.setAttribute("product", product);
+        getServletContext().getRequestDispatcher("/Product.jsp?productid="+productId).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

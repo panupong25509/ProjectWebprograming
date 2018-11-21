@@ -11,7 +11,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.Wishlish;
 import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.util.List;
@@ -23,9 +24,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class AddressJpaController implements Serializable {
+public class WishlishJpaController implements Serializable {
 
-    public AddressJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public WishlishJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -36,20 +37,29 @@ public class AddressJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Address address) throws RollbackFailureException, Exception {
+    public void create(Wishlish wishlish) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Account accountid = address.getAccountid();
+            Account accountid = wishlish.getAccountid();
             if (accountid != null) {
                 accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
-                address.setAccountid(accountid);
+                wishlish.setAccountid(accountid);
             }
-            em.persist(address);
+            Products productid = wishlish.getProductid();
+            if (productid != null) {
+                productid = em.getReference(productid.getClass(), productid.getProductid());
+                wishlish.setProductid(productid);
+            }
+            em.persist(wishlish);
             if (accountid != null) {
-                accountid.getAddressList().add(address);
+                accountid.getWishlishList().add(wishlish);
                 accountid = em.merge(accountid);
+            }
+            if (productid != null) {
+                productid.getWishlishList().add(wishlish);
+                productid = em.merge(productid);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -66,26 +76,40 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public void edit(Address address) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Wishlish wishlish) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Address persistentAddress = em.find(Address.class, address.getAddressid());
-            Account accountidOld = persistentAddress.getAccountid();
-            Account accountidNew = address.getAccountid();
+            Wishlish persistentWishlish = em.find(Wishlish.class, wishlish.getWishlishid());
+            Account accountidOld = persistentWishlish.getAccountid();
+            Account accountidNew = wishlish.getAccountid();
+            Products productidOld = persistentWishlish.getProductid();
+            Products productidNew = wishlish.getProductid();
             if (accountidNew != null) {
                 accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
-                address.setAccountid(accountidNew);
+                wishlish.setAccountid(accountidNew);
             }
-            address = em.merge(address);
+            if (productidNew != null) {
+                productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
+                wishlish.setProductid(productidNew);
+            }
+            wishlish = em.merge(wishlish);
             if (accountidOld != null && !accountidOld.equals(accountidNew)) {
-                accountidOld.getAddressList().remove(address);
+                accountidOld.getWishlishList().remove(wishlish);
                 accountidOld = em.merge(accountidOld);
             }
             if (accountidNew != null && !accountidNew.equals(accountidOld)) {
-                accountidNew.getAddressList().add(address);
+                accountidNew.getWishlishList().add(wishlish);
                 accountidNew = em.merge(accountidNew);
+            }
+            if (productidOld != null && !productidOld.equals(productidNew)) {
+                productidOld.getWishlishList().remove(wishlish);
+                productidOld = em.merge(productidOld);
+            }
+            if (productidNew != null && !productidNew.equals(productidOld)) {
+                productidNew.getWishlishList().add(wishlish);
+                productidNew = em.merge(productidNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -96,9 +120,9 @@ public class AddressJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = address.getAddressid();
-                if (findAddress(id) == null) {
-                    throw new NonexistentEntityException("The address with id " + id + " no longer exists.");
+                Integer id = wishlish.getWishlishid();
+                if (findWishlish(id) == null) {
+                    throw new NonexistentEntityException("The wishlish with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -114,19 +138,24 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Address address;
+            Wishlish wishlish;
             try {
-                address = em.getReference(Address.class, id);
-                address.getAddressid();
+                wishlish = em.getReference(Wishlish.class, id);
+                wishlish.getWishlishid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The wishlish with id " + id + " no longer exists.", enfe);
             }
-            Account accountid = address.getAccountid();
+            Account accountid = wishlish.getAccountid();
             if (accountid != null) {
-                accountid.getAddressList().remove(address);
+                accountid.getWishlishList().remove(wishlish);
                 accountid = em.merge(accountid);
             }
-            em.remove(address);
+            Products productid = wishlish.getProductid();
+            if (productid != null) {
+                productid.getWishlishList().remove(wishlish);
+                productid = em.merge(productid);
+            }
+            em.remove(wishlish);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -142,19 +171,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public List<Address> findAddressEntities() {
-        return findAddressEntities(true, -1, -1);
+    public List<Wishlish> findWishlishEntities() {
+        return findWishlishEntities(true, -1, -1);
     }
 
-    public List<Address> findAddressEntities(int maxResults, int firstResult) {
-        return findAddressEntities(false, maxResults, firstResult);
+    public List<Wishlish> findWishlishEntities(int maxResults, int firstResult) {
+        return findWishlishEntities(false, maxResults, firstResult);
     }
 
-    private List<Address> findAddressEntities(boolean all, int maxResults, int firstResult) {
+    private List<Wishlish> findWishlishEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Address.class));
+            cq.select(cq.from(Wishlish.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -166,20 +195,20 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public Address findAddress(Integer id) {
+    public Wishlish findWishlish(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Address.class, id);
+            return em.find(Wishlish.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getAddressCount() {
+    public int getWishlishCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Address> rt = cq.from(Address.class);
+            Root<Wishlish> rt = cq.from(Wishlish.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

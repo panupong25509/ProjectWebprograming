@@ -6,19 +6,17 @@
 package comfortpay.jpa.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -32,31 +30,28 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a")
+    , @NamedQuery(name = "Account.findByAccountid", query = "SELECT a FROM Account a WHERE a.accountid = :accountid")
     , @NamedQuery(name = "Account.findByUsername", query = "SELECT a FROM Account a WHERE a.username = :username")
     , @NamedQuery(name = "Account.findByPassword", query = "SELECT a FROM Account a WHERE a.password = :password")
-    , @NamedQuery(name = "Account.findByScore", query = "SELECT a FROM Account a WHERE a.score = :score")
-    , @NamedQuery(name = "Account.findByLevel", query = "SELECT a FROM Account a WHERE a.level = :level")
     , @NamedQuery(name = "Account.findByFname", query = "SELECT a FROM Account a WHERE a.fname = :fname")
     , @NamedQuery(name = "Account.findByLname", query = "SELECT a FROM Account a WHERE a.lname = :lname")
     , @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
-    , @NamedQuery(name = "Account.findByDob", query = "SELECT a FROM Account a WHERE a.dob = :dob")})
+    , @NamedQuery(name = "Account.findByClass1", query = "SELECT a FROM Account a WHERE a.class1 = :class1")
+    , @NamedQuery(name = "Account.findByScore", query = "SELECT a FROM Account a WHERE a.score = :score")})
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @Column(name = "ACCOUNTID")
+    private Integer accountid;
+    @Size(max = 20)
     @Column(name = "USERNAME")
     private String username;
     @Size(max = 20)
     @Column(name = "PASSWORD")
     private String password;
-    @Column(name = "SCORE")
-    private Integer score;
-    @Size(max = 10)
-    @Column(name = "LEVEL")
-    private String level;
     @Size(max = 50)
     @Column(name = "FNAME")
     private String fname;
@@ -67,42 +62,46 @@ public class Account implements Serializable {
     @Size(max = 50)
     @Column(name = "EMAIL")
     private String email;
-    @Column(name = "DOB")
-    @Temporal(TemporalType.DATE)
-    private Date dob;
-    @OneToMany(mappedBy = "username")
+    @Size(max = 6)
+    @Column(name = "CLASS")
+    private String class1;
+    @Column(name = "SCORE")
+    private Integer score;
+    @OneToMany(mappedBy = "accountid")
+    private List<Wishlish> wishlishList;
+    @OneToMany(mappedBy = "accountid")
     private List<Address> addressList;
+    @OneToMany(mappedBy = "accountid")
+    private List<Orders> ordersList;
 
     public Account() {
     }
 
-    public Account(String username) {
+    public Account(Integer accountid) {
+        this.accountid = accountid;
+    }
+
+    public Account(String username, String password, String fname, String lname, String email) {
         this.username = username;
+        this.password = password;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.class1 = "BLUE";
+        this.score = 0;
+    }
+    
+
+    public Integer getAccountid() {
+        return accountid;
+    }
+
+    public void setAccountid(Integer accountid) {
+        this.accountid = accountid;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public Account(String username, String password, String fname, String lname, String email, Date dob, List<Address> addressList) {
-        this.username = username;
-        this.password = password;
-        this.fname = fname;
-        this.lname = lname;
-        this.email = email;
-        this.dob = dob;
-        this.addressList = addressList;
-    }
-
-    public Account(String username, String password, String fname, String lname, String email, Date dob) {
-        this.username = username;
-        this.password = password;
-        this.score = 0;
-        this.level = "low";
-        this.fname = fname;
-        this.lname = lname;
-        this.email = email;
-        this.dob = dob;
     }
 
     public void setUsername(String username) {
@@ -115,22 +114,6 @@ public class Account implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getFname() {
@@ -157,12 +140,29 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public Date getDob() {
-        return dob;
+    public String getClass1() {
+        return class1;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setClass1(String class1) {
+        this.class1 = class1;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    @XmlTransient
+    public List<Wishlish> getWishlishList() {
+        return wishlishList;
+    }
+
+    public void setWishlishList(List<Wishlish> wishlishList) {
+        this.wishlishList = wishlishList;
     }
 
     @XmlTransient
@@ -174,10 +174,19 @@ public class Account implements Serializable {
         this.addressList = addressList;
     }
 
+    @XmlTransient
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (username != null ? username.hashCode() : 0);
+        hash += (accountid != null ? accountid.hashCode() : 0);
         return hash;
     }
 
@@ -188,7 +197,7 @@ public class Account implements Serializable {
             return false;
         }
         Account other = (Account) object;
-        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
+        if ((this.accountid == null && other.accountid != null) || (this.accountid != null && !this.accountid.equals(other.accountid))) {
             return false;
         }
         return true;
@@ -196,7 +205,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.jpa.model.Account[ username=" + username + " ]";
+        return "comfortpay.jpa.model.Account[ accountid=" + accountid + " ]";
     }
     
 }

@@ -21,18 +21,18 @@
                         <div class="col">Product Code</div>
                         <div class="col">Product Name</div>
                         <div class="col">Quantity</div>
-                        <div class="col">ADD</div>
-                        <div class="col">REDUCE</div>
                         <div class="col">REMOVE</div>
                     </div>
                 <c:forEach items="${cart.productLine}" var="pdl">
                     <div class="row m-0 p-1" style="background-color: #ECEEF0">
                         <div class="col">${pdl.product.productcode}</div>
                         <div class="col">${pdl.product.productname}</div>
-                        <div class="col">${pdl.quantity}</div>
-                        <div class="col"><a href="AddProduct?productcode=${pdl.product.productcode}"><button>ADD</button></a></div>
-                        <div class="col"><a href="ReduceProduct?productcode=${pdl.product.productcode}"><button>REDUCE</button></a></div>
-                        <div class="col"><a href="RemoveProduct?productcode=${pdl.product.productcode}"><button>REMOVE</button></a></div>
+                        <div class="col">
+                            <a href="ReduceProduct?productid=${pdl.product.productid}"><button>-</button></a>
+                            ${pdl.quantity}
+                            <a href="AddProduct?productid=${pdl.product.productid}"><button>+</button></a>
+                        </div>
+                        <div class="col"><a href="RemoveProduct?productid=${pdl.product.productid}"><button>REMOVE</button></a></div>
                     </div>
                 </c:forEach>
             </div>

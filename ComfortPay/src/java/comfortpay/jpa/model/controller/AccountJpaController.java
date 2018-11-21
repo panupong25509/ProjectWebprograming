@@ -11,14 +11,16 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.jpa.model.Address;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.PreexistingEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import comfortpay.jpa.model.Wishlish;
 import java.util.ArrayList;
 import java.util.List;
+import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.Orders;
+import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -38,28 +40,64 @@ public class AccountJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Account account) throws PreexistingEntityException, RollbackFailureException, Exception {
+    public void create(Account account) throws RollbackFailureException, Exception {
+        if (account.getWishlishList() == null) {
+            account.setWishlishList(new ArrayList<Wishlish>());
+        }
         if (account.getAddressList() == null) {
             account.setAddressList(new ArrayList<Address>());
+        }
+        if (account.getOrdersList() == null) {
+            account.setOrdersList(new ArrayList<Orders>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
+            List<Wishlish> attachedWishlishList = new ArrayList<Wishlish>();
+            for (Wishlish wishlishListWishlishToAttach : account.getWishlishList()) {
+                wishlishListWishlishToAttach = em.getReference(wishlishListWishlishToAttach.getClass(), wishlishListWishlishToAttach.getWishlishid());
+                attachedWishlishList.add(wishlishListWishlishToAttach);
+            }
+            account.setWishlishList(attachedWishlishList);
             List<Address> attachedAddressList = new ArrayList<Address>();
             for (Address addressListAddressToAttach : account.getAddressList()) {
                 addressListAddressToAttach = em.getReference(addressListAddressToAttach.getClass(), addressListAddressToAttach.getAddressid());
                 attachedAddressList.add(addressListAddressToAttach);
             }
             account.setAddressList(attachedAddressList);
+            List<Orders> attachedOrdersList = new ArrayList<Orders>();
+            for (Orders ordersListOrdersToAttach : account.getOrdersList()) {
+                ordersListOrdersToAttach = em.getReference(ordersListOrdersToAttach.getClass(), ordersListOrdersToAttach.getOrderid());
+                attachedOrdersList.add(ordersListOrdersToAttach);
+            }
+            account.setOrdersList(attachedOrdersList);
             em.persist(account);
+            for (Wishlish wishlishListWishlish : account.getWishlishList()) {
+                Account oldAccountidOfWishlishListWishlish = wishlishListWishlish.getAccountid();
+                wishlishListWishlish.setAccountid(account);
+                wishlishListWishlish = em.merge(wishlishListWishlish);
+                if (oldAccountidOfWishlishListWishlish != null) {
+                    oldAccountidOfWishlishListWishlish.getWishlishList().remove(wishlishListWishlish);
+                    oldAccountidOfWishlishListWishlish = em.merge(oldAccountidOfWishlishListWishlish);
+                }
+            }
             for (Address addressListAddress : account.getAddressList()) {
-                Account oldUsernameOfAddressListAddress = addressListAddress.getUsername();
-                addressListAddress.setUsername(account);
+                Account oldAccountidOfAddressListAddress = addressListAddress.getAccountid();
+                addressListAddress.setAccountid(account);
                 addressListAddress = em.merge(addressListAddress);
-                if (oldUsernameOfAddressListAddress != null) {
-                    oldUsernameOfAddressListAddress.getAddressList().remove(addressListAddress);
-                    oldUsernameOfAddressListAddress = em.merge(oldUsernameOfAddressListAddress);
+                if (oldAccountidOfAddressListAddress != null) {
+                    oldAccountidOfAddressListAddress.getAddressList().remove(addressListAddress);
+                    oldAccountidOfAddressListAddress = em.merge(oldAccountidOfAddressListAddress);
+                }
+            }
+            for (Orders ordersListOrders : account.getOrdersList()) {
+                Account oldAccountidOfOrdersListOrders = ordersListOrders.getAccountid();
+                ordersListOrders.setAccountid(account);
+                ordersListOrders = em.merge(ordersListOrders);
+                if (oldAccountidOfOrdersListOrders != null) {
+                    oldAccountidOfOrdersListOrders.getOrdersList().remove(ordersListOrders);
+                    oldAccountidOfOrdersListOrders = em.merge(oldAccountidOfOrdersListOrders);
                 }
             }
             utx.commit();
@@ -68,9 +106,6 @@ public class AccountJpaController implements Serializable {
                 utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-            }
-            if (findAccount(account.getUsername()) != null) {
-                throw new PreexistingEntityException("Account " + account + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -85,9 +120,20 @@ public class AccountJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Account persistentAccount = em.find(Account.class, account.getUsername());
+            Account persistentAccount = em.find(Account.class, account.getAccountid());
+            List<Wishlish> wishlishListOld = persistentAccount.getWishlishList();
+            List<Wishlish> wishlishListNew = account.getWishlishList();
             List<Address> addressListOld = persistentAccount.getAddressList();
             List<Address> addressListNew = account.getAddressList();
+            List<Orders> ordersListOld = persistentAccount.getOrdersList();
+            List<Orders> ordersListNew = account.getOrdersList();
+            List<Wishlish> attachedWishlishListNew = new ArrayList<Wishlish>();
+            for (Wishlish wishlishListNewWishlishToAttach : wishlishListNew) {
+                wishlishListNewWishlishToAttach = em.getReference(wishlishListNewWishlishToAttach.getClass(), wishlishListNewWishlishToAttach.getWishlishid());
+                attachedWishlishListNew.add(wishlishListNewWishlishToAttach);
+            }
+            wishlishListNew = attachedWishlishListNew;
+            account.setWishlishList(wishlishListNew);
             List<Address> attachedAddressListNew = new ArrayList<Address>();
             for (Address addressListNewAddressToAttach : addressListNew) {
                 addressListNewAddressToAttach = em.getReference(addressListNewAddressToAttach.getClass(), addressListNewAddressToAttach.getAddressid());
@@ -95,21 +141,62 @@ public class AccountJpaController implements Serializable {
             }
             addressListNew = attachedAddressListNew;
             account.setAddressList(addressListNew);
+            List<Orders> attachedOrdersListNew = new ArrayList<Orders>();
+            for (Orders ordersListNewOrdersToAttach : ordersListNew) {
+                ordersListNewOrdersToAttach = em.getReference(ordersListNewOrdersToAttach.getClass(), ordersListNewOrdersToAttach.getOrderid());
+                attachedOrdersListNew.add(ordersListNewOrdersToAttach);
+            }
+            ordersListNew = attachedOrdersListNew;
+            account.setOrdersList(ordersListNew);
             account = em.merge(account);
+            for (Wishlish wishlishListOldWishlish : wishlishListOld) {
+                if (!wishlishListNew.contains(wishlishListOldWishlish)) {
+                    wishlishListOldWishlish.setAccountid(null);
+                    wishlishListOldWishlish = em.merge(wishlishListOldWishlish);
+                }
+            }
+            for (Wishlish wishlishListNewWishlish : wishlishListNew) {
+                if (!wishlishListOld.contains(wishlishListNewWishlish)) {
+                    Account oldAccountidOfWishlishListNewWishlish = wishlishListNewWishlish.getAccountid();
+                    wishlishListNewWishlish.setAccountid(account);
+                    wishlishListNewWishlish = em.merge(wishlishListNewWishlish);
+                    if (oldAccountidOfWishlishListNewWishlish != null && !oldAccountidOfWishlishListNewWishlish.equals(account)) {
+                        oldAccountidOfWishlishListNewWishlish.getWishlishList().remove(wishlishListNewWishlish);
+                        oldAccountidOfWishlishListNewWishlish = em.merge(oldAccountidOfWishlishListNewWishlish);
+                    }
+                }
+            }
             for (Address addressListOldAddress : addressListOld) {
                 if (!addressListNew.contains(addressListOldAddress)) {
-                    addressListOldAddress.setUsername(null);
+                    addressListOldAddress.setAccountid(null);
                     addressListOldAddress = em.merge(addressListOldAddress);
                 }
             }
             for (Address addressListNewAddress : addressListNew) {
                 if (!addressListOld.contains(addressListNewAddress)) {
-                    Account oldUsernameOfAddressListNewAddress = addressListNewAddress.getUsername();
-                    addressListNewAddress.setUsername(account);
+                    Account oldAccountidOfAddressListNewAddress = addressListNewAddress.getAccountid();
+                    addressListNewAddress.setAccountid(account);
                     addressListNewAddress = em.merge(addressListNewAddress);
-                    if (oldUsernameOfAddressListNewAddress != null && !oldUsernameOfAddressListNewAddress.equals(account)) {
-                        oldUsernameOfAddressListNewAddress.getAddressList().remove(addressListNewAddress);
-                        oldUsernameOfAddressListNewAddress = em.merge(oldUsernameOfAddressListNewAddress);
+                    if (oldAccountidOfAddressListNewAddress != null && !oldAccountidOfAddressListNewAddress.equals(account)) {
+                        oldAccountidOfAddressListNewAddress.getAddressList().remove(addressListNewAddress);
+                        oldAccountidOfAddressListNewAddress = em.merge(oldAccountidOfAddressListNewAddress);
+                    }
+                }
+            }
+            for (Orders ordersListOldOrders : ordersListOld) {
+                if (!ordersListNew.contains(ordersListOldOrders)) {
+                    ordersListOldOrders.setAccountid(null);
+                    ordersListOldOrders = em.merge(ordersListOldOrders);
+                }
+            }
+            for (Orders ordersListNewOrders : ordersListNew) {
+                if (!ordersListOld.contains(ordersListNewOrders)) {
+                    Account oldAccountidOfOrdersListNewOrders = ordersListNewOrders.getAccountid();
+                    ordersListNewOrders.setAccountid(account);
+                    ordersListNewOrders = em.merge(ordersListNewOrders);
+                    if (oldAccountidOfOrdersListNewOrders != null && !oldAccountidOfOrdersListNewOrders.equals(account)) {
+                        oldAccountidOfOrdersListNewOrders.getOrdersList().remove(ordersListNewOrders);
+                        oldAccountidOfOrdersListNewOrders = em.merge(oldAccountidOfOrdersListNewOrders);
                     }
                 }
             }
@@ -122,7 +209,7 @@ public class AccountJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = account.getUsername();
+                Integer id = account.getAccountid();
                 if (findAccount(id) == null) {
                     throw new NonexistentEntityException("The account with id " + id + " no longer exists.");
                 }
@@ -135,7 +222,7 @@ public class AccountJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
@@ -143,14 +230,24 @@ public class AccountJpaController implements Serializable {
             Account account;
             try {
                 account = em.getReference(Account.class, id);
-                account.getUsername();
+                account.getAccountid();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The account with id " + id + " no longer exists.", enfe);
             }
+            List<Wishlish> wishlishList = account.getWishlishList();
+            for (Wishlish wishlishListWishlish : wishlishList) {
+                wishlishListWishlish.setAccountid(null);
+                wishlishListWishlish = em.merge(wishlishListWishlish);
+            }
             List<Address> addressList = account.getAddressList();
             for (Address addressListAddress : addressList) {
-                addressListAddress.setUsername(null);
+                addressListAddress.setAccountid(null);
                 addressListAddress = em.merge(addressListAddress);
+            }
+            List<Orders> ordersList = account.getOrdersList();
+            for (Orders ordersListOrders : ordersList) {
+                ordersListOrders.setAccountid(null);
+                ordersListOrders = em.merge(ordersListOrders);
             }
             em.remove(account);
             utx.commit();
@@ -192,10 +289,23 @@ public class AccountJpaController implements Serializable {
         }
     }
 
-    public Account findAccount(String id) {
+    public Account findAccount(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Account.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public Account findByUsername(String username) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Account.findByUsername");
+            query.setParameter("username", username.toUpperCase());
+            return (Account) query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
         } finally {
             em.close();
         }
@@ -213,5 +323,5 @@ public class AccountJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

@@ -23,16 +23,16 @@ public class Cart {
         cart = new HashMap();
     }
 
-    public void add(Productcloth p) {
+    public void add(Products p) {
         ProductLine line = cart.get(p.getProductcode());
         if (line == null) {
             cart.put(p.getProductcode(), new ProductLine(p));
         } else {
-            line.setQuantity(line.getQuantity() + 1);
+            line.setQuantity(line.getQuantity()+1);
         }
     }
 
-    public void reduce(Productcloth p) {
+    public void reduce(Products p) {
         ProductLine line = cart.get(p.getProductcode());
         line.setQuantity(line.getQuantity() - 1);
         if (line.getQuantity() == 0) {
@@ -40,7 +40,7 @@ public class Cart {
         }
     }
 
-    public void remove(Productcloth p) {
+    public void remove(Products p) {
         cart.remove(p.getProductcode());
     }
 

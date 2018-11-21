@@ -11,7 +11,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.Address;
+import comfortpay.jpa.model.Orders;
+import comfortpay.jpa.model.Products;
 import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.util.List;
@@ -23,9 +24,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class AddressJpaController implements Serializable {
+public class OrdersJpaController implements Serializable {
 
-    public AddressJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public OrdersJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -36,20 +37,29 @@ public class AddressJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Address address) throws RollbackFailureException, Exception {
+    public void create(Orders orders) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Account accountid = address.getAccountid();
+            Account accountid = orders.getAccountid();
             if (accountid != null) {
                 accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
-                address.setAccountid(accountid);
+                orders.setAccountid(accountid);
             }
-            em.persist(address);
+            Products productid = orders.getProductid();
+            if (productid != null) {
+                productid = em.getReference(productid.getClass(), productid.getProductid());
+                orders.setProductid(productid);
+            }
+            em.persist(orders);
             if (accountid != null) {
-                accountid.getAddressList().add(address);
+                accountid.getOrdersList().add(orders);
                 accountid = em.merge(accountid);
+            }
+            if (productid != null) {
+                productid.getOrdersList().add(orders);
+                productid = em.merge(productid);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -66,26 +76,40 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public void edit(Address address) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Orders orders) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Address persistentAddress = em.find(Address.class, address.getAddressid());
-            Account accountidOld = persistentAddress.getAccountid();
-            Account accountidNew = address.getAccountid();
+            Orders persistentOrders = em.find(Orders.class, orders.getOrderid());
+            Account accountidOld = persistentOrders.getAccountid();
+            Account accountidNew = orders.getAccountid();
+            Products productidOld = persistentOrders.getProductid();
+            Products productidNew = orders.getProductid();
             if (accountidNew != null) {
                 accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
-                address.setAccountid(accountidNew);
+                orders.setAccountid(accountidNew);
             }
-            address = em.merge(address);
+            if (productidNew != null) {
+                productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
+                orders.setProductid(productidNew);
+            }
+            orders = em.merge(orders);
             if (accountidOld != null && !accountidOld.equals(accountidNew)) {
-                accountidOld.getAddressList().remove(address);
+                accountidOld.getOrdersList().remove(orders);
                 accountidOld = em.merge(accountidOld);
             }
             if (accountidNew != null && !accountidNew.equals(accountidOld)) {
-                accountidNew.getAddressList().add(address);
+                accountidNew.getOrdersList().add(orders);
                 accountidNew = em.merge(accountidNew);
+            }
+            if (productidOld != null && !productidOld.equals(productidNew)) {
+                productidOld.getOrdersList().remove(orders);
+                productidOld = em.merge(productidOld);
+            }
+            if (productidNew != null && !productidNew.equals(productidOld)) {
+                productidNew.getOrdersList().add(orders);
+                productidNew = em.merge(productidNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -96,9 +120,9 @@ public class AddressJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = address.getAddressid();
-                if (findAddress(id) == null) {
-                    throw new NonexistentEntityException("The address with id " + id + " no longer exists.");
+                Integer id = orders.getOrderid();
+                if (findOrders(id) == null) {
+                    throw new NonexistentEntityException("The orders with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -114,19 +138,24 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Address address;
+            Orders orders;
             try {
-                address = em.getReference(Address.class, id);
-                address.getAddressid();
+                orders = em.getReference(Orders.class, id);
+                orders.getOrderid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The orders with id " + id + " no longer exists.", enfe);
             }
-            Account accountid = address.getAccountid();
+            Account accountid = orders.getAccountid();
             if (accountid != null) {
-                accountid.getAddressList().remove(address);
+                accountid.getOrdersList().remove(orders);
                 accountid = em.merge(accountid);
             }
-            em.remove(address);
+            Products productid = orders.getProductid();
+            if (productid != null) {
+                productid.getOrdersList().remove(orders);
+                productid = em.merge(productid);
+            }
+            em.remove(orders);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -142,19 +171,19 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public List<Address> findAddressEntities() {
-        return findAddressEntities(true, -1, -1);
+    public List<Orders> findOrdersEntities() {
+        return findOrdersEntities(true, -1, -1);
     }
 
-    public List<Address> findAddressEntities(int maxResults, int firstResult) {
-        return findAddressEntities(false, maxResults, firstResult);
+    public List<Orders> findOrdersEntities(int maxResults, int firstResult) {
+        return findOrdersEntities(false, maxResults, firstResult);
     }
 
-    private List<Address> findAddressEntities(boolean all, int maxResults, int firstResult) {
+    private List<Orders> findOrdersEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Address.class));
+            cq.select(cq.from(Orders.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -166,20 +195,20 @@ public class AddressJpaController implements Serializable {
         }
     }
 
-    public Address findAddress(Integer id) {
+    public Orders findOrders(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Address.class, id);
+            return em.find(Orders.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getAddressCount() {
+    public int getOrdersCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Address> rt = cq.from(Address.class);
+            Root<Orders> rt = cq.from(Orders.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

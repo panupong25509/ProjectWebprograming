@@ -10,20 +10,20 @@ package comfortpay.jpa.model;
  * @author Techin
  */
 public class ProductLine {
-   private Productcloth product;
+   private Products product;
    private int quantity;
    private double totalPrice;
 
     public ProductLine() {
     }
 
-    public ProductLine(Productcloth product, int quantity) {
+    public ProductLine(Products product, int quantity) {
         this.product = product;
         this.quantity = quantity;
         TotalPrice();
     }
 
-    ProductLine(Productcloth product) {
+    ProductLine(Products product) {
         this.product = product;
         this.quantity++;
     }
@@ -33,11 +33,11 @@ public class ProductLine {
         return this.totalPrice;
     }
 
-    public Productcloth getProduct() {
+    public Products getProduct() {
         return product;
     }
 
-    public void setProduct(Productcloth product) {
+    public void setProduct(Products product) {
         this.product = product;
     }
 

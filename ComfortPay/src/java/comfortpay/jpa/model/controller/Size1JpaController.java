@@ -5,27 +5,27 @@
  */
 package comfortpay.jpa.model.controller;
 
-import comfortpay.jpa.model.Productshoes;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.PreexistingEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.Size1;
+import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Joknoi
  */
-public class ProductshoesJpaController implements Serializable {
+public class Size1JpaController implements Serializable {
 
-    public ProductshoesJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public Size1JpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -36,21 +36,27 @@ public class ProductshoesJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Productshoes productshoes) throws PreexistingEntityException, RollbackFailureException, Exception {
+    public void create(Size1 size1) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            em.persist(productshoes);
+            Products productid = size1.getProductid();
+            if (productid != null) {
+                productid = em.getReference(productid.getClass(), productid.getProductid());
+                size1.setProductid(productid);
+            }
+            em.persist(size1);
+            if (productid != null) {
+                productid.getSize1List().add(size1);
+                productid = em.merge(productid);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
                 utx.rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-            }
-            if (findProductshoes(productshoes.getProductcode()) != null) {
-                throw new PreexistingEntityException("Productshoes " + productshoes + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -60,12 +66,27 @@ public class ProductshoesJpaController implements Serializable {
         }
     }
 
-    public void edit(Productshoes productshoes) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Size1 size1) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            productshoes = em.merge(productshoes);
+            Size1 persistentSize1 = em.find(Size1.class, size1.getSizeid());
+            Products productidOld = persistentSize1.getProductid();
+            Products productidNew = size1.getProductid();
+            if (productidNew != null) {
+                productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
+                size1.setProductid(productidNew);
+            }
+            size1 = em.merge(size1);
+            if (productidOld != null && !productidOld.equals(productidNew)) {
+                productidOld.getSize1List().remove(size1);
+                productidOld = em.merge(productidOld);
+            }
+            if (productidNew != null && !productidNew.equals(productidOld)) {
+                productidNew.getSize1List().add(size1);
+                productidNew = em.merge(productidNew);
+            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -75,9 +96,9 @@ public class ProductshoesJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = productshoes.getProductcode();
-                if (findProductshoes(id) == null) {
-                    throw new NonexistentEntityException("The productshoes with id " + id + " no longer exists.");
+                Integer id = size1.getSizeid();
+                if (findSize1(id) == null) {
+                    throw new NonexistentEntityException("The size1 with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -88,19 +109,24 @@ public class ProductshoesJpaController implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Productshoes productshoes;
+            Size1 size1;
             try {
-                productshoes = em.getReference(Productshoes.class, id);
-                productshoes.getProductcode();
+                size1 = em.getReference(Size1.class, id);
+                size1.getSizeid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The productshoes with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The size1 with id " + id + " no longer exists.", enfe);
             }
-            em.remove(productshoes);
+            Products productid = size1.getProductid();
+            if (productid != null) {
+                productid.getSize1List().remove(size1);
+                productid = em.merge(productid);
+            }
+            em.remove(size1);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -116,19 +142,19 @@ public class ProductshoesJpaController implements Serializable {
         }
     }
 
-    public List<Productshoes> findProductshoesEntities() {
-        return findProductshoesEntities(true, -1, -1);
+    public List<Size1> findSize1Entities() {
+        return findSize1Entities(true, -1, -1);
     }
 
-    public List<Productshoes> findProductshoesEntities(int maxResults, int firstResult) {
-        return findProductshoesEntities(false, maxResults, firstResult);
+    public List<Size1> findSize1Entities(int maxResults, int firstResult) {
+        return findSize1Entities(false, maxResults, firstResult);
     }
 
-    private List<Productshoes> findProductshoesEntities(boolean all, int maxResults, int firstResult) {
+    private List<Size1> findSize1Entities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Productshoes.class));
+            cq.select(cq.from(Size1.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -140,20 +166,20 @@ public class ProductshoesJpaController implements Serializable {
         }
     }
 
-    public Productshoes findProductshoes(String id) {
+    public Size1 findSize1(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Productshoes.class, id);
+            return em.find(Size1.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getProductshoesCount() {
+    public int getSize1Count() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Productshoes> rt = cq.from(Productshoes.class);
+            Root<Size1> rt = cq.from(Size1.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

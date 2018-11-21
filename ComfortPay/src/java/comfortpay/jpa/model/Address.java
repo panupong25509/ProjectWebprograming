@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a")
     , @NamedQuery(name = "Address.findByAddressid", query = "SELECT a FROM Address a WHERE a.addressid = :addressid")
     , @NamedQuery(name = "Address.findByAddress", query = "SELECT a FROM Address a WHERE a.address = :address")
-    , @NamedQuery(name = "Address.findByDistrict", query = "SELECT a FROM Address a WHERE a.district = :district")
+    , @NamedQuery(name = "Address.findByDistict", query = "SELECT a FROM Address a WHERE a.distict = :distict")
     , @NamedQuery(name = "Address.findByProvince", query = "SELECT a FROM Address a WHERE a.province = :province")
     , @NamedQuery(name = "Address.findByPostcode", query = "SELECT a FROM Address a WHERE a.postcode = :postcode")})
 public class Address implements Serializable {
@@ -45,18 +45,17 @@ public class Address implements Serializable {
     @Size(max = 500)
     @Column(name = "ADDRESS")
     private String address;
-    @Size(max = 100)
-    @Column(name = "DISTRICT")
-    private String district;
-    @Size(max = 100)
+    @Size(max = 50)
+    @Column(name = "DISTICT")
+    private String distict;
+    @Size(max = 50)
     @Column(name = "PROVINCE")
     private String province;
-    @Size(max = 5)
     @Column(name = "POSTCODE")
-    private String postcode;
-    @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")
+    private Integer postcode;
+    @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
     @ManyToOne
-    private Account username;
+    private Account accountid;
 
     public Address() {
     }
@@ -65,12 +64,12 @@ public class Address implements Serializable {
         this.addressid = addressid;
     }
 
-    public Address(String address, String district, String province, String postcode, Account username) {
+    public Address(String address, String distict, String province, Integer postcode, Account accountid) {
         this.address = address;
-        this.district = district;
+        this.distict = distict;
         this.province = province;
         this.postcode = postcode;
-        this.username = username;
+        this.accountid = accountid;
     }
 
     public Integer getAddressid() {
@@ -89,12 +88,12 @@ public class Address implements Serializable {
         this.address = address;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getDistict() {
+        return distict;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setDistict(String distict) {
+        this.distict = distict;
     }
 
     public String getProvince() {
@@ -105,20 +104,20 @@ public class Address implements Serializable {
         this.province = province;
     }
 
-    public String getPostcode() {
+    public Integer getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(String postcode) {
+    public void setPostcode(Integer postcode) {
         this.postcode = postcode;
     }
 
-    public Account getUsername() {
-        return username;
+    public Account getAccountid() {
+        return accountid;
     }
 
-    public void setUsername(Account username) {
-        this.username = username;
+    public void setAccountid(Account accountid) {
+        this.accountid = accountid;
     }
 
     @Override

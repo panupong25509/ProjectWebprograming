@@ -6,8 +6,8 @@
 package comfortpay.servlet;
 
 import comfortpay.jpa.model.Cart;
-import comfortpay.jpa.model.Productcloth;
-import comfortpay.jpa.model.controller.ProductclothJpaController;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -42,16 +42,15 @@ public class RemoveProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productCode = request.getParameter("productcode");
-        ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
+        String productId = request.getParameter("productid");
+        ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
 
-        Productcloth pdc = pdcJpa.findProductcloth(productCode);
-//       ProductLine pdl = new ProductLine(pdc,1);
+        Products product = productsCtrl.findProducts(Integer.parseInt(productId));
 
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        cart.remove(pdc);
-        getServletContext().getRequestDispatcher("/Cart").forward(request, response);
+        cart.remove(product);
+        response.sendRedirect("Cart");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

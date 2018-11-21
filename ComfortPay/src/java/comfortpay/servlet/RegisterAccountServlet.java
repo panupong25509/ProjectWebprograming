@@ -63,13 +63,13 @@ public class RegisterAccountServlet extends HttpServlet {
         String province = request.getParameter("province").toUpperCase();
         String postcode = request.getParameter("postcode");
         AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-        Account account = accountCtrl.findAccount(username);
+        Account account = accountCtrl.findByUsername(username);
         if (account != null) {
             getServletContext().getRequestDispatcher("/Register").forward(request, response);
         } else {
             if (password.equals(passwordAgain)) {
-                Account newAccount = new Account(username, password, fname, lname, email, new Date());
-                Address newAddress = new Address(address, district, province, postcode, newAccount);
+                Account newAccount = new Account(username, password, fname, lname, email);
+                Address newAddress = new Address(address, district, province, Integer.parseInt(postcode), newAccount);
                 AddressJpaController addressCtrl = new AddressJpaController(utx, emf);
                 try {
                     accountCtrl.create(newAccount);
@@ -79,7 +79,7 @@ public class RegisterAccountServlet extends HttpServlet {
                 } catch (Exception ex) {
                     Logger.getLogger(RegisterAccountServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                account = accountCtrl.findAccount(username);
+                account = accountCtrl.findByUsername(username);
                 session.setAttribute("account", account);
                 getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
             } else {

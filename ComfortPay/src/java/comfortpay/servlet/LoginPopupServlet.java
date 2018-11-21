@@ -51,7 +51,7 @@ public class LoginPopupServlet extends HttpServlet {
         if (session.getAttribute("account") == null) {
             if (username != null || password != null) {
                 AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = accountCtrl.findAccount(username.toUpperCase());
+                Account account = (Account) accountCtrl.findByUsername(username);
                 if (account != null) {
                     if (account.getPassword().equals(password)) {
                         session.setAttribute("account", account);

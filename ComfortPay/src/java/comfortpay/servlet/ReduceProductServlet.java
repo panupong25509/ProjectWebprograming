@@ -6,8 +6,8 @@
 package comfortpay.servlet;
 
 import comfortpay.jpa.model.Cart;
-import comfortpay.jpa.model.Productcloth;
-import comfortpay.jpa.model.controller.ProductclothJpaController;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -25,10 +25,12 @@ import javax.transaction.UserTransaction;
  * @author Joknoi
  */
 public class ReduceProductServlet extends HttpServlet {
-    @PersistenceUnit (unitName = "ComfortPayPU")
+
+    @PersistenceUnit(unitName = "ComfortPayPU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,16 +42,15 @@ public class ReduceProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       String productCode = request.getParameter("productcode");
-       ProductclothJpaController pdcJpa = new ProductclothJpaController(utx, emf);
-       
-       Productcloth pdc = pdcJpa.findProductcloth(productCode);
-//       ProductLine pdl = new ProductLine(pdc,1);
- 
-       HttpSession session = request.getSession();
-       Cart cart = (Cart) session.getAttribute("cart");
-        cart.reduce(pdc);
-        getServletContext().getRequestDispatcher("/Cart").forward(request, response);
+        String productId = request.getParameter("productid");
+        ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
+
+        Products product = productsCtrl.findProducts(Integer.parseInt(productId));
+
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.reduce(product);
+        response.sendRedirect("Cart");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

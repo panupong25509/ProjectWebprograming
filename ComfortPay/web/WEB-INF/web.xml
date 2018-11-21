@@ -52,6 +52,14 @@
         <servlet-name>AddToCartServlet</servlet-name>
         <servlet-class>comfortpay.servlet.AddToCartServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.SearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.ProductListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>AddToCartServlet</servlet-name>
         <url-pattern>/AddToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/Search</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/ProductList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

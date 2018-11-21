@@ -31,7 +31,7 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        session.invalidate();
+        session.removeAttribute("account");
         String path = request.getParameter("path");
         int pathLength = path.length();
         String pathServlet = path.substring(0, pathLength-4);

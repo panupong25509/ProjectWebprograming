@@ -16,13 +16,19 @@
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
         <div style="padding-top: 130px;">
-            <h1>My Account</h1>
-            <p>${account.fname} ${account.lname}</p>
-            <p>${account.level}</p>
-            <p>${account.score}</p>
+            <div class="container">
+                <div class="col-8 mx-auto text-center">
+                    <h1>My Account</h1>
+                    <div class="text-left pt-5">
+                        <p>${account.fname} ${account.lname}</p>
+                        <p>${account.class1}</p>
+                        <p>${account.score}</p>    
+                    </div>
+                     
+                </div>
+                 
+            </div>
+            
         </div>
-
-
-        <p></p>
     </body>
 </html>

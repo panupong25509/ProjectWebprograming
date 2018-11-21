@@ -87,23 +87,23 @@
     </style>
     <body>
         <div style="position: fixed;z-index: 2;width: 100vw;">
-            <div style="background-color: #53759A;color: #D5C4AD;font-size: 12px;height: 35px;">
+            <div style="background-color: #53759A;font-size: 12px;height: 35px;">
                 <div class="container">
                     <div class="col-12 row m-0 navbar-collapse navbar-expand-lg">
                         <ul class="list-inline m-0 mr-auto p-0">
                             <% if (session.getAttribute("account") == null) { %>
                             <li class="list-inline-item">
-                                <a class="nav-link" onclick="Login()"><i class="fas fa-user"></i> LOGIN</a>
+                                <a class="nav-link" onclick="Login()" style="cursor: pointer;color: #D5C4AD;"><i class="fas fa-user"></i> LOGIN</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link" href="Register" ><i class="fas fa-user"></i> REGISTER</a>
+                                <a class="nav-link" href="Register" style="color: #D5C4AD;"><i class="fas fa-user"></i> REGISTER</a>
                             </li>
                             <% } else {%>
                             <li class="list-inline-item">
-                                <a class="nav-link" href="MyAccount">${account.fname} ${account.lname}</a>
+                                <a class="nav-link" href="MyAccount" style="color: #D5C4AD;">${account.fname} ${account.lname}</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>">Logout</a>
+                                <a class="nav-link" href="Logout?path=<%= request.getRequestURL()%>" style="color: #D5C4AD;">LOGOUT</a>
                             </li>
                             <% }%>
                         </ul> 
@@ -112,19 +112,19 @@
                                 <div>
                                     <form action="Search" class="form-inline">
                                         <input class="form-control" type="text" name="search" required style="height: 35px;background-color: transparent">
-                                        <a href="#">
+                                        <a href="#" >
                                             <button type="submit" style="height: 35px;background-color: transparent;border: none;cursor: pointer">
-                                                <i class="fas fa-search ml-1"></i>
+                                                <i class="fas fa-search ml-1" style="color: #D5C4AD;"></i>
                                             </button>
                                         </a>
                                     </form> 
                                 </div>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link"><i class="fas fa-star"></i> WISH LIST </a>
+                                <a class="nav-link"style="color: #D5C4AD;"><i class="fas fa-star"></i> WISH LIST </a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link" href="/ComfortPay/Cart">
+                                <a class="nav-link" href="/ComfortPay/Cart"style="color: #D5C4AD;">
                                     <% Cart cart = (Cart) session.getAttribute("cart"); %>
                                     <% if (cart!=null && cart.getTotalQuantity() != 0) { %>
                                     <i class="fas fa-shopping-cart"></i> SHOPPING CART (${cart.totalQuantity}) 

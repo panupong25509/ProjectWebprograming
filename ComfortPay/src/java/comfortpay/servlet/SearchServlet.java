@@ -5,10 +5,11 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.controller.AccountJpaController;
+import comfortpay.jpa.model.Products;
+import comfortpay.jpa.model.controller.ProductsJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -16,20 +17,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Joknoi
  */
-public class LoginServlet extends HttpServlet {
-
-    @PersistenceUnit(unitName = "ComfortPayPU")
+public class SearchServlet extends HttpServlet {
+    @PersistenceUnit (unitName = "ComfortPayPU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,47 +39,47 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        String path = request.getParameter("path");
-        String pathServlet = null;
-
-        if (path != null && path != "") {
-            int pathLength = path.length();
-            pathServlet = path.substring(0, pathLength - 4);
-        }
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        if (session.getAttribute("account") == null) {
-            if (username != null || password != null) {
-                AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = accountCtrl.findByUsername(username);
-
-                if (account != null) {
-                    if (account.getPassword().equals(password)) {
-                        session.setAttribute("account", account);
-                        if (path == null || path == "") {
-                            getServletContext().getRequestDispatcher("/Home").forward(request, response);
-                            response.sendRedirect(pathServlet);
-                        } else {
-                            response.sendRedirect(pathServlet);
-                        }
-                    } else {
-                        request.setAttribute("path", path);
-                        getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-                    }
-                } else {
-                    request.setAttribute("path", path);
-                    getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
-                }
-            } else {
-                request.setAttribute("path", path);
-                getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        String search = request.getParameter("search").toLowerCase();
+        String[] brand = {"nike", "adidas", "champion", "fila"};
+        String[] color = {"red", "black", "white", "pink", "green", "gray", "blue", "purple", "orange"};
+        String[] type = {"sneaker", "slipper", "shirt", "pant", "short"};
+        String Have = null;
+        ProductsJpaController productCtrl = new ProductsJpaController(utx, emf);
+        List<Products> product = null;
+        for (String brandHave : brand) {
+            if (search.equals(brandHave)) {
+                Have = search;
             }
+        }
+        if (Have != null) {
+            //หาตามbrand
+            product = productCtrl.findByBrand(Have);
         } else {
-            if (path == null || path == "") {
-                getServletContext().getRequestDispatcher("/Home").forward(request, response);
+            for (String colorHave : color) {
+                if (search.equals(colorHave)) {
+                    Have = search;
+                }
+            }
+            if (Have != null) {
+                   //หาตามcolor
             } else {
-                response.sendRedirect(pathServlet);
+                if (search.equals("cloth")) {
+                    //หาตามtype(shirt,pant,short)
+                } else if (search.equals("shoes")) {
+                    //หาตามtype(sneaker,slipper)
+                } else {
+                    for (String typeHave : type) {
+                        if (search.equals(typeHave)) {
+                            Have = search;
+                        }
+                    }
+                    if (Have != null) {
+                        //หาตามtype
+                    } else {
+                        //หาตามชื่อสินค้า
+                    }
+                }
+
             }
         }
     }
