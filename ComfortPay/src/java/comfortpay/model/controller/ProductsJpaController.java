@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model.controller;
+package comfortpay.model.controller;
 
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.jpa.model.Wishlish;
+import comfortpay.model.Wishlish;
 import java.util.ArrayList;
 import java.util.List;
-import comfortpay.jpa.model.Orders;
-import comfortpay.jpa.model.Products;
-import comfortpay.jpa.model.Size1;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import comfortpay.model.Orderlist;
+import comfortpay.model.Products;
+import comfortpay.model.Size1;
+import comfortpay.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.model.controller.exceptions.RollbackFailureException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
@@ -43,8 +43,8 @@ public class ProductsJpaController implements Serializable {
         if (products.getWishlishList() == null) {
             products.setWishlishList(new ArrayList<Wishlish>());
         }
-        if (products.getOrdersList() == null) {
-            products.setOrdersList(new ArrayList<Orders>());
+        if (products.getOrderlistList() == null) {
+            products.setOrderlistList(new ArrayList<Orderlist>());
         }
         if (products.getSize1List() == null) {
             products.setSize1List(new ArrayList<Size1>());
@@ -59,12 +59,12 @@ public class ProductsJpaController implements Serializable {
                 attachedWishlishList.add(wishlishListWishlishToAttach);
             }
             products.setWishlishList(attachedWishlishList);
-            List<Orders> attachedOrdersList = new ArrayList<Orders>();
-            for (Orders ordersListOrdersToAttach : products.getOrdersList()) {
-                ordersListOrdersToAttach = em.getReference(ordersListOrdersToAttach.getClass(), ordersListOrdersToAttach.getOrderid());
-                attachedOrdersList.add(ordersListOrdersToAttach);
+            List<Orderlist> attachedOrderlistList = new ArrayList<Orderlist>();
+            for (Orderlist orderlistListOrderlistToAttach : products.getOrderlistList()) {
+                orderlistListOrderlistToAttach = em.getReference(orderlistListOrderlistToAttach.getClass(), orderlistListOrderlistToAttach.getOrderlistid());
+                attachedOrderlistList.add(orderlistListOrderlistToAttach);
             }
-            products.setOrdersList(attachedOrdersList);
+            products.setOrderlistList(attachedOrderlistList);
             List<Size1> attachedSize1List = new ArrayList<Size1>();
             for (Size1 size1ListSize1ToAttach : products.getSize1List()) {
                 size1ListSize1ToAttach = em.getReference(size1ListSize1ToAttach.getClass(), size1ListSize1ToAttach.getSizeid());
@@ -81,13 +81,13 @@ public class ProductsJpaController implements Serializable {
                     oldProductidOfWishlishListWishlish = em.merge(oldProductidOfWishlishListWishlish);
                 }
             }
-            for (Orders ordersListOrders : products.getOrdersList()) {
-                Products oldProductidOfOrdersListOrders = ordersListOrders.getProductid();
-                ordersListOrders.setProductid(products);
-                ordersListOrders = em.merge(ordersListOrders);
-                if (oldProductidOfOrdersListOrders != null) {
-                    oldProductidOfOrdersListOrders.getOrdersList().remove(ordersListOrders);
-                    oldProductidOfOrdersListOrders = em.merge(oldProductidOfOrdersListOrders);
+            for (Orderlist orderlistListOrderlist : products.getOrderlistList()) {
+                Products oldProductidOfOrderlistListOrderlist = orderlistListOrderlist.getProductid();
+                orderlistListOrderlist.setProductid(products);
+                orderlistListOrderlist = em.merge(orderlistListOrderlist);
+                if (oldProductidOfOrderlistListOrderlist != null) {
+                    oldProductidOfOrderlistListOrderlist.getOrderlistList().remove(orderlistListOrderlist);
+                    oldProductidOfOrderlistListOrderlist = em.merge(oldProductidOfOrderlistListOrderlist);
                 }
             }
             for (Size1 size1ListSize1 : products.getSize1List()) {
@@ -122,8 +122,8 @@ public class ProductsJpaController implements Serializable {
             Products persistentProducts = em.find(Products.class, products.getProductid());
             List<Wishlish> wishlishListOld = persistentProducts.getWishlishList();
             List<Wishlish> wishlishListNew = products.getWishlishList();
-            List<Orders> ordersListOld = persistentProducts.getOrdersList();
-            List<Orders> ordersListNew = products.getOrdersList();
+            List<Orderlist> orderlistListOld = persistentProducts.getOrderlistList();
+            List<Orderlist> orderlistListNew = products.getOrderlistList();
             List<Size1> size1ListOld = persistentProducts.getSize1List();
             List<Size1> size1ListNew = products.getSize1List();
             List<Wishlish> attachedWishlishListNew = new ArrayList<Wishlish>();
@@ -133,13 +133,13 @@ public class ProductsJpaController implements Serializable {
             }
             wishlishListNew = attachedWishlishListNew;
             products.setWishlishList(wishlishListNew);
-            List<Orders> attachedOrdersListNew = new ArrayList<Orders>();
-            for (Orders ordersListNewOrdersToAttach : ordersListNew) {
-                ordersListNewOrdersToAttach = em.getReference(ordersListNewOrdersToAttach.getClass(), ordersListNewOrdersToAttach.getOrderid());
-                attachedOrdersListNew.add(ordersListNewOrdersToAttach);
+            List<Orderlist> attachedOrderlistListNew = new ArrayList<Orderlist>();
+            for (Orderlist orderlistListNewOrderlistToAttach : orderlistListNew) {
+                orderlistListNewOrderlistToAttach = em.getReference(orderlistListNewOrderlistToAttach.getClass(), orderlistListNewOrderlistToAttach.getOrderlistid());
+                attachedOrderlistListNew.add(orderlistListNewOrderlistToAttach);
             }
-            ordersListNew = attachedOrdersListNew;
-            products.setOrdersList(ordersListNew);
+            orderlistListNew = attachedOrderlistListNew;
+            products.setOrderlistList(orderlistListNew);
             List<Size1> attachedSize1ListNew = new ArrayList<Size1>();
             for (Size1 size1ListNewSize1ToAttach : size1ListNew) {
                 size1ListNewSize1ToAttach = em.getReference(size1ListNewSize1ToAttach.getClass(), size1ListNewSize1ToAttach.getSizeid());
@@ -165,20 +165,20 @@ public class ProductsJpaController implements Serializable {
                     }
                 }
             }
-            for (Orders ordersListOldOrders : ordersListOld) {
-                if (!ordersListNew.contains(ordersListOldOrders)) {
-                    ordersListOldOrders.setProductid(null);
-                    ordersListOldOrders = em.merge(ordersListOldOrders);
+            for (Orderlist orderlistListOldOrderlist : orderlistListOld) {
+                if (!orderlistListNew.contains(orderlistListOldOrderlist)) {
+                    orderlistListOldOrderlist.setProductid(null);
+                    orderlistListOldOrderlist = em.merge(orderlistListOldOrderlist);
                 }
             }
-            for (Orders ordersListNewOrders : ordersListNew) {
-                if (!ordersListOld.contains(ordersListNewOrders)) {
-                    Products oldProductidOfOrdersListNewOrders = ordersListNewOrders.getProductid();
-                    ordersListNewOrders.setProductid(products);
-                    ordersListNewOrders = em.merge(ordersListNewOrders);
-                    if (oldProductidOfOrdersListNewOrders != null && !oldProductidOfOrdersListNewOrders.equals(products)) {
-                        oldProductidOfOrdersListNewOrders.getOrdersList().remove(ordersListNewOrders);
-                        oldProductidOfOrdersListNewOrders = em.merge(oldProductidOfOrdersListNewOrders);
+            for (Orderlist orderlistListNewOrderlist : orderlistListNew) {
+                if (!orderlistListOld.contains(orderlistListNewOrderlist)) {
+                    Products oldProductidOfOrderlistListNewOrderlist = orderlistListNewOrderlist.getProductid();
+                    orderlistListNewOrderlist.setProductid(products);
+                    orderlistListNewOrderlist = em.merge(orderlistListNewOrderlist);
+                    if (oldProductidOfOrderlistListNewOrderlist != null && !oldProductidOfOrderlistListNewOrderlist.equals(products)) {
+                        oldProductidOfOrderlistListNewOrderlist.getOrderlistList().remove(orderlistListNewOrderlist);
+                        oldProductidOfOrderlistListNewOrderlist = em.merge(oldProductidOfOrderlistListNewOrderlist);
                     }
                 }
             }
@@ -238,10 +238,10 @@ public class ProductsJpaController implements Serializable {
                 wishlishListWishlish.setProductid(null);
                 wishlishListWishlish = em.merge(wishlishListWishlish);
             }
-            List<Orders> ordersList = products.getOrdersList();
-            for (Orders ordersListOrders : ordersList) {
-                ordersListOrders.setProductid(null);
-                ordersListOrders = em.merge(ordersListOrders);
+            List<Orderlist> orderlistList = products.getOrderlistList();
+            for (Orderlist orderlistListOrderlist : orderlistList) {
+                orderlistListOrderlist.setProductid(null);
+                orderlistListOrderlist = em.merge(orderlistListOrderlist);
             }
             List<Size1> size1List = products.getSize1List();
             for (Size1 size1ListSize1 : size1List) {
@@ -297,17 +297,6 @@ public class ProductsJpaController implements Serializable {
         }
     }
 
-    public List<Products> findByBrand(String brand) {
-        EntityManager em = getEntityManager();
-        try {
-            Query query = em.createNamedQuery("Products.findByProductband");
-            query.setParameter("productband", brand.toUpperCase());
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
     public int getProductsCount() {
         EntityManager em = getEntityManager();
         try {
@@ -321,4 +310,15 @@ public class ProductsJpaController implements Serializable {
         }
     }
 
+    public List<Products> findByBrand(String brand) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByProductband");
+            query.setParameter("productband", brand.toUpperCase());
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }

@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model;
+package comfortpay.model;
 
 /**
  *
- * @author Techin
+ * @author Joknoi
  */
 public class ProductLine {
-   private Products product;
+    private Products product;
    private int quantity;
    private double totalPrice;
 
@@ -56,14 +56,4 @@ public class ProductLine {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
-    
-  
-    
-    
-    
-
-   
-    
-    
-    
 }

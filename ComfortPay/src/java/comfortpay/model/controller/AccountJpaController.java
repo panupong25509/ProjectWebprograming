@@ -3,21 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model.controller;
+package comfortpay.model.controller;
 
-import comfortpay.jpa.model.Account;
+import comfortpay.model.Account;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.jpa.model.Wishlish;
+import comfortpay.model.Wishlish;
 import java.util.ArrayList;
 import java.util.List;
-import comfortpay.jpa.model.Address;
-import comfortpay.jpa.model.Orders;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import comfortpay.model.Address;
+import comfortpay.model.Orders;
+import comfortpay.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.model.controller.exceptions.RollbackFailureException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;

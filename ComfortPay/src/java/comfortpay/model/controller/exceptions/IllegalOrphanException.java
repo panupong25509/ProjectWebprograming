@@ -1,4 +1,4 @@
-package comfortpay.jpa.model.controller.exceptions;
+package comfortpay.model.controller.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

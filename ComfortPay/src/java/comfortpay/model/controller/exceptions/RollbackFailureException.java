@@ -1,4 +1,4 @@
-package comfortpay.jpa.model.controller.exceptions;
+package comfortpay.model.controller.exceptions;
 
 public class RollbackFailureException extends Exception {
     public RollbackFailureException(String message, Throwable cause) {

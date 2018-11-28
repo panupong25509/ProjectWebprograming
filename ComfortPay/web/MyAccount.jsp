@@ -4,6 +4,7 @@
     Author     : crtiexx
 --%>
 
+<%@page import="comfortpay.model.Account"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,13 +23,13 @@
                     <div class="text-left pt-5">
                         <p>${account.fname} ${account.lname}</p>
                         <p>${account.class1}</p>
-                        <p>${account.score}</p>    
+                        <p>${account.score}</p>   
                     </div>
-                     
+
                 </div>
-                 
+
             </div>
-            
+
         </div>
     </body>
 </html>

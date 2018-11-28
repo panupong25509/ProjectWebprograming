@@ -1,4 +1,4 @@
-package comfortpay.jpa.model.controller.exceptions;
+package comfortpay.model.controller.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

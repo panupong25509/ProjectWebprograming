@@ -5,7 +5,7 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Products;
+import comfortpay.model.Products;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;

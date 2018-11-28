@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model;
+package comfortpay.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -90,7 +90,8 @@ public class Account implements Serializable {
         this.class1 = "BLUE";
         this.score = 0;
     }
-    
+
+
 
     public Integer getAccountid() {
         return accountid;
@@ -205,7 +206,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.jpa.model.Account[ accountid=" + accountid + " ]";
+        return "comfortpay.model.Account[ accountid=" + accountid + " ]";
     }
     
 }

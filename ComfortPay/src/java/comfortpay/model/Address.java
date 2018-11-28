@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model;
+package comfortpay.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -64,12 +64,12 @@ public class Address implements Serializable {
         this.addressid = addressid;
     }
 
-    public Address(String address, String distict, String province, Integer postcode, Account accountid) {
+    public Address(String address, String district, String province, int postcode, Account newAccount) {
         this.address = address;
-        this.distict = distict;
+        this.distict = district;
         this.province = province;
         this.postcode = postcode;
-        this.accountid = accountid;
+        this.accountid = newAccount;
     }
 
     public Integer getAddressid() {
@@ -142,7 +142,7 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.jpa.model.Address[ addressid=" + addressid + " ]";
+        return "comfortpay.model.Address[ addressid=" + addressid + " ]";
     }
-    
+
 }

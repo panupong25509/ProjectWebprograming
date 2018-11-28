@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model;
+package comfortpay.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,10 +13,9 @@ import java.util.Map;
 
 /**
  *
- * @author Techin
+ * @author Joknoi
  */
 public class Cart {
-
     private Map<String, ProductLine> cart;
 
     public Cart() {

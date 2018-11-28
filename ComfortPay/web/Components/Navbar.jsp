@@ -4,7 +4,7 @@
     Author     : Joknoi
 --%>
 
-<%@page import="comfortpay.jpa.model.Cart"%>
+<%@page import="comfortpay.model.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model.controller;
+package comfortpay.model.controller;
 
+import comfortpay.model.Orderlist;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.Products;
-import comfortpay.jpa.model.Wishlish;
-import comfortpay.jpa.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import comfortpay.model.Orders;
+import comfortpay.model.Products;
+import comfortpay.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.model.controller.exceptions.RollbackFailureException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,9 +24,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class WishlishJpaController implements Serializable {
+public class OrderlistJpaController implements Serializable {
 
-    public WishlishJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public OrderlistJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -37,28 +37,28 @@ public class WishlishJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Wishlish wishlish) throws RollbackFailureException, Exception {
+    public void create(Orderlist orderlist) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Account accountid = wishlish.getAccountid();
-            if (accountid != null) {
-                accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
-                wishlish.setAccountid(accountid);
+            Orders orderid = orderlist.getOrderid();
+            if (orderid != null) {
+                orderid = em.getReference(orderid.getClass(), orderid.getOrderid());
+                orderlist.setOrderid(orderid);
             }
-            Products productid = wishlish.getProductid();
+            Products productid = orderlist.getProductid();
             if (productid != null) {
                 productid = em.getReference(productid.getClass(), productid.getProductid());
-                wishlish.setProductid(productid);
+                orderlist.setProductid(productid);
             }
-            em.persist(wishlish);
-            if (accountid != null) {
-                accountid.getWishlishList().add(wishlish);
-                accountid = em.merge(accountid);
+            em.persist(orderlist);
+            if (orderid != null) {
+                orderid.getOrderlistList().add(orderlist);
+                orderid = em.merge(orderid);
             }
             if (productid != null) {
-                productid.getWishlishList().add(wishlish);
+                productid.getOrderlistList().add(orderlist);
                 productid = em.merge(productid);
             }
             utx.commit();
@@ -76,39 +76,39 @@ public class WishlishJpaController implements Serializable {
         }
     }
 
-    public void edit(Wishlish wishlish) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Orderlist orderlist) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Wishlish persistentWishlish = em.find(Wishlish.class, wishlish.getWishlishid());
-            Account accountidOld = persistentWishlish.getAccountid();
-            Account accountidNew = wishlish.getAccountid();
-            Products productidOld = persistentWishlish.getProductid();
-            Products productidNew = wishlish.getProductid();
-            if (accountidNew != null) {
-                accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
-                wishlish.setAccountid(accountidNew);
+            Orderlist persistentOrderlist = em.find(Orderlist.class, orderlist.getOrderlistid());
+            Orders orderidOld = persistentOrderlist.getOrderid();
+            Orders orderidNew = orderlist.getOrderid();
+            Products productidOld = persistentOrderlist.getProductid();
+            Products productidNew = orderlist.getProductid();
+            if (orderidNew != null) {
+                orderidNew = em.getReference(orderidNew.getClass(), orderidNew.getOrderid());
+                orderlist.setOrderid(orderidNew);
             }
             if (productidNew != null) {
                 productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
-                wishlish.setProductid(productidNew);
+                orderlist.setProductid(productidNew);
             }
-            wishlish = em.merge(wishlish);
-            if (accountidOld != null && !accountidOld.equals(accountidNew)) {
-                accountidOld.getWishlishList().remove(wishlish);
-                accountidOld = em.merge(accountidOld);
+            orderlist = em.merge(orderlist);
+            if (orderidOld != null && !orderidOld.equals(orderidNew)) {
+                orderidOld.getOrderlistList().remove(orderlist);
+                orderidOld = em.merge(orderidOld);
             }
-            if (accountidNew != null && !accountidNew.equals(accountidOld)) {
-                accountidNew.getWishlishList().add(wishlish);
-                accountidNew = em.merge(accountidNew);
+            if (orderidNew != null && !orderidNew.equals(orderidOld)) {
+                orderidNew.getOrderlistList().add(orderlist);
+                orderidNew = em.merge(orderidNew);
             }
             if (productidOld != null && !productidOld.equals(productidNew)) {
-                productidOld.getWishlishList().remove(wishlish);
+                productidOld.getOrderlistList().remove(orderlist);
                 productidOld = em.merge(productidOld);
             }
             if (productidNew != null && !productidNew.equals(productidOld)) {
-                productidNew.getWishlishList().add(wishlish);
+                productidNew.getOrderlistList().add(orderlist);
                 productidNew = em.merge(productidNew);
             }
             utx.commit();
@@ -120,9 +120,9 @@ public class WishlishJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = wishlish.getWishlishid();
-                if (findWishlish(id) == null) {
-                    throw new NonexistentEntityException("The wishlish with id " + id + " no longer exists.");
+                Integer id = orderlist.getOrderlistid();
+                if (findOrderlist(id) == null) {
+                    throw new NonexistentEntityException("The orderlist with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -138,24 +138,24 @@ public class WishlishJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Wishlish wishlish;
+            Orderlist orderlist;
             try {
-                wishlish = em.getReference(Wishlish.class, id);
-                wishlish.getWishlishid();
+                orderlist = em.getReference(Orderlist.class, id);
+                orderlist.getOrderlistid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The wishlish with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The orderlist with id " + id + " no longer exists.", enfe);
             }
-            Account accountid = wishlish.getAccountid();
-            if (accountid != null) {
-                accountid.getWishlishList().remove(wishlish);
-                accountid = em.merge(accountid);
+            Orders orderid = orderlist.getOrderid();
+            if (orderid != null) {
+                orderid.getOrderlistList().remove(orderlist);
+                orderid = em.merge(orderid);
             }
-            Products productid = wishlish.getProductid();
+            Products productid = orderlist.getProductid();
             if (productid != null) {
-                productid.getWishlishList().remove(wishlish);
+                productid.getOrderlistList().remove(orderlist);
                 productid = em.merge(productid);
             }
-            em.remove(wishlish);
+            em.remove(orderlist);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -171,19 +171,19 @@ public class WishlishJpaController implements Serializable {
         }
     }
 
-    public List<Wishlish> findWishlishEntities() {
-        return findWishlishEntities(true, -1, -1);
+    public List<Orderlist> findOrderlistEntities() {
+        return findOrderlistEntities(true, -1, -1);
     }
 
-    public List<Wishlish> findWishlishEntities(int maxResults, int firstResult) {
-        return findWishlishEntities(false, maxResults, firstResult);
+    public List<Orderlist> findOrderlistEntities(int maxResults, int firstResult) {
+        return findOrderlistEntities(false, maxResults, firstResult);
     }
 
-    private List<Wishlish> findWishlishEntities(boolean all, int maxResults, int firstResult) {
+    private List<Orderlist> findOrderlistEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Wishlish.class));
+            cq.select(cq.from(Orderlist.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -195,20 +195,20 @@ public class WishlishJpaController implements Serializable {
         }
     }
 
-    public Wishlish findWishlish(Integer id) {
+    public Orderlist findOrderlist(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Wishlish.class, id);
+            return em.find(Orderlist.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getWishlishCount() {
+    public int getOrderlistCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Wishlish> rt = cq.from(Wishlish.class);
+            Root<Orderlist> rt = cq.from(Orderlist.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

@@ -5,11 +5,11 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.Address;
-import comfortpay.jpa.model.controller.AccountJpaController;
-import comfortpay.jpa.model.controller.AddressJpaController;
-import comfortpay.jpa.model.controller.exceptions.RollbackFailureException;
+import comfortpay.model.Account;
+import comfortpay.model.Address;
+import comfortpay.model.controller.AccountJpaController;
+import comfortpay.model.controller.AddressJpaController;
+import comfortpay.model.controller.exceptions.RollbackFailureException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -55,7 +55,7 @@ public class RegisterAccountServlet extends HttpServlet {
         String passwordAgain = request.getParameter("passwordAgain");
         String fname = request.getParameter("fname").toUpperCase();
         String lname = request.getParameter("lname").toUpperCase();
-        String dob = request.getParameter("dob");
+//        String dob = request.getParameter("dob");
 //        Date date = new SimpleDateFormat("yyyy/mm/dd").parse(dob);
         String email = request.getParameter("email").toUpperCase();
         String address = request.getParameter("address").toUpperCase();
@@ -81,7 +81,7 @@ public class RegisterAccountServlet extends HttpServlet {
                 }
                 account = accountCtrl.findByUsername(username);
                 session.setAttribute("account", account);
-                getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/MyAccount").forward(request, response);
             } else {
                 getServletContext().getRequestDispatcher("/Register").forward(request, response);
             }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package comfortpay.jpa.model;
+package comfortpay.model;
 
 import java.io.Serializable;
 import java.util.List;
@@ -66,7 +66,7 @@ public class Products implements Serializable {
     @OneToMany(mappedBy = "productid")
     private List<Wishlish> wishlishList;
     @OneToMany(mappedBy = "productid")
-    private List<Orders> ordersList;
+    private List<Orderlist> orderlistList;
     @OneToMany(mappedBy = "productid")
     private List<Size1> size1List;
 
@@ -143,12 +143,12 @@ public class Products implements Serializable {
     }
 
     @XmlTransient
-    public List<Orders> getOrdersList() {
-        return ordersList;
+    public List<Orderlist> getOrderlistList() {
+        return orderlistList;
     }
 
-    public void setOrdersList(List<Orders> ordersList) {
-        this.ordersList = ordersList;
+    public void setOrderlistList(List<Orderlist> orderlistList) {
+        this.orderlistList = orderlistList;
     }
 
     @XmlTransient
@@ -182,7 +182,7 @@ public class Products implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.jpa.model.Products[ productid=" + productid + " ]";
+        return "comfortpay.model.Products[ productid=" + productid + " ]";
     }
     
 }

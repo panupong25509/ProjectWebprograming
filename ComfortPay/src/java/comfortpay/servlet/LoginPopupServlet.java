@@ -5,8 +5,8 @@
  */
 package comfortpay.servlet;
 
-import comfortpay.jpa.model.Account;
-import comfortpay.jpa.model.controller.AccountJpaController;
+import comfortpay.model.Account;
+import comfortpay.model.controller.AccountJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
