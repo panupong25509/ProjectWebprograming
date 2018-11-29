@@ -43,6 +43,7 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String productIdReq = request.getParameter("productid");
+        StringBuffer path = request.getRequestURL();
         int productId = 0;
         if (productIdReq == null) {
             Products product = (Products) session.getAttribute("product");
@@ -55,6 +56,7 @@ public class ProductServlet extends HttpServlet {
         
         Products product = productsCtrl.findProducts(productId);
         request.setAttribute("product", product);
+        request.setAttribute("path", path);
         getServletContext().getRequestDispatcher("/Product.jsp?productid="+productId).forward(request, response);
     }
 

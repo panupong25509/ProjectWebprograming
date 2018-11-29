@@ -10,12 +10,12 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.model.Wishlish;
+import comfortpay.model.Wishlishs;
 import java.util.ArrayList;
 import java.util.List;
-import comfortpay.model.Orderlist;
+import comfortpay.model.Orderlists;
 import comfortpay.model.Products;
-import comfortpay.model.Size1;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.model.controller.exceptions.RollbackFailureException;
 import javax.persistence.EntityManager;
@@ -40,63 +40,63 @@ public class ProductsJpaController implements Serializable {
     }
 
     public void create(Products products) throws RollbackFailureException, Exception {
-        if (products.getWishlishList() == null) {
-            products.setWishlishList(new ArrayList<Wishlish>());
+        if (products.getWishlishsList() == null) {
+            products.setWishlishsList(new ArrayList<Wishlishs>());
         }
-        if (products.getOrderlistList() == null) {
-            products.setOrderlistList(new ArrayList<Orderlist>());
+        if (products.getOrderlistsList() == null) {
+            products.setOrderlistsList(new ArrayList<Orderlists>());
         }
-        if (products.getSize1List() == null) {
-            products.setSize1List(new ArrayList<Size1>());
+        if (products.getSizesList() == null) {
+            products.setSizesList(new ArrayList<Sizes>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            List<Wishlish> attachedWishlishList = new ArrayList<Wishlish>();
-            for (Wishlish wishlishListWishlishToAttach : products.getWishlishList()) {
-                wishlishListWishlishToAttach = em.getReference(wishlishListWishlishToAttach.getClass(), wishlishListWishlishToAttach.getWishlishid());
-                attachedWishlishList.add(wishlishListWishlishToAttach);
+            List<Wishlishs> attachedWishlishsList = new ArrayList<Wishlishs>();
+            for (Wishlishs wishlishsListWishlishsToAttach : products.getWishlishsList()) {
+                wishlishsListWishlishsToAttach = em.getReference(wishlishsListWishlishsToAttach.getClass(), wishlishsListWishlishsToAttach.getWishlishid());
+                attachedWishlishsList.add(wishlishsListWishlishsToAttach);
             }
-            products.setWishlishList(attachedWishlishList);
-            List<Orderlist> attachedOrderlistList = new ArrayList<Orderlist>();
-            for (Orderlist orderlistListOrderlistToAttach : products.getOrderlistList()) {
-                orderlistListOrderlistToAttach = em.getReference(orderlistListOrderlistToAttach.getClass(), orderlistListOrderlistToAttach.getOrderlistid());
-                attachedOrderlistList.add(orderlistListOrderlistToAttach);
+            products.setWishlishsList(attachedWishlishsList);
+            List<Orderlists> attachedOrderlistsList = new ArrayList<Orderlists>();
+            for (Orderlists orderlistsListOrderlistsToAttach : products.getOrderlistsList()) {
+                orderlistsListOrderlistsToAttach = em.getReference(orderlistsListOrderlistsToAttach.getClass(), orderlistsListOrderlistsToAttach.getOrderlistid());
+                attachedOrderlistsList.add(orderlistsListOrderlistsToAttach);
             }
-            products.setOrderlistList(attachedOrderlistList);
-            List<Size1> attachedSize1List = new ArrayList<Size1>();
-            for (Size1 size1ListSize1ToAttach : products.getSize1List()) {
-                size1ListSize1ToAttach = em.getReference(size1ListSize1ToAttach.getClass(), size1ListSize1ToAttach.getSizeid());
-                attachedSize1List.add(size1ListSize1ToAttach);
+            products.setOrderlistsList(attachedOrderlistsList);
+            List<Sizes> attachedSizesList = new ArrayList<Sizes>();
+            for (Sizes sizesListSizesToAttach : products.getSizesList()) {
+                sizesListSizesToAttach = em.getReference(sizesListSizesToAttach.getClass(), sizesListSizesToAttach.getSizeid());
+                attachedSizesList.add(sizesListSizesToAttach);
             }
-            products.setSize1List(attachedSize1List);
+            products.setSizesList(attachedSizesList);
             em.persist(products);
-            for (Wishlish wishlishListWishlish : products.getWishlishList()) {
-                Products oldProductidOfWishlishListWishlish = wishlishListWishlish.getProductid();
-                wishlishListWishlish.setProductid(products);
-                wishlishListWishlish = em.merge(wishlishListWishlish);
-                if (oldProductidOfWishlishListWishlish != null) {
-                    oldProductidOfWishlishListWishlish.getWishlishList().remove(wishlishListWishlish);
-                    oldProductidOfWishlishListWishlish = em.merge(oldProductidOfWishlishListWishlish);
+            for (Wishlishs wishlishsListWishlishs : products.getWishlishsList()) {
+                Products oldProductidOfWishlishsListWishlishs = wishlishsListWishlishs.getProductid();
+                wishlishsListWishlishs.setProductid(products);
+                wishlishsListWishlishs = em.merge(wishlishsListWishlishs);
+                if (oldProductidOfWishlishsListWishlishs != null) {
+                    oldProductidOfWishlishsListWishlishs.getWishlishsList().remove(wishlishsListWishlishs);
+                    oldProductidOfWishlishsListWishlishs = em.merge(oldProductidOfWishlishsListWishlishs);
                 }
             }
-            for (Orderlist orderlistListOrderlist : products.getOrderlistList()) {
-                Products oldProductidOfOrderlistListOrderlist = orderlistListOrderlist.getProductid();
-                orderlistListOrderlist.setProductid(products);
-                orderlistListOrderlist = em.merge(orderlistListOrderlist);
-                if (oldProductidOfOrderlistListOrderlist != null) {
-                    oldProductidOfOrderlistListOrderlist.getOrderlistList().remove(orderlistListOrderlist);
-                    oldProductidOfOrderlistListOrderlist = em.merge(oldProductidOfOrderlistListOrderlist);
+            for (Orderlists orderlistsListOrderlists : products.getOrderlistsList()) {
+                Products oldProductidOfOrderlistsListOrderlists = orderlistsListOrderlists.getProductid();
+                orderlistsListOrderlists.setProductid(products);
+                orderlistsListOrderlists = em.merge(orderlistsListOrderlists);
+                if (oldProductidOfOrderlistsListOrderlists != null) {
+                    oldProductidOfOrderlistsListOrderlists.getOrderlistsList().remove(orderlistsListOrderlists);
+                    oldProductidOfOrderlistsListOrderlists = em.merge(oldProductidOfOrderlistsListOrderlists);
                 }
             }
-            for (Size1 size1ListSize1 : products.getSize1List()) {
-                Products oldProductidOfSize1ListSize1 = size1ListSize1.getProductid();
-                size1ListSize1.setProductid(products);
-                size1ListSize1 = em.merge(size1ListSize1);
-                if (oldProductidOfSize1ListSize1 != null) {
-                    oldProductidOfSize1ListSize1.getSize1List().remove(size1ListSize1);
-                    oldProductidOfSize1ListSize1 = em.merge(oldProductidOfSize1ListSize1);
+            for (Sizes sizesListSizes : products.getSizesList()) {
+                Products oldProductidOfSizesListSizes = sizesListSizes.getProductid();
+                sizesListSizes.setProductid(products);
+                sizesListSizes = em.merge(sizesListSizes);
+                if (oldProductidOfSizesListSizes != null) {
+                    oldProductidOfSizesListSizes.getSizesList().remove(sizesListSizes);
+                    oldProductidOfSizesListSizes = em.merge(oldProductidOfSizesListSizes);
                 }
             }
             utx.commit();
@@ -120,82 +120,82 @@ public class ProductsJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Products persistentProducts = em.find(Products.class, products.getProductid());
-            List<Wishlish> wishlishListOld = persistentProducts.getWishlishList();
-            List<Wishlish> wishlishListNew = products.getWishlishList();
-            List<Orderlist> orderlistListOld = persistentProducts.getOrderlistList();
-            List<Orderlist> orderlistListNew = products.getOrderlistList();
-            List<Size1> size1ListOld = persistentProducts.getSize1List();
-            List<Size1> size1ListNew = products.getSize1List();
-            List<Wishlish> attachedWishlishListNew = new ArrayList<Wishlish>();
-            for (Wishlish wishlishListNewWishlishToAttach : wishlishListNew) {
-                wishlishListNewWishlishToAttach = em.getReference(wishlishListNewWishlishToAttach.getClass(), wishlishListNewWishlishToAttach.getWishlishid());
-                attachedWishlishListNew.add(wishlishListNewWishlishToAttach);
+            List<Wishlishs> wishlishsListOld = persistentProducts.getWishlishsList();
+            List<Wishlishs> wishlishsListNew = products.getWishlishsList();
+            List<Orderlists> orderlistsListOld = persistentProducts.getOrderlistsList();
+            List<Orderlists> orderlistsListNew = products.getOrderlistsList();
+            List<Sizes> sizesListOld = persistentProducts.getSizesList();
+            List<Sizes> sizesListNew = products.getSizesList();
+            List<Wishlishs> attachedWishlishsListNew = new ArrayList<Wishlishs>();
+            for (Wishlishs wishlishsListNewWishlishsToAttach : wishlishsListNew) {
+                wishlishsListNewWishlishsToAttach = em.getReference(wishlishsListNewWishlishsToAttach.getClass(), wishlishsListNewWishlishsToAttach.getWishlishid());
+                attachedWishlishsListNew.add(wishlishsListNewWishlishsToAttach);
             }
-            wishlishListNew = attachedWishlishListNew;
-            products.setWishlishList(wishlishListNew);
-            List<Orderlist> attachedOrderlistListNew = new ArrayList<Orderlist>();
-            for (Orderlist orderlistListNewOrderlistToAttach : orderlistListNew) {
-                orderlistListNewOrderlistToAttach = em.getReference(orderlistListNewOrderlistToAttach.getClass(), orderlistListNewOrderlistToAttach.getOrderlistid());
-                attachedOrderlistListNew.add(orderlistListNewOrderlistToAttach);
+            wishlishsListNew = attachedWishlishsListNew;
+            products.setWishlishsList(wishlishsListNew);
+            List<Orderlists> attachedOrderlistsListNew = new ArrayList<Orderlists>();
+            for (Orderlists orderlistsListNewOrderlistsToAttach : orderlistsListNew) {
+                orderlistsListNewOrderlistsToAttach = em.getReference(orderlistsListNewOrderlistsToAttach.getClass(), orderlistsListNewOrderlistsToAttach.getOrderlistid());
+                attachedOrderlistsListNew.add(orderlistsListNewOrderlistsToAttach);
             }
-            orderlistListNew = attachedOrderlistListNew;
-            products.setOrderlistList(orderlistListNew);
-            List<Size1> attachedSize1ListNew = new ArrayList<Size1>();
-            for (Size1 size1ListNewSize1ToAttach : size1ListNew) {
-                size1ListNewSize1ToAttach = em.getReference(size1ListNewSize1ToAttach.getClass(), size1ListNewSize1ToAttach.getSizeid());
-                attachedSize1ListNew.add(size1ListNewSize1ToAttach);
+            orderlistsListNew = attachedOrderlistsListNew;
+            products.setOrderlistsList(orderlistsListNew);
+            List<Sizes> attachedSizesListNew = new ArrayList<Sizes>();
+            for (Sizes sizesListNewSizesToAttach : sizesListNew) {
+                sizesListNewSizesToAttach = em.getReference(sizesListNewSizesToAttach.getClass(), sizesListNewSizesToAttach.getSizeid());
+                attachedSizesListNew.add(sizesListNewSizesToAttach);
             }
-            size1ListNew = attachedSize1ListNew;
-            products.setSize1List(size1ListNew);
+            sizesListNew = attachedSizesListNew;
+            products.setSizesList(sizesListNew);
             products = em.merge(products);
-            for (Wishlish wishlishListOldWishlish : wishlishListOld) {
-                if (!wishlishListNew.contains(wishlishListOldWishlish)) {
-                    wishlishListOldWishlish.setProductid(null);
-                    wishlishListOldWishlish = em.merge(wishlishListOldWishlish);
+            for (Wishlishs wishlishsListOldWishlishs : wishlishsListOld) {
+                if (!wishlishsListNew.contains(wishlishsListOldWishlishs)) {
+                    wishlishsListOldWishlishs.setProductid(null);
+                    wishlishsListOldWishlishs = em.merge(wishlishsListOldWishlishs);
                 }
             }
-            for (Wishlish wishlishListNewWishlish : wishlishListNew) {
-                if (!wishlishListOld.contains(wishlishListNewWishlish)) {
-                    Products oldProductidOfWishlishListNewWishlish = wishlishListNewWishlish.getProductid();
-                    wishlishListNewWishlish.setProductid(products);
-                    wishlishListNewWishlish = em.merge(wishlishListNewWishlish);
-                    if (oldProductidOfWishlishListNewWishlish != null && !oldProductidOfWishlishListNewWishlish.equals(products)) {
-                        oldProductidOfWishlishListNewWishlish.getWishlishList().remove(wishlishListNewWishlish);
-                        oldProductidOfWishlishListNewWishlish = em.merge(oldProductidOfWishlishListNewWishlish);
+            for (Wishlishs wishlishsListNewWishlishs : wishlishsListNew) {
+                if (!wishlishsListOld.contains(wishlishsListNewWishlishs)) {
+                    Products oldProductidOfWishlishsListNewWishlishs = wishlishsListNewWishlishs.getProductid();
+                    wishlishsListNewWishlishs.setProductid(products);
+                    wishlishsListNewWishlishs = em.merge(wishlishsListNewWishlishs);
+                    if (oldProductidOfWishlishsListNewWishlishs != null && !oldProductidOfWishlishsListNewWishlishs.equals(products)) {
+                        oldProductidOfWishlishsListNewWishlishs.getWishlishsList().remove(wishlishsListNewWishlishs);
+                        oldProductidOfWishlishsListNewWishlishs = em.merge(oldProductidOfWishlishsListNewWishlishs);
                     }
                 }
             }
-            for (Orderlist orderlistListOldOrderlist : orderlistListOld) {
-                if (!orderlistListNew.contains(orderlistListOldOrderlist)) {
-                    orderlistListOldOrderlist.setProductid(null);
-                    orderlistListOldOrderlist = em.merge(orderlistListOldOrderlist);
+            for (Orderlists orderlistsListOldOrderlists : orderlistsListOld) {
+                if (!orderlistsListNew.contains(orderlistsListOldOrderlists)) {
+                    orderlistsListOldOrderlists.setProductid(null);
+                    orderlistsListOldOrderlists = em.merge(orderlistsListOldOrderlists);
                 }
             }
-            for (Orderlist orderlistListNewOrderlist : orderlistListNew) {
-                if (!orderlistListOld.contains(orderlistListNewOrderlist)) {
-                    Products oldProductidOfOrderlistListNewOrderlist = orderlistListNewOrderlist.getProductid();
-                    orderlistListNewOrderlist.setProductid(products);
-                    orderlistListNewOrderlist = em.merge(orderlistListNewOrderlist);
-                    if (oldProductidOfOrderlistListNewOrderlist != null && !oldProductidOfOrderlistListNewOrderlist.equals(products)) {
-                        oldProductidOfOrderlistListNewOrderlist.getOrderlistList().remove(orderlistListNewOrderlist);
-                        oldProductidOfOrderlistListNewOrderlist = em.merge(oldProductidOfOrderlistListNewOrderlist);
+            for (Orderlists orderlistsListNewOrderlists : orderlistsListNew) {
+                if (!orderlistsListOld.contains(orderlistsListNewOrderlists)) {
+                    Products oldProductidOfOrderlistsListNewOrderlists = orderlistsListNewOrderlists.getProductid();
+                    orderlistsListNewOrderlists.setProductid(products);
+                    orderlistsListNewOrderlists = em.merge(orderlistsListNewOrderlists);
+                    if (oldProductidOfOrderlistsListNewOrderlists != null && !oldProductidOfOrderlistsListNewOrderlists.equals(products)) {
+                        oldProductidOfOrderlistsListNewOrderlists.getOrderlistsList().remove(orderlistsListNewOrderlists);
+                        oldProductidOfOrderlistsListNewOrderlists = em.merge(oldProductidOfOrderlistsListNewOrderlists);
                     }
                 }
             }
-            for (Size1 size1ListOldSize1 : size1ListOld) {
-                if (!size1ListNew.contains(size1ListOldSize1)) {
-                    size1ListOldSize1.setProductid(null);
-                    size1ListOldSize1 = em.merge(size1ListOldSize1);
+            for (Sizes sizesListOldSizes : sizesListOld) {
+                if (!sizesListNew.contains(sizesListOldSizes)) {
+                    sizesListOldSizes.setProductid(null);
+                    sizesListOldSizes = em.merge(sizesListOldSizes);
                 }
             }
-            for (Size1 size1ListNewSize1 : size1ListNew) {
-                if (!size1ListOld.contains(size1ListNewSize1)) {
-                    Products oldProductidOfSize1ListNewSize1 = size1ListNewSize1.getProductid();
-                    size1ListNewSize1.setProductid(products);
-                    size1ListNewSize1 = em.merge(size1ListNewSize1);
-                    if (oldProductidOfSize1ListNewSize1 != null && !oldProductidOfSize1ListNewSize1.equals(products)) {
-                        oldProductidOfSize1ListNewSize1.getSize1List().remove(size1ListNewSize1);
-                        oldProductidOfSize1ListNewSize1 = em.merge(oldProductidOfSize1ListNewSize1);
+            for (Sizes sizesListNewSizes : sizesListNew) {
+                if (!sizesListOld.contains(sizesListNewSizes)) {
+                    Products oldProductidOfSizesListNewSizes = sizesListNewSizes.getProductid();
+                    sizesListNewSizes.setProductid(products);
+                    sizesListNewSizes = em.merge(sizesListNewSizes);
+                    if (oldProductidOfSizesListNewSizes != null && !oldProductidOfSizesListNewSizes.equals(products)) {
+                        oldProductidOfSizesListNewSizes.getSizesList().remove(sizesListNewSizes);
+                        oldProductidOfSizesListNewSizes = em.merge(oldProductidOfSizesListNewSizes);
                     }
                 }
             }
@@ -233,20 +233,20 @@ public class ProductsJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The products with id " + id + " no longer exists.", enfe);
             }
-            List<Wishlish> wishlishList = products.getWishlishList();
-            for (Wishlish wishlishListWishlish : wishlishList) {
-                wishlishListWishlish.setProductid(null);
-                wishlishListWishlish = em.merge(wishlishListWishlish);
+            List<Wishlishs> wishlishsList = products.getWishlishsList();
+            for (Wishlishs wishlishsListWishlishs : wishlishsList) {
+                wishlishsListWishlishs.setProductid(null);
+                wishlishsListWishlishs = em.merge(wishlishsListWishlishs);
             }
-            List<Orderlist> orderlistList = products.getOrderlistList();
-            for (Orderlist orderlistListOrderlist : orderlistList) {
-                orderlistListOrderlist.setProductid(null);
-                orderlistListOrderlist = em.merge(orderlistListOrderlist);
+            List<Orderlists> orderlistsList = products.getOrderlistsList();
+            for (Orderlists orderlistsListOrderlists : orderlistsList) {
+                orderlistsListOrderlists.setProductid(null);
+                orderlistsListOrderlists = em.merge(orderlistsListOrderlists);
             }
-            List<Size1> size1List = products.getSize1List();
-            for (Size1 size1ListSize1 : size1List) {
-                size1ListSize1.setProductid(null);
-                size1ListSize1 = em.merge(size1ListSize1);
+            List<Sizes> sizesList = products.getSizesList();
+            for (Sizes sizesListSizes : sizesList) {
+                sizesListSizes.setProductid(null);
+                sizesListSizes = em.merge(sizesListSizes);
             }
             em.remove(products);
             utx.commit();
@@ -305,17 +305,6 @@ public class ProductsJpaController implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
-        } finally {
-            em.close();
-        }
-    }
-
-    public List<Products> findByBrand(String brand) {
-        EntityManager em = getEntityManager();
-        try {
-            Query query = em.createNamedQuery("Products.findByProductband");
-            query.setParameter("productband", brand.toUpperCase());
-            return query.getResultList();
         } finally {
             em.close();
         }

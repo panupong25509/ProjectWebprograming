@@ -50,7 +50,7 @@ public class Orders implements Serializable {
     @Column(name = "TOTALPRICE")
     private Double totalprice;
     @OneToMany(mappedBy = "orderid")
-    private List<Orderlist> orderlistList;
+    private List<Orderlists> orderlistsList;
     @JoinColumn(name = "ACCOUNTID", referencedColumnName = "ACCOUNTID")
     @ManyToOne
     private Account accountid;
@@ -87,12 +87,12 @@ public class Orders implements Serializable {
     }
 
     @XmlTransient
-    public List<Orderlist> getOrderlistList() {
-        return orderlistList;
+    public List<Orderlists> getOrderlistsList() {
+        return orderlistsList;
     }
 
-    public void setOrderlistList(List<Orderlist> orderlistList) {
-        this.orderlistList = orderlistList;
+    public void setOrderlistsList(List<Orderlists> orderlistsList) {
+        this.orderlistsList = orderlistsList;
     }
 
     public Account getAccountid() {

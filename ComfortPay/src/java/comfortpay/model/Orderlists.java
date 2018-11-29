@@ -24,14 +24,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Joknoi
  */
 @Entity
-@Table(name = "ORDERLIST")
+@Table(name = "ORDERLISTS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Orderlist.findAll", query = "SELECT o FROM Orderlist o")
-    , @NamedQuery(name = "Orderlist.findByOrderlistid", query = "SELECT o FROM Orderlist o WHERE o.orderlistid = :orderlistid")
-    , @NamedQuery(name = "Orderlist.findByQuantity", query = "SELECT o FROM Orderlist o WHERE o.quantity = :quantity")
-    , @NamedQuery(name = "Orderlist.findByTotalprice", query = "SELECT o FROM Orderlist o WHERE o.totalprice = :totalprice")})
-public class Orderlist implements Serializable {
+    @NamedQuery(name = "Orderlists.findAll", query = "SELECT o FROM Orderlists o")
+    , @NamedQuery(name = "Orderlists.findByOrderlistid", query = "SELECT o FROM Orderlists o WHERE o.orderlistid = :orderlistid")
+    , @NamedQuery(name = "Orderlists.findByQuantity", query = "SELECT o FROM Orderlists o WHERE o.quantity = :quantity")
+    , @NamedQuery(name = "Orderlists.findByTotalprice", query = "SELECT o FROM Orderlists o WHERE o.totalprice = :totalprice")})
+public class Orderlists implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,11 +50,14 @@ public class Orderlist implements Serializable {
     @JoinColumn(name = "PRODUCTID", referencedColumnName = "PRODUCTID")
     @ManyToOne
     private Products productid;
+    @JoinColumn(name = "SIZEID", referencedColumnName = "SIZEID")
+    @ManyToOne
+    private Sizes sizeid;
 
-    public Orderlist() {
+    public Orderlists() {
     }
 
-    public Orderlist(Integer orderlistid) {
+    public Orderlists(Integer orderlistid) {
         this.orderlistid = orderlistid;
     }
 
@@ -98,6 +101,14 @@ public class Orderlist implements Serializable {
         this.productid = productid;
     }
 
+    public Sizes getSizeid() {
+        return sizeid;
+    }
+
+    public void setSizeid(Sizes sizeid) {
+        this.sizeid = sizeid;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -108,10 +119,10 @@ public class Orderlist implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Orderlist)) {
+        if (!(object instanceof Orderlists)) {
             return false;
         }
-        Orderlist other = (Orderlist) object;
+        Orderlists other = (Orderlists) object;
         if ((this.orderlistid == null && other.orderlistid != null) || (this.orderlistid != null && !this.orderlistid.equals(other.orderlistid))) {
             return false;
         }
@@ -120,7 +131,7 @@ public class Orderlist implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.model.Orderlist[ orderlistid=" + orderlistid + " ]";
+        return "comfortpay.model.Orderlists[ orderlistid=" + orderlistid + " ]";
     }
     
 }

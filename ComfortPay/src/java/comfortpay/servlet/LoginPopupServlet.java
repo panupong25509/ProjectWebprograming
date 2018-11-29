@@ -45,7 +45,7 @@ public class LoginPopupServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         String path = request.getParameter("path");
         int pathLength = path.length();
-        String pathServlet = path.substring(0, pathLength-4);
+        String pathServlet = path.substring(0, pathLength - 4);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (session.getAttribute("account") == null) {
@@ -58,6 +58,10 @@ public class LoginPopupServlet extends HttpServlet {
                         if (path == null || path == "") {
                             getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
                         } else {
+//                            if (request.getParameter("productid") != null) {
+//                                pathServlet = "http://localhost:8080/ComfortPay/Product";
+//                                response.sendRedirect(pathServlet);
+//                            }
                             response.sendRedirect(pathServlet);
                         }
                     } else {
@@ -76,6 +80,9 @@ public class LoginPopupServlet extends HttpServlet {
             if (path == null || path == "") {
                 getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
             } else {
+//                if (request.getParameter("productid") != null) {
+//                    response.sendRedirect(pathServlet + "?productid=" + request.getParameter("productid"));
+//                }
                 response.sendRedirect(pathServlet);
             }
         }

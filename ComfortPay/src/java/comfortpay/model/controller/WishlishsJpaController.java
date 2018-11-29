@@ -10,8 +10,9 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import comfortpay.model.Account;
 import comfortpay.model.Products;
-import comfortpay.model.Size1;
+import comfortpay.model.Wishlishs;
 import comfortpay.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.model.controller.exceptions.RollbackFailureException;
 import java.util.List;
@@ -23,9 +24,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class Size1JpaController implements Serializable {
+public class WishlishsJpaController implements Serializable {
 
-    public Size1JpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public WishlishsJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -36,19 +37,28 @@ public class Size1JpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Size1 size1) throws RollbackFailureException, Exception {
+    public void create(Wishlishs wishlishs) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Products productid = size1.getProductid();
+            Account accountid = wishlishs.getAccountid();
+            if (accountid != null) {
+                accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
+                wishlishs.setAccountid(accountid);
+            }
+            Products productid = wishlishs.getProductid();
             if (productid != null) {
                 productid = em.getReference(productid.getClass(), productid.getProductid());
-                size1.setProductid(productid);
+                wishlishs.setProductid(productid);
             }
-            em.persist(size1);
+            em.persist(wishlishs);
+            if (accountid != null) {
+                accountid.getWishlishsList().add(wishlishs);
+                accountid = em.merge(accountid);
+            }
             if (productid != null) {
-                productid.getSize1List().add(size1);
+                productid.getWishlishsList().add(wishlishs);
                 productid = em.merge(productid);
             }
             utx.commit();
@@ -66,25 +76,39 @@ public class Size1JpaController implements Serializable {
         }
     }
 
-    public void edit(Size1 size1) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Wishlishs wishlishs) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Size1 persistentSize1 = em.find(Size1.class, size1.getSizeid());
-            Products productidOld = persistentSize1.getProductid();
-            Products productidNew = size1.getProductid();
+            Wishlishs persistentWishlishs = em.find(Wishlishs.class, wishlishs.getWishlishid());
+            Account accountidOld = persistentWishlishs.getAccountid();
+            Account accountidNew = wishlishs.getAccountid();
+            Products productidOld = persistentWishlishs.getProductid();
+            Products productidNew = wishlishs.getProductid();
+            if (accountidNew != null) {
+                accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
+                wishlishs.setAccountid(accountidNew);
+            }
             if (productidNew != null) {
                 productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
-                size1.setProductid(productidNew);
+                wishlishs.setProductid(productidNew);
             }
-            size1 = em.merge(size1);
+            wishlishs = em.merge(wishlishs);
+            if (accountidOld != null && !accountidOld.equals(accountidNew)) {
+                accountidOld.getWishlishsList().remove(wishlishs);
+                accountidOld = em.merge(accountidOld);
+            }
+            if (accountidNew != null && !accountidNew.equals(accountidOld)) {
+                accountidNew.getWishlishsList().add(wishlishs);
+                accountidNew = em.merge(accountidNew);
+            }
             if (productidOld != null && !productidOld.equals(productidNew)) {
-                productidOld.getSize1List().remove(size1);
+                productidOld.getWishlishsList().remove(wishlishs);
                 productidOld = em.merge(productidOld);
             }
             if (productidNew != null && !productidNew.equals(productidOld)) {
-                productidNew.getSize1List().add(size1);
+                productidNew.getWishlishsList().add(wishlishs);
                 productidNew = em.merge(productidNew);
             }
             utx.commit();
@@ -96,9 +120,9 @@ public class Size1JpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = size1.getSizeid();
-                if (findSize1(id) == null) {
-                    throw new NonexistentEntityException("The size1 with id " + id + " no longer exists.");
+                Integer id = wishlishs.getWishlishid();
+                if (findWishlishs(id) == null) {
+                    throw new NonexistentEntityException("The wishlishs with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -114,19 +138,24 @@ public class Size1JpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Size1 size1;
+            Wishlishs wishlishs;
             try {
-                size1 = em.getReference(Size1.class, id);
-                size1.getSizeid();
+                wishlishs = em.getReference(Wishlishs.class, id);
+                wishlishs.getWishlishid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The size1 with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The wishlishs with id " + id + " no longer exists.", enfe);
             }
-            Products productid = size1.getProductid();
+            Account accountid = wishlishs.getAccountid();
+            if (accountid != null) {
+                accountid.getWishlishsList().remove(wishlishs);
+                accountid = em.merge(accountid);
+            }
+            Products productid = wishlishs.getProductid();
             if (productid != null) {
-                productid.getSize1List().remove(size1);
+                productid.getWishlishsList().remove(wishlishs);
                 productid = em.merge(productid);
             }
-            em.remove(size1);
+            em.remove(wishlishs);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -142,19 +171,19 @@ public class Size1JpaController implements Serializable {
         }
     }
 
-    public List<Size1> findSize1Entities() {
-        return findSize1Entities(true, -1, -1);
+    public List<Wishlishs> findWishlishsEntities() {
+        return findWishlishsEntities(true, -1, -1);
     }
 
-    public List<Size1> findSize1Entities(int maxResults, int firstResult) {
-        return findSize1Entities(false, maxResults, firstResult);
+    public List<Wishlishs> findWishlishsEntities(int maxResults, int firstResult) {
+        return findWishlishsEntities(false, maxResults, firstResult);
     }
 
-    private List<Size1> findSize1Entities(boolean all, int maxResults, int firstResult) {
+    private List<Wishlishs> findWishlishsEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Size1.class));
+            cq.select(cq.from(Wishlishs.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -166,20 +195,20 @@ public class Size1JpaController implements Serializable {
         }
     }
 
-    public Size1 findSize1(Integer id) {
+    public Wishlishs findWishlishs(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Size1.class, id);
+            return em.find(Wishlishs.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getSize1Count() {
+    public int getWishlishsCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Size1> rt = cq.from(Size1.class);
+            Root<Wishlishs> rt = cq.from(Wishlishs.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

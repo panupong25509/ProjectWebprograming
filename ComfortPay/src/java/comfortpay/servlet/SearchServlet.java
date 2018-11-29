@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
         }
         if (Have != null) {
             //หาตามbrand
-            product = productCtrl.findByBrand(Have);
+//            product = productCtrl.findByBrand(Have);
         } else {
             for (String colorHave : color) {
                 if (search.equals(colorHave)) {

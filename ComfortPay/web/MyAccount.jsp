@@ -25,7 +25,13 @@
                         <p>${account.class1}</p>
                         <p>${account.score}</p>   
                     </div>
-
+                    
+                    <%
+                        Account account = (Account) session.getAttribute("account");
+                        if(account.getClass1().equals("ADMIN")){
+                    %>
+                    <a href="AddToStock">ADD TO STOCK</a>
+                    <% } %>
                 </div>
 
             </div>

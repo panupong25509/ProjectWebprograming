@@ -68,17 +68,11 @@ public class Account implements Serializable {
     @Column(name = "SCORE")
     private Integer score;
     @OneToMany(mappedBy = "accountid")
-    private List<Wishlish> wishlishList;
-    @OneToMany(mappedBy = "accountid")
-    private List<Address> addressList;
+    private List<Wishlishs> wishlishsList;
     @OneToMany(mappedBy = "accountid")
     private List<Orders> ordersList;
 
     public Account() {
-    }
-
-    public Account(Integer accountid) {
-        this.accountid = accountid;
     }
 
     public Account(String username, String password, String fname, String lname, String email) {
@@ -91,7 +85,9 @@ public class Account implements Serializable {
         this.score = 0;
     }
 
-
+    public Account(Integer accountid) {
+        this.accountid = accountid;
+    }
 
     public Integer getAccountid() {
         return accountid;
@@ -158,21 +154,12 @@ public class Account implements Serializable {
     }
 
     @XmlTransient
-    public List<Wishlish> getWishlishList() {
-        return wishlishList;
+    public List<Wishlishs> getWishlishsList() {
+        return wishlishsList;
     }
 
-    public void setWishlishList(List<Wishlish> wishlishList) {
-        this.wishlishList = wishlishList;
-    }
-
-    @XmlTransient
-    public List<Address> getAddressList() {
-        return addressList;
-    }
-
-    public void setAddressList(List<Address> addressList) {
-        this.addressList = addressList;
+    public void setWishlishsList(List<Wishlishs> wishlishsList) {
+        this.wishlishsList = wishlishsList;
     }
 
     @XmlTransient

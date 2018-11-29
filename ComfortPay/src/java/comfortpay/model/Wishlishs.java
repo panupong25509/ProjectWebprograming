@@ -24,12 +24,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Joknoi
  */
 @Entity
-@Table(name = "WISHLISH")
+@Table(name = "WISHLISHS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Wishlish.findAll", query = "SELECT w FROM Wishlish w")
-    , @NamedQuery(name = "Wishlish.findByWishlishid", query = "SELECT w FROM Wishlish w WHERE w.wishlishid = :wishlishid")})
-public class Wishlish implements Serializable {
+    @NamedQuery(name = "Wishlishs.findAll", query = "SELECT w FROM Wishlishs w")
+    , @NamedQuery(name = "Wishlishs.findByWishlishid", query = "SELECT w FROM Wishlishs w WHERE w.wishlishid = :wishlishid")})
+public class Wishlishs implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,10 +44,10 @@ public class Wishlish implements Serializable {
     @ManyToOne
     private Products productid;
 
-    public Wishlish() {
+    public Wishlishs() {
     }
 
-    public Wishlish(Integer wishlishid) {
+    public Wishlishs(Integer wishlishid) {
         this.wishlishid = wishlishid;
     }
 
@@ -85,10 +85,10 @@ public class Wishlish implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Wishlish)) {
+        if (!(object instanceof Wishlishs)) {
             return false;
         }
-        Wishlish other = (Wishlish) object;
+        Wishlishs other = (Wishlishs) object;
         if ((this.wishlishid == null && other.wishlishid != null) || (this.wishlishid != null && !this.wishlishid.equals(other.wishlishid))) {
             return false;
         }
@@ -97,7 +97,7 @@ public class Wishlish implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.model.Wishlish[ wishlishid=" + wishlishid + " ]";
+        return "comfortpay.model.Wishlishs[ wishlishid=" + wishlishid + " ]";
     }
     
 }

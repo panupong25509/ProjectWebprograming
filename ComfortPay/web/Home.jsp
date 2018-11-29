@@ -35,18 +35,17 @@
                 <div class="col-12">
                     <div class="row">
                         <c:forEach items="${products}" var = "product" >
-                            <form action="Product" method="post" method="post" class="col-4 p-3 text-center"> 
-                                <div onclick="javascript:this.form.submit();">
+                            <a href="Product?productid=${product.productid}" class="col-4 p-3 text-center">
+                                <div >
                                     <button style="background-color: #ECEEF0; border: none">
                                         <div style="background-color: transparent;cursor: pointer">
                                             <img src="images/PictureWebPro/adidasMencCloth/${product.productcode}.jpg" width="100%">
                                             <p>${product.productname}</p>
                                             <p>${product.price} BAHT</p>
-                                            <input type="hidden" name="productid" value="${product.productid}">
                                         </div>
                                     </button>
                                 </div>
-                            </form>
+                            </a>
                         </c:forEach>
                     </div>
                 </div>               

@@ -5,7 +5,7 @@
  */
 package comfortpay.model.controller;
 
-import comfortpay.model.Orderlist;
+import comfortpay.model.Orderlists;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import comfortpay.model.Orders;
 import comfortpay.model.Products;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.model.controller.exceptions.RollbackFailureException;
 import java.util.List;
@@ -24,9 +25,9 @@ import javax.transaction.UserTransaction;
  *
  * @author Joknoi
  */
-public class OrderlistJpaController implements Serializable {
+public class OrderlistsJpaController implements Serializable {
 
-    public OrderlistJpaController(UserTransaction utx, EntityManagerFactory emf) {
+    public OrderlistsJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;
     }
@@ -37,29 +38,38 @@ public class OrderlistJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Orderlist orderlist) throws RollbackFailureException, Exception {
+    public void create(Orderlists orderlists) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Orders orderid = orderlist.getOrderid();
+            Orders orderid = orderlists.getOrderid();
             if (orderid != null) {
                 orderid = em.getReference(orderid.getClass(), orderid.getOrderid());
-                orderlist.setOrderid(orderid);
+                orderlists.setOrderid(orderid);
             }
-            Products productid = orderlist.getProductid();
+            Products productid = orderlists.getProductid();
             if (productid != null) {
                 productid = em.getReference(productid.getClass(), productid.getProductid());
-                orderlist.setProductid(productid);
+                orderlists.setProductid(productid);
             }
-            em.persist(orderlist);
+            Sizes sizeid = orderlists.getSizeid();
+            if (sizeid != null) {
+                sizeid = em.getReference(sizeid.getClass(), sizeid.getSizeid());
+                orderlists.setSizeid(sizeid);
+            }
+            em.persist(orderlists);
             if (orderid != null) {
-                orderid.getOrderlistList().add(orderlist);
+                orderid.getOrderlistsList().add(orderlists);
                 orderid = em.merge(orderid);
             }
             if (productid != null) {
-                productid.getOrderlistList().add(orderlist);
+                productid.getOrderlistsList().add(orderlists);
                 productid = em.merge(productid);
+            }
+            if (sizeid != null) {
+                sizeid.getOrderlistsList().add(orderlists);
+                sizeid = em.merge(sizeid);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -76,40 +86,54 @@ public class OrderlistJpaController implements Serializable {
         }
     }
 
-    public void edit(Orderlist orderlist) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Orderlists orderlists) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Orderlist persistentOrderlist = em.find(Orderlist.class, orderlist.getOrderlistid());
-            Orders orderidOld = persistentOrderlist.getOrderid();
-            Orders orderidNew = orderlist.getOrderid();
-            Products productidOld = persistentOrderlist.getProductid();
-            Products productidNew = orderlist.getProductid();
+            Orderlists persistentOrderlists = em.find(Orderlists.class, orderlists.getOrderlistid());
+            Orders orderidOld = persistentOrderlists.getOrderid();
+            Orders orderidNew = orderlists.getOrderid();
+            Products productidOld = persistentOrderlists.getProductid();
+            Products productidNew = orderlists.getProductid();
+            Sizes sizeidOld = persistentOrderlists.getSizeid();
+            Sizes sizeidNew = orderlists.getSizeid();
             if (orderidNew != null) {
                 orderidNew = em.getReference(orderidNew.getClass(), orderidNew.getOrderid());
-                orderlist.setOrderid(orderidNew);
+                orderlists.setOrderid(orderidNew);
             }
             if (productidNew != null) {
                 productidNew = em.getReference(productidNew.getClass(), productidNew.getProductid());
-                orderlist.setProductid(productidNew);
+                orderlists.setProductid(productidNew);
             }
-            orderlist = em.merge(orderlist);
+            if (sizeidNew != null) {
+                sizeidNew = em.getReference(sizeidNew.getClass(), sizeidNew.getSizeid());
+                orderlists.setSizeid(sizeidNew);
+            }
+            orderlists = em.merge(orderlists);
             if (orderidOld != null && !orderidOld.equals(orderidNew)) {
-                orderidOld.getOrderlistList().remove(orderlist);
+                orderidOld.getOrderlistsList().remove(orderlists);
                 orderidOld = em.merge(orderidOld);
             }
             if (orderidNew != null && !orderidNew.equals(orderidOld)) {
-                orderidNew.getOrderlistList().add(orderlist);
+                orderidNew.getOrderlistsList().add(orderlists);
                 orderidNew = em.merge(orderidNew);
             }
             if (productidOld != null && !productidOld.equals(productidNew)) {
-                productidOld.getOrderlistList().remove(orderlist);
+                productidOld.getOrderlistsList().remove(orderlists);
                 productidOld = em.merge(productidOld);
             }
             if (productidNew != null && !productidNew.equals(productidOld)) {
-                productidNew.getOrderlistList().add(orderlist);
+                productidNew.getOrderlistsList().add(orderlists);
                 productidNew = em.merge(productidNew);
+            }
+            if (sizeidOld != null && !sizeidOld.equals(sizeidNew)) {
+                sizeidOld.getOrderlistsList().remove(orderlists);
+                sizeidOld = em.merge(sizeidOld);
+            }
+            if (sizeidNew != null && !sizeidNew.equals(sizeidOld)) {
+                sizeidNew.getOrderlistsList().add(orderlists);
+                sizeidNew = em.merge(sizeidNew);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -120,9 +144,9 @@ public class OrderlistJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = orderlist.getOrderlistid();
-                if (findOrderlist(id) == null) {
-                    throw new NonexistentEntityException("The orderlist with id " + id + " no longer exists.");
+                Integer id = orderlists.getOrderlistid();
+                if (findOrderlists(id) == null) {
+                    throw new NonexistentEntityException("The orderlists with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -138,24 +162,29 @@ public class OrderlistJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Orderlist orderlist;
+            Orderlists orderlists;
             try {
-                orderlist = em.getReference(Orderlist.class, id);
-                orderlist.getOrderlistid();
+                orderlists = em.getReference(Orderlists.class, id);
+                orderlists.getOrderlistid();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The orderlist with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The orderlists with id " + id + " no longer exists.", enfe);
             }
-            Orders orderid = orderlist.getOrderid();
+            Orders orderid = orderlists.getOrderid();
             if (orderid != null) {
-                orderid.getOrderlistList().remove(orderlist);
+                orderid.getOrderlistsList().remove(orderlists);
                 orderid = em.merge(orderid);
             }
-            Products productid = orderlist.getProductid();
+            Products productid = orderlists.getProductid();
             if (productid != null) {
-                productid.getOrderlistList().remove(orderlist);
+                productid.getOrderlistsList().remove(orderlists);
                 productid = em.merge(productid);
             }
-            em.remove(orderlist);
+            Sizes sizeid = orderlists.getSizeid();
+            if (sizeid != null) {
+                sizeid.getOrderlistsList().remove(orderlists);
+                sizeid = em.merge(sizeid);
+            }
+            em.remove(orderlists);
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -171,19 +200,19 @@ public class OrderlistJpaController implements Serializable {
         }
     }
 
-    public List<Orderlist> findOrderlistEntities() {
-        return findOrderlistEntities(true, -1, -1);
+    public List<Orderlists> findOrderlistsEntities() {
+        return findOrderlistsEntities(true, -1, -1);
     }
 
-    public List<Orderlist> findOrderlistEntities(int maxResults, int firstResult) {
-        return findOrderlistEntities(false, maxResults, firstResult);
+    public List<Orderlists> findOrderlistsEntities(int maxResults, int firstResult) {
+        return findOrderlistsEntities(false, maxResults, firstResult);
     }
 
-    private List<Orderlist> findOrderlistEntities(boolean all, int maxResults, int firstResult) {
+    private List<Orderlists> findOrderlistsEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Orderlist.class));
+            cq.select(cq.from(Orderlists.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -195,20 +224,20 @@ public class OrderlistJpaController implements Serializable {
         }
     }
 
-    public Orderlist findOrderlist(Integer id) {
+    public Orderlists findOrderlists(Integer id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Orderlist.class, id);
+            return em.find(Orderlists.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getOrderlistCount() {
+    public int getOrderlistsCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Orderlist> rt = cq.from(Orderlist.class);
+            Root<Orderlists> rt = cq.from(Orderlists.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

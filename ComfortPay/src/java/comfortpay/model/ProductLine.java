@@ -10,9 +10,10 @@ package comfortpay.model;
  * @author Joknoi
  */
 public class ProductLine {
+
     private Products product;
-   private int quantity;
-   private double totalPrice;
+    private int quantity;
+    private double totalPrice;
 
     public ProductLine() {
     }
@@ -28,8 +29,8 @@ public class ProductLine {
         this.quantity++;
     }
 
-    public double TotalPrice(){
-        this.totalPrice = product.getPrice()*this.quantity;
+    public double TotalPrice() {
+        this.totalPrice = product.getPrice() * this.quantity;
         return this.totalPrice;
     }
 

@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import comfortpay.model.Account;
-import comfortpay.model.Orderlist;
+import comfortpay.model.Orderlists;
 import comfortpay.model.Orders;
 import comfortpay.model.controller.exceptions.NonexistentEntityException;
 import comfortpay.model.controller.exceptions.RollbackFailureException;
@@ -39,8 +39,8 @@ public class OrdersJpaController implements Serializable {
     }
 
     public void create(Orders orders) throws RollbackFailureException, Exception {
-        if (orders.getOrderlistList() == null) {
-            orders.setOrderlistList(new ArrayList<Orderlist>());
+        if (orders.getOrderlistsList() == null) {
+            orders.setOrderlistsList(new ArrayList<Orderlists>());
         }
         EntityManager em = null;
         try {
@@ -51,24 +51,24 @@ public class OrdersJpaController implements Serializable {
                 accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
                 orders.setAccountid(accountid);
             }
-            List<Orderlist> attachedOrderlistList = new ArrayList<Orderlist>();
-            for (Orderlist orderlistListOrderlistToAttach : orders.getOrderlistList()) {
-                orderlistListOrderlistToAttach = em.getReference(orderlistListOrderlistToAttach.getClass(), orderlistListOrderlistToAttach.getOrderlistid());
-                attachedOrderlistList.add(orderlistListOrderlistToAttach);
+            List<Orderlists> attachedOrderlistsList = new ArrayList<Orderlists>();
+            for (Orderlists orderlistsListOrderlistsToAttach : orders.getOrderlistsList()) {
+                orderlistsListOrderlistsToAttach = em.getReference(orderlistsListOrderlistsToAttach.getClass(), orderlistsListOrderlistsToAttach.getOrderlistid());
+                attachedOrderlistsList.add(orderlistsListOrderlistsToAttach);
             }
-            orders.setOrderlistList(attachedOrderlistList);
+            orders.setOrderlistsList(attachedOrderlistsList);
             em.persist(orders);
             if (accountid != null) {
                 accountid.getOrdersList().add(orders);
                 accountid = em.merge(accountid);
             }
-            for (Orderlist orderlistListOrderlist : orders.getOrderlistList()) {
-                Orders oldOrderidOfOrderlistListOrderlist = orderlistListOrderlist.getOrderid();
-                orderlistListOrderlist.setOrderid(orders);
-                orderlistListOrderlist = em.merge(orderlistListOrderlist);
-                if (oldOrderidOfOrderlistListOrderlist != null) {
-                    oldOrderidOfOrderlistListOrderlist.getOrderlistList().remove(orderlistListOrderlist);
-                    oldOrderidOfOrderlistListOrderlist = em.merge(oldOrderidOfOrderlistListOrderlist);
+            for (Orderlists orderlistsListOrderlists : orders.getOrderlistsList()) {
+                Orders oldOrderidOfOrderlistsListOrderlists = orderlistsListOrderlists.getOrderid();
+                orderlistsListOrderlists.setOrderid(orders);
+                orderlistsListOrderlists = em.merge(orderlistsListOrderlists);
+                if (oldOrderidOfOrderlistsListOrderlists != null) {
+                    oldOrderidOfOrderlistsListOrderlists.getOrderlistsList().remove(orderlistsListOrderlists);
+                    oldOrderidOfOrderlistsListOrderlists = em.merge(oldOrderidOfOrderlistsListOrderlists);
                 }
             }
             utx.commit();
@@ -94,19 +94,19 @@ public class OrdersJpaController implements Serializable {
             Orders persistentOrders = em.find(Orders.class, orders.getOrderid());
             Account accountidOld = persistentOrders.getAccountid();
             Account accountidNew = orders.getAccountid();
-            List<Orderlist> orderlistListOld = persistentOrders.getOrderlistList();
-            List<Orderlist> orderlistListNew = orders.getOrderlistList();
+            List<Orderlists> orderlistsListOld = persistentOrders.getOrderlistsList();
+            List<Orderlists> orderlistsListNew = orders.getOrderlistsList();
             if (accountidNew != null) {
                 accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
                 orders.setAccountid(accountidNew);
             }
-            List<Orderlist> attachedOrderlistListNew = new ArrayList<Orderlist>();
-            for (Orderlist orderlistListNewOrderlistToAttach : orderlistListNew) {
-                orderlistListNewOrderlistToAttach = em.getReference(orderlistListNewOrderlistToAttach.getClass(), orderlistListNewOrderlistToAttach.getOrderlistid());
-                attachedOrderlistListNew.add(orderlistListNewOrderlistToAttach);
+            List<Orderlists> attachedOrderlistsListNew = new ArrayList<Orderlists>();
+            for (Orderlists orderlistsListNewOrderlistsToAttach : orderlistsListNew) {
+                orderlistsListNewOrderlistsToAttach = em.getReference(orderlistsListNewOrderlistsToAttach.getClass(), orderlistsListNewOrderlistsToAttach.getOrderlistid());
+                attachedOrderlistsListNew.add(orderlistsListNewOrderlistsToAttach);
             }
-            orderlistListNew = attachedOrderlistListNew;
-            orders.setOrderlistList(orderlistListNew);
+            orderlistsListNew = attachedOrderlistsListNew;
+            orders.setOrderlistsList(orderlistsListNew);
             orders = em.merge(orders);
             if (accountidOld != null && !accountidOld.equals(accountidNew)) {
                 accountidOld.getOrdersList().remove(orders);
@@ -116,20 +116,20 @@ public class OrdersJpaController implements Serializable {
                 accountidNew.getOrdersList().add(orders);
                 accountidNew = em.merge(accountidNew);
             }
-            for (Orderlist orderlistListOldOrderlist : orderlistListOld) {
-                if (!orderlistListNew.contains(orderlistListOldOrderlist)) {
-                    orderlistListOldOrderlist.setOrderid(null);
-                    orderlistListOldOrderlist = em.merge(orderlistListOldOrderlist);
+            for (Orderlists orderlistsListOldOrderlists : orderlistsListOld) {
+                if (!orderlistsListNew.contains(orderlistsListOldOrderlists)) {
+                    orderlistsListOldOrderlists.setOrderid(null);
+                    orderlistsListOldOrderlists = em.merge(orderlistsListOldOrderlists);
                 }
             }
-            for (Orderlist orderlistListNewOrderlist : orderlistListNew) {
-                if (!orderlistListOld.contains(orderlistListNewOrderlist)) {
-                    Orders oldOrderidOfOrderlistListNewOrderlist = orderlistListNewOrderlist.getOrderid();
-                    orderlistListNewOrderlist.setOrderid(orders);
-                    orderlistListNewOrderlist = em.merge(orderlistListNewOrderlist);
-                    if (oldOrderidOfOrderlistListNewOrderlist != null && !oldOrderidOfOrderlistListNewOrderlist.equals(orders)) {
-                        oldOrderidOfOrderlistListNewOrderlist.getOrderlistList().remove(orderlistListNewOrderlist);
-                        oldOrderidOfOrderlistListNewOrderlist = em.merge(oldOrderidOfOrderlistListNewOrderlist);
+            for (Orderlists orderlistsListNewOrderlists : orderlistsListNew) {
+                if (!orderlistsListOld.contains(orderlistsListNewOrderlists)) {
+                    Orders oldOrderidOfOrderlistsListNewOrderlists = orderlistsListNewOrderlists.getOrderid();
+                    orderlistsListNewOrderlists.setOrderid(orders);
+                    orderlistsListNewOrderlists = em.merge(orderlistsListNewOrderlists);
+                    if (oldOrderidOfOrderlistsListNewOrderlists != null && !oldOrderidOfOrderlistsListNewOrderlists.equals(orders)) {
+                        oldOrderidOfOrderlistsListNewOrderlists.getOrderlistsList().remove(orderlistsListNewOrderlists);
+                        oldOrderidOfOrderlistsListNewOrderlists = em.merge(oldOrderidOfOrderlistsListNewOrderlists);
                     }
                 }
             }
@@ -172,10 +172,10 @@ public class OrdersJpaController implements Serializable {
                 accountid.getOrdersList().remove(orders);
                 accountid = em.merge(accountid);
             }
-            List<Orderlist> orderlistList = orders.getOrderlistList();
-            for (Orderlist orderlistListOrderlist : orderlistList) {
-                orderlistListOrderlist.setOrderid(null);
-                orderlistListOrderlist = em.merge(orderlistListOrderlist);
+            List<Orderlists> orderlistsList = orders.getOrderlistsList();
+            for (Orderlists orderlistsListOrderlists : orderlistsList) {
+                orderlistsListOrderlists.setOrderid(null);
+                orderlistsListOrderlists = em.merge(orderlistsListOrderlists);
             }
             em.remove(orders);
             utx.commit();

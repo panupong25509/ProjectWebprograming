@@ -178,7 +178,9 @@
 
                         <label for="psw"><b>Password</b></label>
                         <input type="password" placeholder="Enter Password" name="password" required>
-                        <input type="hidden" name="path" value=<%= request.getRequestURL()%>>
+                        
+                        <input type="hidden" name="path" value="<%= request.getRequestURL()%>">
+                        <input type="hidden" name="productid" value="${product.productid}">
                         <button type="submit">Login</button>
                     </div>
                 </form> 

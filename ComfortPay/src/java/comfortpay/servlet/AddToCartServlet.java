@@ -54,8 +54,7 @@ public class AddToCartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
         cart.add(product);
-        session.setAttribute("product", product);
-        response.sendRedirect("Product");
+        response.sendRedirect("Product?productid="+productId);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

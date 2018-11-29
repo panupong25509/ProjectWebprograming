@@ -51,7 +51,7 @@ public class Products implements Serializable {
     @Size(max = 50)
     @Column(name = "PRODUCTNAME")
     private String productname;
-    @Size(max = 5)
+    @Size(max = 10)
     @Column(name = "PRODUCTTYPE")
     private String producttype;
     @Size(max = 8)
@@ -64,17 +64,26 @@ public class Products implements Serializable {
     @Column(name = "PRICE")
     private Double price;
     @OneToMany(mappedBy = "productid")
-    private List<Wishlish> wishlishList;
+    private List<Wishlishs> wishlishsList;
     @OneToMany(mappedBy = "productid")
-    private List<Orderlist> orderlistList;
+    private List<Orderlists> orderlistsList;
     @OneToMany(mappedBy = "productid")
-    private List<Size1> size1List;
+    private List<Sizes> sizesList;
 
     public Products() {
     }
 
     public Products(Integer productid) {
         this.productid = productid;
+    }
+    
+    public Products(String productcode, String productname, String producttype, String productband, String color, Double price) {
+        this.productcode = productcode;
+        this.productname = productname;
+        this.producttype = producttype;
+        this.productband = productband;
+        this.color = color;
+        this.price = price;
     }
 
     public Integer getProductid() {
@@ -134,30 +143,30 @@ public class Products implements Serializable {
     }
 
     @XmlTransient
-    public List<Wishlish> getWishlishList() {
-        return wishlishList;
+    public List<Wishlishs> getWishlishsList() {
+        return wishlishsList;
     }
 
-    public void setWishlishList(List<Wishlish> wishlishList) {
-        this.wishlishList = wishlishList;
-    }
-
-    @XmlTransient
-    public List<Orderlist> getOrderlistList() {
-        return orderlistList;
-    }
-
-    public void setOrderlistList(List<Orderlist> orderlistList) {
-        this.orderlistList = orderlistList;
+    public void setWishlishsList(List<Wishlishs> wishlishsList) {
+        this.wishlishsList = wishlishsList;
     }
 
     @XmlTransient
-    public List<Size1> getSize1List() {
-        return size1List;
+    public List<Orderlists> getOrderlistsList() {
+        return orderlistsList;
     }
 
-    public void setSize1List(List<Size1> size1List) {
-        this.size1List = size1List;
+    public void setOrderlistsList(List<Orderlists> orderlistsList) {
+        this.orderlistsList = orderlistsList;
+    }
+
+    @XmlTransient
+    public List<Sizes> getSizesList() {
+        return sizesList;
+    }
+
+    public void setSizesList(List<Sizes> sizesList) {
+        this.sizesList = sizesList;
     }
 
     @Override

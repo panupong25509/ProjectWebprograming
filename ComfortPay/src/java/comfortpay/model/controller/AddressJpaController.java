@@ -5,18 +5,17 @@
  */
 package comfortpay.model.controller;
 
+import comfortpay.model.Address;
+import comfortpay.model.controller.exceptions.NonexistentEntityException;
+import comfortpay.model.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import comfortpay.model.Account;
-import comfortpay.model.Address;
-import comfortpay.model.controller.exceptions.NonexistentEntityException;
-import comfortpay.model.controller.exceptions.RollbackFailureException;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.UserTransaction;
 
 /**
@@ -41,16 +40,7 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Account accountid = address.getAccountid();
-            if (accountid != null) {
-                accountid = em.getReference(accountid.getClass(), accountid.getAccountid());
-                address.setAccountid(accountid);
-            }
             em.persist(address);
-            if (accountid != null) {
-                accountid.getAddressList().add(address);
-                accountid = em.merge(accountid);
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -71,22 +61,7 @@ public class AddressJpaController implements Serializable {
         try {
             utx.begin();
             em = getEntityManager();
-            Address persistentAddress = em.find(Address.class, address.getAddressid());
-            Account accountidOld = persistentAddress.getAccountid();
-            Account accountidNew = address.getAccountid();
-            if (accountidNew != null) {
-                accountidNew = em.getReference(accountidNew.getClass(), accountidNew.getAccountid());
-                address.setAccountid(accountidNew);
-            }
             address = em.merge(address);
-            if (accountidOld != null && !accountidOld.equals(accountidNew)) {
-                accountidOld.getAddressList().remove(address);
-                accountidOld = em.merge(accountidOld);
-            }
-            if (accountidNew != null && !accountidNew.equals(accountidOld)) {
-                accountidNew.getAddressList().add(address);
-                accountidNew = em.merge(accountidNew);
-            }
             utx.commit();
         } catch (Exception ex) {
             try {
@@ -120,11 +95,6 @@ public class AddressJpaController implements Serializable {
                 address.getAddressid();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The address with id " + id + " no longer exists.", enfe);
-            }
-            Account accountid = address.getAccountid();
-            if (accountid != null) {
-                accountid.getAddressList().remove(address);
-                accountid = em.merge(accountid);
             }
             em.remove(address);
             utx.commit();

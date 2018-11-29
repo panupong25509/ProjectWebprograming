@@ -6,6 +6,7 @@
 package comfortpay.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,23 +17,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Joknoi
  */
 @Entity
-@Table(name = "SIZE")
+@Table(name = "SIZES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Size1.findAll", query = "SELECT s FROM Size1 s")
-    , @NamedQuery(name = "Size1.findBySizeid", query = "SELECT s FROM Size1 s WHERE s.sizeid = :sizeid")
-    , @NamedQuery(name = "Size1.findBySize", query = "SELECT s FROM Size1 s WHERE s.size = :size")
-    , @NamedQuery(name = "Size1.findByQuantity", query = "SELECT s FROM Size1 s WHERE s.quantity = :quantity")})
-public class Size1 implements Serializable {
+    @NamedQuery(name = "Sizes.findAll", query = "SELECT s FROM Sizes s")
+    , @NamedQuery(name = "Sizes.findBySizeid", query = "SELECT s FROM Sizes s WHERE s.sizeid = :sizeid")
+    , @NamedQuery(name = "Sizes.findBySize", query = "SELECT s FROM Sizes s WHERE s.size = :size")
+    , @NamedQuery(name = "Sizes.findByQuantity", query = "SELECT s FROM Sizes s WHERE s.quantity = :quantity")})
+public class Sizes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,14 +48,22 @@ public class Size1 implements Serializable {
     private String size;
     @Column(name = "QUANTITY")
     private Integer quantity;
+    @OneToMany(mappedBy = "sizeid")
+    private List<Orderlists> orderlistsList;
     @JoinColumn(name = "PRODUCTID", referencedColumnName = "PRODUCTID")
     @ManyToOne
     private Products productid;
 
-    public Size1() {
+    public Sizes() {
     }
 
-    public Size1(Integer sizeid) {
+    public Sizes(String size, Integer quantity, Products productid) {
+        this.size = size;
+        this.quantity = quantity;
+        this.productid = productid;
+    }
+
+    public Sizes(Integer sizeid) {
         this.sizeid = sizeid;
     }
 
@@ -80,6 +91,15 @@ public class Size1 implements Serializable {
         this.quantity = quantity;
     }
 
+    @XmlTransient
+    public List<Orderlists> getOrderlistsList() {
+        return orderlistsList;
+    }
+
+    public void setOrderlistsList(List<Orderlists> orderlistsList) {
+        this.orderlistsList = orderlistsList;
+    }
+
     public Products getProductid() {
         return productid;
     }
@@ -98,10 +118,10 @@ public class Size1 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Size1)) {
+        if (!(object instanceof Sizes)) {
             return false;
         }
-        Size1 other = (Size1) object;
+        Sizes other = (Sizes) object;
         if ((this.sizeid == null && other.sizeid != null) || (this.sizeid != null && !this.sizeid.equals(other.sizeid))) {
             return false;
         }
@@ -110,7 +130,7 @@ public class Size1 implements Serializable {
 
     @Override
     public String toString() {
-        return "comfortpay.model.Size1[ sizeid=" + sizeid + " ]";
+        return "comfortpay.model.Sizes[ sizeid=" + sizeid + " ]";
     }
     
 }

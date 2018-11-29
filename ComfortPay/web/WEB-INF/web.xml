@@ -60,6 +60,18 @@
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>comfortpay.servlet.ProductListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddToStockServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.AddToStockServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SizeStockServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.SizeStockServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmAddToStockServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.ConfirmAddToStockServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -120,6 +132,22 @@
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/ProductList</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToStockServlet</servlet-name>
+        <url-pattern>/AddToStock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SizeStockServlet</servlet-name>
+        <url-pattern>/SizeStock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmAddToStockServlet</servlet-name>
+        <url-pattern>/ConfirmAddToStock</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>com.sun.faces.writeStateAtFormEnd</param-name>
+        <param-value>false</param-value>
+    </context-param>
     <session-config>
         <session-timeout>
             30
