@@ -6,9 +6,12 @@
 package comfortpay.servlet;
 
 import comfortpay.model.Products;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.ProductsJpaController;
+import comfortpay.model.controller.SizesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -43,21 +46,20 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String productIdReq = request.getParameter("productid");
-        StringBuffer path = request.getRequestURL();
-        int productId = 0;
-        if (productIdReq == null) {
-            Products product = (Products) session.getAttribute("product");
-            productId = product.getProductid();
-        } else {
-            productId = Integer.parseInt(productIdReq);
-        }
+//        int productId = 0;
+//        if (productIdReq == null) {
+//            Products product = (Products) session.getAttribute("product");
+//            productId = product.getProductid();
+//        } else {
+//            productId = Integer.parseInt(productIdReq);
+//        }
 
         ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
-        
-        Products product = productsCtrl.findProducts(productId);
+        Products product = productsCtrl.findProducts(Integer.parseInt(productIdReq));
+        List<Sizes> productSize = product.getSizesList();
         request.setAttribute("product", product);
-        request.setAttribute("path", path);
-        getServletContext().getRequestDispatcher("/Product.jsp?productid="+productId).forward(request, response);
+        request.setAttribute("productSize", productSize);
+        getServletContext().getRequestDispatcher("/Product.jsp?productid="+productIdReq).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

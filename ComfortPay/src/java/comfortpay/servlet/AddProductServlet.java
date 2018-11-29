@@ -5,10 +5,11 @@
  */
 package comfortpay.servlet;
 
-
 import comfortpay.model.Cart;
 import comfortpay.model.Products;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.ProductsJpaController;
+import comfortpay.model.controller.SizesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -45,12 +46,13 @@ public class AddProductServlet extends HttpServlet {
             throws ServletException, IOException {
         String productId = request.getParameter("productid");
         ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
-
+        String sizeId = request.getParameter("sizeid");
         Products product = productsCtrl.findProducts(Integer.parseInt(productId));
-
+        SizesJpaController sizeCtrl = new SizesJpaController(utx, emf);
+        Sizes size = sizeCtrl.findSizes(Integer.parseInt(sizeId));
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        cart.add(product);
+        cart.add(product, size);
         response.sendRedirect("Cart");
     }
 

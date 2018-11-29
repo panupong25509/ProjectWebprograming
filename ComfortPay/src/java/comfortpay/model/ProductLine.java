@@ -12,6 +12,7 @@ package comfortpay.model;
 public class ProductLine {
 
     private Products product;
+    private Sizes size;
     private int quantity;
     private double totalPrice;
 
@@ -24,9 +25,18 @@ public class ProductLine {
         TotalPrice();
     }
 
-    ProductLine(Products product) {
+    ProductLine(Products product, Sizes size) {
         this.product = product;
+        this.size = size;
         this.quantity++;
+    }
+
+    public Sizes getSize() {
+        return size;
+    }
+
+    public void setSize(Sizes size) {
+        this.size = size;
     }
 
     public double TotalPrice() {

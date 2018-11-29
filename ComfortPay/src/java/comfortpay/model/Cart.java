@@ -22,10 +22,10 @@ public class Cart {
         cart = new HashMap();
     }
 
-    public void add(Products p) {
+    public void add(Products p, Sizes s) {
         ProductLine line = cart.get(p.getProductcode());
         if (line == null) {
-            cart.put(p.getProductcode(), new ProductLine(p));
+            cart.put(p.getProductcode(), new ProductLine(p,s));
         } else {
             line.setQuantity(line.getQuantity()+1);
         }

@@ -4,6 +4,7 @@
     Author     : Techin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,8 +26,13 @@
                     <p>ProductType : ${product.producttype}</p>
                     <p>Color : ${product.color}</p>
                     <p>Price : ${product.price}</p>
-
                     <form action="AddToCart" method="post">
+                        <select name="sizeId">
+                            <c:forEach items="${productSize}" var="size">
+                                <option value="${size.sizeid}">${size.size}</option>
+                            </c:forEach>  
+                        </select>
+                        <br>
                         <input type="hidden" name="productid" value="${product.productid}"> 
                         <input type="submit" value="ADD">
                     </form>

@@ -7,7 +7,9 @@ package comfortpay.servlet;
 
 import comfortpay.model.Cart;
 import comfortpay.model.Products;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.ProductsJpaController;
+import comfortpay.model.controller.SizesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -43,17 +45,19 @@ public class AddToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String productId = request.getParameter("productid");
+        String sizeId = request.getParameter("sizeId");
         ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
 
         Products product = productsCtrl.findProducts(Integer.parseInt(productId));
-
+        SizesJpaController sizeCtrl = new SizesJpaController(utx, emf);
+        Sizes size = sizeCtrl.findSizes(Integer.parseInt(sizeId));
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         if (cart == null) {
             cart = new Cart();
             session.setAttribute("cart", cart);
         }
-        cart.add(product);
+        cart.add(product, size);
         response.sendRedirect("Product?productid="+productId);
     }
 
