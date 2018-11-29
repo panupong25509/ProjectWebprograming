@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -238,5 +239,18 @@ public class OrdersJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public Orders findByOrderCode(String code) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Orders.findByOrdercode");
+            query.setParameter("ordercode", code);
+            return (Orders) query.getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
 }

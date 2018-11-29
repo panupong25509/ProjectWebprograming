@@ -15,27 +15,30 @@
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
         <div class="container text-center" style="padding-top: 130px;">
-            <h1>Product</h1>
-            <div class="col-12 row m-0">
-                <div class="col p-3 text-right">
-                    <img src="images/PictureWebPro/adidasMencCloth/${product.productcode}.jpg" width="80%">
-                </div>
-                <div class="col p-3 text-left">
-                    <p>ProductName : ${product.productname}</p>
-                    <p>ProductCode : ${product.productcode}</p>
-                    <p>ProductType : ${product.producttype}</p>
-                    <p>Color : ${product.color}</p>
-                    <p>Price : ${product.price}</p>
-                    <form action="AddToCart" method="post">
-                        <select name="sizeId">
-                            <c:forEach items="${productSize}" var="size">
-                                <option value="${size.sizeid}">${size.size}</option>
-                            </c:forEach>  
-                        </select>
-                        <br>
-                        <input type="hidden" name="productid" value="${product.productid}"> 
-                        <input type="submit" value="ADD">
-                    </form>
+            <div class="col-8 mx-auto p-3" style="background-color: #53759A;color: #D5C4AD;">
+                
+                <h1>Product</h1>
+                <div class="col-12 row m-0">
+                    <div class="col p-3 text-right">
+                        <img src="images/PictureWebPro/Products/${product.productcode}.jpg" width="100%">
+                        
+                    </div>
+                    <div class="col p-3 text-left">
+                        <p>ProductName : ${product.productname}</p>
+                        <p>ProductCode : ${product.productcode}</p>
+                        <p>ProductType : ${product.producttype}</p>
+                        <p>Color : ${product.color}</p>
+                        <p>Price : ${product.price} ฿</p>
+                        <form action="AddToCart" method="post">
+                            <select name="sizeId" class="btn dropdown-toggle">
+                                <c:forEach items="${productSize}" var="size">
+                                    <option value="${size.sizeid}">${size.size}</option>
+                                </c:forEach>  
+                            </select>
+                            <input type="hidden" name="productid" value="${product.productid}"> 
+                            <button type="button submit" class="btn btn-warning ml-5">ADD TO CART</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 

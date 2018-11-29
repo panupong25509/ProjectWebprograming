@@ -32,11 +32,28 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Products.findAll", query = "SELECT p FROM Products p")
     , @NamedQuery(name = "Products.findByProductid", query = "SELECT p FROM Products p WHERE p.productid = :productid")
     , @NamedQuery(name = "Products.findByProductcode", query = "SELECT p FROM Products p WHERE p.productcode = :productcode")
-    , @NamedQuery(name = "Products.findByProductname", query = "SELECT p FROM Products p WHERE p.productname = :productname")
+    , @NamedQuery(name = "Products.findByProductname", query = "SELECT p FROM Products p WHERE p.productname LIKE :productname")
     , @NamedQuery(name = "Products.findByProducttype", query = "SELECT p FROM Products p WHERE p.producttype = :producttype")
+    , @NamedQuery(name = "Products.findByCloth", query = "SELECT p FROM Products p WHERE p.producttype = :shirt"
+            + "                                           UNION"
+            + "                                           SELECT p FROM Products p WHERE p.producttype = :bra"
+            + "                                           UNION"
+            + "                                           SELECT p FROM Products p WHERE p.producttype = :hood"
+            + "                                           UNION"
+            + "                                           SELECT p FROM Products p WHERE p.producttype = :pant"
+            + "                                           UNION"
+            + "                                           SELECT p FROM Products p WHERE p.producttype = :short")
+    , @NamedQuery(name = "Products.findByShoes", query = "SELECT p FROM Products p WHERE p.producttype = :sneaker"
+            + "                                           UNION"
+            + "                                           SELECT p FROM Products p WHERE p.producttype = :slipper")
+    , @NamedQuery(name = "Products.findByFilter", query = "SELECT p FROM Products p WHERE p.productname LIKE :productname"
+            + "                                            AND p.productband LIKE :productbrand"
+            + "                                            AND p.producttype LIKE :producttype"
+            + "                                            AND p.color LIKE :color"
+            + "                                            AND p.price >= :start AND p.price <= :end")
     , @NamedQuery(name = "Products.findByProductband", query = "SELECT p FROM Products p WHERE p.productband = :productband")
     , @NamedQuery(name = "Products.findByColor", query = "SELECT p FROM Products p WHERE p.color = :color")
-    , @NamedQuery(name = "Products.findByPrice", query = "SELECT p FROM Products p WHERE p.price = :price")})
+    , @NamedQuery(name = "Products.findByPrice", query = "SELECT p FROM Products p WHERE p.price >= :start AND p.price <= :end")})
 public class Products implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -73,10 +90,6 @@ public class Products implements Serializable {
     public Products() {
     }
 
-    public Products(Integer productid) {
-        this.productid = productid;
-    }
-    
     public Products(String productcode, String productname, String producttype, String productband, String color, Double price) {
         this.productcode = productcode;
         this.productname = productname;
@@ -84,6 +97,10 @@ public class Products implements Serializable {
         this.productband = productband;
         this.color = color;
         this.price = price;
+    }
+
+    public Products(Integer productid) {
+        this.productid = productid;
     }
 
     public Integer getProductid() {
@@ -193,5 +210,5 @@ public class Products implements Serializable {
     public String toString() {
         return "comfortpay.model.Products[ productid=" + productid + " ]";
     }
-    
+
 }

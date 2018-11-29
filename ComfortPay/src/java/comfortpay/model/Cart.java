@@ -16,31 +16,32 @@ import java.util.Map;
  * @author Joknoi
  */
 public class Cart {
-    private Map<String, ProductLine> cart;
+
+    private Map<Integer, ProductLine> cart;
 
     public Cart() {
         cart = new HashMap();
     }
 
     public void add(Products p, Sizes s) {
-        ProductLine line = cart.get(p.getProductcode());
+        ProductLine line = cart.get(s.getSizeid());
         if (line == null) {
-            cart.put(p.getProductcode(), new ProductLine(p,s));
+            cart.put(s.getSizeid(), new ProductLine(p, s));
         } else {
-            line.setQuantity(line.getQuantity()+1);
+            line.setQuantity(line.getQuantity() + 1);
         }
     }
 
-    public void reduce(Products p) {
-        ProductLine line = cart.get(p.getProductcode());
+    public void reduce(Sizes s) {
+        ProductLine line = cart.get(s.getSizeid());
         line.setQuantity(line.getQuantity() - 1);
         if (line.getQuantity() == 0) {
-            remove(p);
+            remove(s);
         }
     }
 
-    public void remove(Products p) {
-        cart.remove(p.getProductcode());
+    public void remove(Sizes s) {
+        cart.remove(s.getSizeid());
     }
 
     public int getTotalQuantity() {
@@ -51,12 +52,21 @@ public class Cart {
         }
         return all;
     }
+    
+    public Double getTotalPrice() {
+        double all = 0;
+        Collection<ProductLine> productLine = this.cart.values();
+        for (ProductLine productline : productLine) {
+            all += productline.TotalPrice();
+        }
+        return all;
+    }
 
-    public Map<String, ProductLine> getCart() {
+    public Map<Integer, ProductLine> getCart() {
         return cart;
     }
 
-    public void setCart(Map<String, ProductLine> cart) {
+    public void setCart(Map<Integer, ProductLine> cart) {
         this.cart = cart;
     }
 

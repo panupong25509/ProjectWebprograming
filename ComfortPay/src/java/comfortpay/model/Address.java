@@ -64,12 +64,12 @@ public class Address implements Serializable {
         this.addressid = addressid;
     }
 
-    public Address(String address, String district, String province, int postcode, Account newAccount) {
+    public Address(String address, String distict, String province, Integer postcode, Account accountid) {
         this.address = address;
-        this.distict = district;
+        this.distict = distict;
         this.province = province;
         this.postcode = postcode;
-        this.accountid = newAccount;
+        this.accountid = accountid;
     }
 
     public Integer getAddressid() {
@@ -144,5 +144,5 @@ public class Address implements Serializable {
     public String toString() {
         return "comfortpay.model.Address[ addressid=" + addressid + " ]";
     }
-
+    
 }

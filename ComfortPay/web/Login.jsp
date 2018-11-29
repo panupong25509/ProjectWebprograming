@@ -14,19 +14,22 @@
     </head>
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
-        <div class="col-8 mx-auto text-center" style="padding-top: 130px;">
-            <h1>Login Comfort Pay</h1>
-            <form action="Login">
-                <br>
-                <input type="text" placeholder="Enter Username" name="username" required>
-                <br>
-                <br>
-                <input type="password" placeholder="Enter Password" name="password" required>
-                <br>
-                <br>
-                <input type="hidden" name="path" value=${path}>
-                <button type="submit">Login</button>
-            </form>
-        </div>
+        <div class="col-6 mx-auto" style="padding-top: 130px;">
+                <form class="modal-content animate" action="Login" style="background-color: #53759A;color: #D5C4AD;">
+                    <div class="container" style="font-size: 18px;">
+                        <h1 class="text-center">Login</h1>
+                        <label for="uname">Username</label>
+                        <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+                        <!--<br>-->
+                        <label for="psw">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+                        
+                        <input type="hidden" name="path" value="<%= request.getRequestURL()%>">
+                        <input type="hidden" name="productid" value="${product.productid}">
+                        <br>
+                        <button type="button submit" class="btn mb-3" style="font-size: 16px;width: 100%;background-color:#D5C4AD;color: #53759A"><b>Login</b></button>
+                    </div>
+                </form> 
+            </div>
     </body>
 </html>

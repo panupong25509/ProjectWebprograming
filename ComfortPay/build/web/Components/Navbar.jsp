@@ -111,7 +111,7 @@
                             <li class="list-inline-item">
                                 <div>
                                     <form action="Search" class="form-inline">
-                                        <input class="form-control" type="text" name="search" required style="height: 35px;background-color: transparent">
+                                        <input class="form-control" type="text" name="search" required style="background-color: transparent;border: none;border-bottom: 1px solid #D5C4AD;color: #D5C4AD;font-size: 12px">
                                         <a href="#" >
                                             <button type="submit" style="height: 35px;background-color: transparent;border: none;cursor: pointer">
                                                 <i class="fas fa-search ml-1" style="color: #D5C4AD;"></i>
@@ -148,16 +148,16 @@
                         </ul> 
                         <ul class="list-inline m-0">
                             <li class="list-inline-item">
-                                <a class="nav-link">CHAMPION</a>
+                                <a class="nav-link" href="Search?search=champion"style="color: #53759A;">CHAMPION</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link">NIKE</a>
+                                <a class="nav-link" href="Search?search=nike" style="color: #53759A;">NIKE</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link">ADIDAS</a>
+                                <a class="nav-link" href="Search?search=adidas" style="color: #53759A;">ADIDAS</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="nav-link">FILA</a>
+                                <a class="nav-link" href="Search?search=fila" style="color: #53759A;">FILA</a>
                             </li>
                         </ul> 
                     </div>
@@ -167,21 +167,23 @@
 
         <!--        popup-->
         <div id="login" class="modal">
-            <div class="col-8 mx-auto">
-                <form class="modal-content animate" action="LoginPopup">
+            <div class="col-6 mx-auto">
+                <form class="modal-content animate" action="LoginPopup" style="background-color: #53759A;color: #D5C4AD;">
                     <div class="imgcontainer">
                         <span onclick="Close()" class="close" title="Close Modal">&times;</span>
                     </div>
-                    <div class="container">
-                        <label for="uname"><b>Username</b></label>
-                        <input type="text" placeholder="Enter Username" name="username" required>
-
-                        <label for="psw"><b>Password</b></label>
-                        <input type="password" placeholder="Enter Password" name="password" required>
+                    <div class="container" style="font-size: 18px;">
+                        <h1 class="text-center">Login</h1>
+                        <label for="uname">Username</label>
+                        <input type="text" class="form-control" placeholder="Enter Username" name="username" required>
+                        <!--<br>-->
+                        <label for="psw">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
                         
                         <input type="hidden" name="path" value="<%= request.getRequestURL()%>">
                         <input type="hidden" name="productid" value="${product.productid}">
-                        <button type="submit">Login</button>
+                        <br>
+                        <button type="button submit" class="btn mb-3" style="font-size: 16px;width: 100%;background-color:#D5C4AD;color: #53759A"><b>Login</b></button>
                     </div>
                 </form> 
             </div>

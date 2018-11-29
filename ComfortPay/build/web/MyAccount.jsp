@@ -18,20 +18,25 @@
         <jsp:include page="Components/Navbar.jsp"/>
         <div style="padding-top: 130px;">
             <div class="container">
-                <div class="col-8 mx-auto text-center">
+                <div class="col-7 mx-auto text-center pd-5 mb-5" style="background-color: #53759A;color: #D5C4AD;padding: 50px;">
                     <h1>My Account</h1>
-                    <div class="text-left pt-5">
-                        <p>${account.fname} ${account.lname}</p>
-                        <p>${account.class1}</p>
-                        <p>${account.score}</p>   
+                    <img src="images/Home/User.png" height="200px;" class="mt-3">
+                    <div class="text-center pt-5">
+
+                        <h3>${account.fname} ${account.lname}</h3>
+                        <br>
+                        <button type="button" class="btn btn-warning" >STATUS : ${account.class1}</button>
+                        <button type="button" class="btn btn-info">SCORE : ${account.score}</button>
                     </div>
-                    
-                    <%
-                        Account account = (Account) session.getAttribute("account");
-                        if(account.getClass1().equals("ADMIN")){
-                    %>
-                    <a href="AddToStock">ADD TO STOCK</a>
-                    <% } %>
+                    <div class="col-12 mx-auto mt-3">
+                        <%
+                            Account account = (Account) session.getAttribute("account");
+                            if (account.getClass1().equals("ADMIN")) {
+                        %>
+                        <a href="AddToStock"><button type="button" class="btn btn-light" style="width: 100%">ADD TO STOCK</button></a>
+                        <% }%>
+                        <a href="History"><button type="button" class="btn btn-light mt-1" style="width: 100% ">HISTORY</button></a>
+                    </div>
                 </div>
 
             </div>

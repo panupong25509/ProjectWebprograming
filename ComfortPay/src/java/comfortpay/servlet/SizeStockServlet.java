@@ -40,12 +40,12 @@ public class SizeStockServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productCode = request.getParameter("productcode");
-        String productName = request.getParameter("productname");
-        String productType = request.getParameter("type");
-        String productBand = request.getParameter("band");
-        String productColor = request.getParameter("color");
-        String productPrice = request.getParameter("price");
+        String productCode = request.getParameter("productcode").toUpperCase();
+        String productName = request.getParameter("productname").toUpperCase();
+        String productType = request.getParameter("type").toUpperCase();
+        String productBand = request.getParameter("band").toUpperCase();
+        String productColor = request.getParameter("color").toUpperCase();
+        String productPrice = request.getParameter("price").toUpperCase();
         Products product = new Products(productCode, productName, productType, productBand, productColor, Double.parseDouble(productPrice));
         ProductsJpaController pdCtrl = new ProductsJpaController(utx, emf);
         try {

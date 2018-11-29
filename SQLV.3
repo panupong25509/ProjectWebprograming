@@ -64,3 +64,77 @@ VALUES ('S',100,1),
        ('M',100,2),
        ('L',100,2),
        ('XL',50,2);
+
+    public List<Products> findByBrand(String search) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByProductband");
+            query.setParameter("productband", search);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Products> findByColor(String search) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByColor");
+            query.setParameter("color", search);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Products> findByCloth() {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByCloth");
+            query.setParameter("shirt", "SHIRT");
+            query.setParameter("bra", "BRA");
+            query.setParameter("hood", "HOOD");
+            query.setParameter("pant", "PLANT");
+            query.setParameter("short", "SHORT");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Products> findByShoes() {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByShoes");
+            query.setParameter("sneaker", "SNEAKER");
+            query.setParameter("slipper", "SLIPPER");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Products> findByType(String search) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByProducttype");
+            if (search.equals("PANT")) {
+                search = "PLANT";
+            }
+            query.setParameter("producttype", search);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Products> findByProductName(String search) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createNamedQuery("Products.findByProductname");
+            query.setParameter("productname", "%" + search + "%");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }

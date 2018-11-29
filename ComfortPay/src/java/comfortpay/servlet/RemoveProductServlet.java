@@ -7,7 +7,9 @@ package comfortpay.servlet;
 
 import comfortpay.model.Cart;
 import comfortpay.model.Products;
+import comfortpay.model.Sizes;
 import comfortpay.model.controller.ProductsJpaController;
+import comfortpay.model.controller.SizesJpaController;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -46,10 +48,12 @@ public class RemoveProductServlet extends HttpServlet {
         ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
 
         Products product = productsCtrl.findProducts(Integer.parseInt(productId));
-
+        String sizeId = request.getParameter("sizeid");
+        SizesJpaController sizeCtrl = new SizesJpaController(utx, emf);
+        Sizes size = sizeCtrl.findSizes(Integer.parseInt(sizeId));
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
-        cart.remove(product);
+        cart.remove(size);
         response.sendRedirect("Cart");
     }
 

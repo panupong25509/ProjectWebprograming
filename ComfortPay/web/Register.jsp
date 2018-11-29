@@ -13,9 +13,10 @@
     </head>
     <body>
         <jsp:include page="Components/Navbar.jsp"/>
-        <div class="col-8 mx-auto text-center" style="padding-top: 130px;">
-            <h1>Register Comfort Pay</h1>
-            <form action="RegisterAccount" class="pt-5">
+        <div class="col-10 mx-auto text-center" style="padding-top: 130px;">
+            <form class="modal-content animate p-5" action="RegisterAccount" class="pt-5" style="background-color: #53759A;color: #D5C4AD;" >
+                <h1>Register Comfort Pay</h1>
+                <br>
                 <div class="col-12 row m-0">
                     <div class="col">
                         
@@ -24,37 +25,37 @@
                         <p>Username :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="text" placeholder="Enter Username" name="username" required></p>
+                        <p><input type="text" class="form-control" placeholder="Enter Username" name="username" required></p>
                     </div>
                     <div class="col-5 text-right">
                         <p>Password :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="password" placeholder="Enter Password" name="password" required></p>
+                        <p><input type="password" class="form-control" placeholder="Enter Password" name="password" required></p>
                     </div>
                     <div class="col-5 text-right">
                         <p>Password :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="password" placeholder="Enter Password Again" name="passwordAgain" required></p>
+                        <p><input type="password" class="form-control" placeholder="Enter Password Again" name="passwordAgain" required></p>
                     </div>
                     <div class="col-5 text-right">
                         <p>Firstname :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="text" placeholder="Enter Firstname" name="fname" required></p>
+                        <p><input type="text" class="form-control" placeholder="Enter Firstname" name="fname" required></p>
                     </div>
                     <div class="col-5 text-right">
                         <p>Lastname :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="text" placeholder="Enter Lastname" name="lname" required></p>
+                        <p><input type="text" class="form-control" placeholder="Enter Lastname" name="lname" required></p>
                     </div>
                     <div class="col-5 text-right">
                         <p>Email :</p>
                     </div>
                     <div class="col-7 text-left">
-                        <p><input type="text" placeholder="Enter Email" name="email" required></p>
+                        <p><input type="text"class="form-control" placeholder="Enter Email" name="email" required></p>
                     </div>
                 </div>
                     </div>
@@ -64,37 +65,37 @@
                                 <p>DOB :</p>
                             </div>
                             <div class="col-7 text-left">
-                                <p><input type="date" name="dob" required></p>
+                                <p><input class="form-control" type="date" name="dob" required></p>
                             </div>
                             <div class="col-5 text-right">
                                 <p>Address :</p>
                             </div>
                             <div class="col-7 text-left">
-                                <p><input type="text" placeholder="Enter Address" name="address" required></p>
+                                <p><input class="form-control" type="text" placeholder="Enter Address" name="address" required></p>
                             </div>
                             <div class="col-5 text-right">
                                 <p>District :</p>
                             </div>
                             <div class="col-7 text-left">
-                                <p><input type="text" placeholder="Enter District" name="district" required></p>
+                                <p><input  class="form-control" type="text" placeholder="Enter District" name="district" required></p>
                             </div>
                             <div class="col-5 text-right">
                                 <p>Province :</p>
                             </div>
                             <div class="col-7 text-left">
-                                <p><input type="text" placeholder="Enter Province" name="province" required></p>
+                                <p><input class="form-control" type="text" placeholder="Enter Province" name="province" required></p>
                             </div>
                             <div class="col-5 text-right">
                                 <p>Postcode :</p>
                             </div>
                             <div class="col-7 text-left">
-                                <p><input type="text" placeholder="Enter Postcode" name="postcode" required></p>
+                                <p><input class="form-control" type="text" placeholder="Enter Postcode" name="postcode" required></p>
                             </div>
                         </div>
                         
                     </div>
                 </div>
-                <input type="submit" value="CONFIRM">
+                <button type="button submit" class="btn btn-warning">CONFIRM</button>
             </form>
         </div>
     </body>

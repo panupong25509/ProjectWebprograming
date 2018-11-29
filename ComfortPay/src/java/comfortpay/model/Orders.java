@@ -62,6 +62,12 @@ public class Orders implements Serializable {
         this.orderid = orderid;
     }
 
+    public Orders(String ordercode, Double totalprice, Account accountid) {
+        this.ordercode = ordercode;
+        this.totalprice = totalprice;
+        this.accountid = accountid;
+    }
+
     public Integer getOrderid() {
         return orderid;
     }

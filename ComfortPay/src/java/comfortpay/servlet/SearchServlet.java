@@ -24,10 +24,12 @@ import javax.transaction.UserTransaction;
  * @author Joknoi
  */
 public class SearchServlet extends HttpServlet {
-    @PersistenceUnit (unitName = "ComfortPayPU")
+
+    @PersistenceUnit(unitName = "ComfortPayPU")
     EntityManagerFactory emf;
     @Resource
     UserTransaction utx;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,46 +44,55 @@ public class SearchServlet extends HttpServlet {
         String search = request.getParameter("search").toLowerCase();
         String[] brand = {"nike", "adidas", "champion", "fila"};
         String[] color = {"red", "black", "white", "pink", "green", "gray", "blue", "purple", "orange"};
-        String[] type = {"sneaker", "slipper", "shirt", "pant", "short"};
-        String Have = null;
+        String[] type = {"sneaker", "slipper", "shirt", "pant", "short", "hood" , "bra"};
+        String have = null;
         ProductsJpaController productCtrl = new ProductsJpaController(utx, emf);
-        List<Products> product = null;
+
+        List<Products> product = productCtrl.findByBrand(search.toUpperCase());
         for (String brandHave : brand) {
             if (search.equals(brandHave)) {
-                Have = search;
+                have = search;
             }
         }
-        if (Have != null) {
+        if (have != null) {
             //หาตามbrand
-//            product = productCtrl.findByBrand(Have);
+            product = productCtrl.findByBrand(search.toUpperCase());
         } else {
             for (String colorHave : color) {
                 if (search.equals(colorHave)) {
-                    Have = search;
+                    have = search;
                 }
             }
-            if (Have != null) {
-                   //หาตามcolor
+            if (have != null) {
+                //หาตามcolor
+                product = productCtrl.findByColor(search.toUpperCase());
             } else {
                 if (search.equals("cloth")) {
                     //หาตามtype(shirt,pant,short)
+                    product = productCtrl.findByCloth();
                 } else if (search.equals("shoes")) {
                     //หาตามtype(sneaker,slipper)
+                    product = productCtrl.findByShoes();
                 } else {
                     for (String typeHave : type) {
                         if (search.equals(typeHave)) {
-                            Have = search;
+                            have = search;
                         }
                     }
-                    if (Have != null) {
+                    if (have != null) {
                         //หาตามtype
+                        product = productCtrl.findByType(search.toUpperCase());
                     } else {
                         //หาตามชื่อสินค้า
+                        product = productCtrl.findByProductName(search.toUpperCase());
+
                     }
                 }
 
             }
         }
+        request.setAttribute("products", product);
+        getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

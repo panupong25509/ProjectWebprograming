@@ -70,9 +70,15 @@ public class Account implements Serializable {
     @OneToMany(mappedBy = "accountid")
     private List<Wishlishs> wishlishsList;
     @OneToMany(mappedBy = "accountid")
+    private List<Address> addressList;
+    @OneToMany(mappedBy = "accountid")
     private List<Orders> ordersList;
 
     public Account() {
+    }
+
+    public Account(Integer accountid) {
+        this.accountid = accountid;
     }
 
     public Account(String username, String password, String fname, String lname, String email) {
@@ -81,12 +87,8 @@ public class Account implements Serializable {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
-        this.class1 = "BLUE";
         this.score = 0;
-    }
-
-    public Account(Integer accountid) {
-        this.accountid = accountid;
+        this.class1 = "BLUE";
     }
 
     public Integer getAccountid() {
@@ -160,6 +162,15 @@ public class Account implements Serializable {
 
     public void setWishlishsList(List<Wishlishs> wishlishsList) {
         this.wishlishsList = wishlishsList;
+    }
+
+    @XmlTransient
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
     }
 
     @XmlTransient

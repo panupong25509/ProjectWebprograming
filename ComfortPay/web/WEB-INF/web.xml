@@ -72,6 +72,26 @@
         <servlet-name>ConfirmAddToStockServlet</servlet-name>
         <servlet-class>comfortpay.servlet.ConfirmAddToStockServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckformServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.CheckformServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.ConfirmServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.HistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BillServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.BillServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SerachByFilterServlet</servlet-name>
+        <servlet-class>comfortpay.servlet.SerachByFilterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginPopupServlet</servlet-name>
         <url-pattern>/LoginPopup</url-pattern>
@@ -144,10 +164,26 @@
         <servlet-name>ConfirmAddToStockServlet</servlet-name>
         <url-pattern>/ConfirmAddToStock</url-pattern>
     </servlet-mapping>
-    <context-param>
-        <param-name>com.sun.faces.writeStateAtFormEnd</param-name>
-        <param-value>false</param-value>
-    </context-param>
+    <servlet-mapping>
+        <servlet-name>CheckformServlet</servlet-name>
+        <url-pattern>/Checkform</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmServlet</servlet-name>
+        <url-pattern>/Confirm</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/History</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BillServlet</servlet-name>
+        <url-pattern>/Bill</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SerachByFilterServlet</servlet-name>
+        <url-pattern>/SerachByFilter</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

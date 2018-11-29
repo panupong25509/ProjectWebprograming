@@ -50,7 +50,7 @@ public class ConfirmAddToStockServlet extends HttpServlet {
         Products product = pdCtrl.findProducts(Integer.parseInt(productid));
         SizesJpaController sizeProduct = new SizesJpaController(utx, emf);
         if (product.getProducttype().equals("SHIRT") || product.getProducttype().equals("BRA")
-                || product.getProducttype().equals("HOOD") || product.getProducttype().equals("PLANT")
+                || product.getProducttype().equals("HOOD") || product.getProducttype().equals("PANT")
                 || product.getProducttype().equals("SHORT")) {
             Sizes sizeS = new Sizes("S", Integer.parseInt(request.getParameter("S")), product);
             Sizes sizeM = new Sizes("M", Integer.parseInt(request.getParameter("M")), product);

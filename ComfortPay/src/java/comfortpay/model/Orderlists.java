@@ -61,6 +61,15 @@ public class Orderlists implements Serializable {
         this.orderlistid = orderlistid;
     }
 
+    public Orderlists(Integer quantity, Double totalprice, Orders orderid, Products productid, Sizes sizeid) {
+        this.quantity = quantity;
+        this.totalprice = totalprice;
+        this.orderid = orderid;
+        this.productid = productid;
+        this.sizeid = sizeid;
+    }
+
+    
     public Integer getOrderlistid() {
         return orderlistid;
     }
