@@ -87,16 +87,14 @@
                             <c:forEach items="${products}" var = "product" >
                                 <a href="Product?productid=${product.productid}" class="col-4 p-3 text-center text-dark">
                                     <div >
-                                        <!--<button style="background-color: #ECEEF0; border: none">-->
                                         <div style="background-color: #ECEEF0;cursor: pointer" class="card bg-light">
-                                            <img src="images/PictureWebPro/Products/${product.productcode}.jpg" width="100%">
+                                            <img src="images/Products/${product.productcode}.jpg" style="height: 250px;width: auto">
                                             <div class="col-12 row m-0">
                                                 <div class="col">${product.productname}</div>
                                                 <div class="col">${product.price} BAHT</div>
                                             </div>
                                             
                                         </div>
-                                        <!--                                        </button>-->
                                     </div>
                                 </a>
                             </c:forEach>

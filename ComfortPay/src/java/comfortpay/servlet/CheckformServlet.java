@@ -50,8 +50,7 @@ public class CheckformServlet extends HttpServlet {
             request.setAttribute("address", address);
             getServletContext().getRequestDispatcher("/ConfirmCheckout.jsp").forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher("/Login").forward(request, response);
-
+            getServletContext().getRequestDispatcher("/Login?path="+request.getParameter("path")).forward(request, response);
         }
     }
 

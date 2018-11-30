@@ -53,6 +53,7 @@ public class AddProductServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute("cart");
         cart.add(product, size);
+       
         response.sendRedirect("Cart");
     }
 

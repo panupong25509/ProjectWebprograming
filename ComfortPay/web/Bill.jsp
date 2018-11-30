@@ -44,6 +44,9 @@
                 </c:forEach>    
                 <div class="text-right pt-5 pr-5">Total OrderPrice : ${order.totalprice}</div>
             </div>
+            <div class="col-6 mx-auto m-0">
+                <a href="History"><button type="button" class="btn col-12 mt-3" style="border: 1px solid black;background-color: white">BACK</button></a>
+            </div>
 
         </div>
 

@@ -21,13 +21,14 @@
                         <h3>Last Product</h3>
                         <div class="row">
                             <div class="col">
-                                <img class="col" src="images/PictureWebPro/Products/${product.productcode}.jpg">
+                                <img class="col" src="images/Products/${product.productcode}.jpg">
                             </div>
                             <p class="col">Product code: ${product.productcode}</p> 
                             <p class="col">Product code: ${product.productname}</p> 
                         </div>
 
                     </div>
+                        <a href="MyAccount"><button type="button" class="btn btn-warning mt-3" style="width: 100%">BACK</button></a>
                 </div>
                 <div class="col">
                     <div>

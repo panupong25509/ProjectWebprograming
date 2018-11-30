@@ -44,22 +44,19 @@ public class ProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String productIdReq = request.getParameter("productid");
-//        int productId = 0;
-//        if (productIdReq == null) {
-//            Products product = (Products) session.getAttribute("product");
-//            productId = product.getProductid();
-//        } else {
-//            productId = Integer.parseInt(productIdReq);
-//        }
+        try {
+            HttpSession session = request.getSession();
+            String productIdReq = request.getParameter("productid");
+            ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
+            Products product = productsCtrl.findProducts(Integer.parseInt(productIdReq));
+            List<Sizes> productSize = product.getSizesList();
+            request.setAttribute("product", product);
+            request.setAttribute("productSize", productSize);
+            getServletContext().getRequestDispatcher("/Product.jsp?productid=" + productIdReq).forward(request, response);
+        } catch (NumberFormatException ex) {
+            getServletContext().getRequestDispatcher("/Home").forward(request, response);
+        }
 
-        ProductsJpaController productsCtrl = new ProductsJpaController(utx, emf);
-        Products product = productsCtrl.findProducts(Integer.parseInt(productIdReq));
-        List<Sizes> productSize = product.getSizesList();
-        request.setAttribute("product", product);
-        request.setAttribute("productSize", productSize);
-        getServletContext().getRequestDispatcher("/Product.jsp?productid="+productIdReq).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -30,16 +30,21 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        session.removeAttribute("account");
-        String path = request.getParameter("path");
-        int pathLength = path.length();
-        String pathServlet = path.substring(0, pathLength-4);
-        if(path==null || path==""){
+        try {
+            HttpSession session = request.getSession(true);
+            session.removeAttribute("account");
+            String path = request.getParameter("path");
+            int pathLength = path.length();
+            String pathServlet = path.substring(0, pathLength - 4);
+            if (path == null || path == "") {
+                getServletContext().getRequestDispatcher("/Home").forward(request, response);
+            } else {
+                response.sendRedirect(pathServlet);
+            }
+        } catch (NumberFormatException e) {
             getServletContext().getRequestDispatcher("/Home").forward(request, response);
-        }else{
-            response.sendRedirect(pathServlet);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

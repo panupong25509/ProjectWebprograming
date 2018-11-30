@@ -16,12 +16,12 @@
         <jsp:include page="Components/Navbar.jsp"/>
         <div class="container text-center" style="padding-top: 130px;">
             <div class="col-8 mx-auto p-3" style="background-color: #53759A;color: #D5C4AD;">
-                
+
                 <h1>Product</h1>
                 <div class="col-12 row m-0">
                     <div class="col p-3 text-right">
-                        <img src="images/PictureWebPro/Products/${product.productcode}.jpg" width="100%">
-                        
+                        <img src="images/Products/${product.productcode}.jpg" width="100%">
+
                     </div>
                     <div class="col p-3 text-left">
                         <p>ProductName : ${product.productname}</p>
@@ -41,6 +41,7 @@
                     </div>
                 </div>
             </div>
+                            <div class="col-8 mx-auto m-0 p-0"><a href="Home"><button class="btn btn-warning" style="width: 100%">BACK</button></a></div>
 
 
         </div>

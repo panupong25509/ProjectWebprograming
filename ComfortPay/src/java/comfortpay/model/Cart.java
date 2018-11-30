@@ -30,6 +30,7 @@ public class Cart {
         } else {
             line.setQuantity(line.getQuantity() + 1);
         }
+//        line.TotalPrice();
     }
 
     public void reduce(Sizes s) {

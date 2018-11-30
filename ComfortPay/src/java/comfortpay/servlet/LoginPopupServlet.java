@@ -42,27 +42,32 @@ public class LoginPopupServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(true);
-        String path = request.getParameter("path");
-        int pathLength = path.length();
-        String pathServlet = path.substring(0, pathLength - 4);
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        if (session.getAttribute("account") == null) {
-            if (username != null || password != null) {
-                AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
-                Account account = (Account) accountCtrl.findByUsername(username);
-                if (account != null) {
-                    if (account.getPassword().equals(password)) {
-                        session.setAttribute("account", account);
-                        if (path == null || path == "") {
-                            getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-                        } else {
+        try {
+            HttpSession session = request.getSession(true);
+            String path = request.getParameter("path");
+            int pathLength = path.length();
+            String pathServlet = path.substring(0, pathLength - 4);
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            if (session.getAttribute("account") == null) {
+                if (username != null || password != null) {
+                    AccountJpaController accountCtrl = new AccountJpaController(utx, emf);
+                    Account account = (Account) accountCtrl.findByUsername(username);
+                    if (account != null) {
+                        if (account.getPassword().equals(password)) {
+                            session.setAttribute("account", account);
+                            if (path == null || path == "") {
+                                getServletContext().getRequestDispatcher("/Home").forward(request, response);
+                            } else {
 //                            if (request.getParameter("productid") != null) {
 //                                pathServlet = "http://localhost:8080/ComfortPay/Product";
 //                                response.sendRedirect(pathServlet);
 //                            }
-                            response.sendRedirect(pathServlet);
+                                response.sendRedirect(pathServlet);
+                            }
+                        } else {
+                            request.setAttribute("path", path);
+                            getServletContext().getRequestDispatcher("/Login").forward(request, response);
                         }
                     } else {
                         request.setAttribute("path", path);
@@ -73,18 +78,17 @@ public class LoginPopupServlet extends HttpServlet {
                     getServletContext().getRequestDispatcher("/Login").forward(request, response);
                 }
             } else {
-                request.setAttribute("path", path);
-                getServletContext().getRequestDispatcher("/Login").forward(request, response);
-            }
-        } else {
-            if (path == null || path == "") {
-                getServletContext().getRequestDispatcher("/Home.jsp").forward(request, response);
-            } else {
+                if (path == null || path == "") {
+                    getServletContext().getRequestDispatcher("/Home").forward(request, response);
+                } else {
 //                if (request.getParameter("productid") != null) {
 //                    response.sendRedirect(pathServlet + "?productid=" + request.getParameter("productid"));
 //                }
-                response.sendRedirect(pathServlet);
+                    response.sendRedirect(pathServlet);
+                }
             }
+        } catch (NumberFormatException ex) {
+            getServletContext().getRequestDispatcher("/Home").forward(request, response);
         }
 
     }
